@@ -1,11 +1,38 @@
 import { useState } from "react";
 import ParcelForm from "../../components/admin/ParcelForm";
 import { RiAddBoxFill } from "react-icons/ri";
-//auoverflow y auto
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import Spinner from "../../components/common/Spinner";
+
+import { parcelRegister, reset } from "../../features/parcel/parcelSlice";
+
 const Parcels = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { admin } = useSelector((state) => state.admin);
+    const { parcels, isLoading, isError, message } = useSelector(
+        (state) => state.parcels
+    );
+
+    useEffect(() => {
+        if (isError) {
+            console.log(message);
+        }
+
+        if (!admin) {
+            navigate("/admin/signin");
+        }
+
+        // dispatch(getParcels());
+
+        return () => {
+            dispatch(reset());
+        };
+    }, [admin, navigate, isError, message, dispatch]);
+
     const [receiverFormDetails, setReceiverFormDetails] = useState({
-        email: "",
-        password: "",
         firstname: "",
         lastname: "",
         phone: "",
@@ -15,11 +42,8 @@ const Parcels = () => {
         district: "",
         subdistrict: "",
         postcode: "",
-        dob: "",
     });
     const [senderFormDetails, setSenderFormDetails] = useState({
-        email: "",
-        password: "",
         firstname: "",
         lastname: "",
         phone: "",
@@ -29,9 +53,13 @@ const Parcels = () => {
         district: "",
         subdistrict: "",
         postcode: "",
-        dob: "",
     });
-    const [parcelFormDetails, setParcelFormDetails] = useState({});
+    const [parcelFormDetails, setParcelFormDetails] = useState({
+        weight: "",
+        typeofshipment: "Normal",
+        typeofstuff: "Electronics Device",
+        boxsize: "A4",
+    });
 
     const [visibility, setVisibility] = useState(false);
 
@@ -59,12 +87,17 @@ const Parcels = () => {
     };
 
     const onSubmit = (e) => {
-        console.log({
+        const parcelData = {
             sender: senderFormDetails,
             receiver: receiverFormDetails,
             parcel: parcelFormDetails,
-        });
+        };
+        dispatch(parcelRegister(parcelData));
     };
+
+    if (isLoading) {
+        return <Spinner />;
+    }
 
     return (
         <>
@@ -144,13 +177,13 @@ const Parcels = () => {
                                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                             onChange={onParcelChange}
                                         >
-                                            <option value="Import">
+                                            <option value="Normal">
                                                 Normal
                                             </option>
-                                            <option value="Export">
+                                            <option value="Express">
                                                 Express
                                             </option>
-                                            <option value="Import Screen">
+                                            <option value="Same day">
                                                 Same day
                                             </option>
                                         </select>
@@ -170,18 +203,36 @@ const Parcels = () => {
                                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                             onChange={onParcelChange}
                                         >
-                                            <option value="Import">
+                                            <option value="Electronics Device">
                                                 Electronics Device
                                             </option>
-                                            <option value="Export">
+                                            <option value="Fragile">
                                                 Fragile
                                             </option>
-                                            <option value="Import Screen">
-                                                Foods
-                                            </option>
-                                            <option value="Import Screen">
+                                            <option value="Foods">Foods</option>
+                                            <option value="Normal">
                                                 Normal
                                             </option>
+                                        </select>
+                                    </div>
+                                    {/* boxsizing */}
+                                    <div className="space-x-2 flex">
+                                        <label
+                                            htmlFor="typeofshipment"
+                                            className="basis-1/4"
+                                        >
+                                            Box Size
+                                        </label>
+                                        <select
+                                            name="typeofshipment"
+                                            id="typeofshipment"
+                                            // value={typeofshipment}
+                                            className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
+                                            onChange={onParcelChange}
+                                        >
+                                            <option value="A4">A4</option>
+                                            <option value="A5">A5</option>
+                                            <option value="A6">A6</option>
                                         </select>
                                     </div>
                                 </div>
