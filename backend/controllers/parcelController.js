@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Parcel = require("../models/parcelModel");
+const User = require("../models/userModel");
 const { update } = require("../models/userModel");
 
 // @desc Get parcels
@@ -7,18 +8,32 @@ const { update } = require("../models/userModel");
 // @access Private
 const getParcels = asyncHandler(async (req, res) => {
     const parcels = await Parcel.find({});
-    console.log(parcels);
     res.status(200).json(parcels);
+});
+
+// @desc Get parcels specific
+// @route GET /api/parcels/:id
+// @accesss Private
+const getParcelsById = asyncHandler(async (req, res) => {
+    const parcel = await Parcel.find({ _id: req.params.id });
+    res.status(200).json(parcel);
+    console.log(parcel);
 });
 
 // @desc Register new parcels
 // @route POST /api/parcels
 // @access Private // for Admin
 const registerParcel = asyncHandler(async (req, res) => {
-    console.log(req.body);
     const { sender, receiver, parcel } = req.body;
     const { weight, typeofshipment, typeofstuff, boxsize } = parcel;
-    if (!sender || !receiver || !parcel) {
+    if (
+        !sender.citizen ||
+        !receiver.citizen ||
+        !weight ||
+        !typeofshipment ||
+        !typeofstuff ||
+        !boxsize
+    ) {
         res.status(400);
         throw new Error("Please add all fields");
     }
@@ -106,4 +121,5 @@ module.exports = {
     registerParcel,
     updateParcel,
     deleteParcel,
+    getParcelsById,
 };

@@ -13,7 +13,7 @@ import Spinner from "../../../../components/common/Spinner";
 const initailFormValue = {
     email: "",
     password: "",
-    role: "Import",
+    role: "Emp Import",
     firstname: "",
     lastname: "",
     phone: "",
@@ -185,11 +185,16 @@ const CreateEmployee = () => {
                                         className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                         onChange={onChange}
                                     >
-                                        <option value="Import">Import</option>
-                                        <option value="Export">Export</option>
-                                        <option value="Import Screen">
-                                            Import Screen
+                                        <option value="Emp Import">
+                                            Emp Import
                                         </option>
+                                        <option value="Emp Screening">
+                                            Emp Screening
+                                        </option>
+                                        <option value="Emp Export">
+                                            Emp Export
+                                        </option>
+                                        <option value="None">None</option>
                                     </select>
                                 </div>
 

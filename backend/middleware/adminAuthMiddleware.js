@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
-const Admin = require("../models/adminModel");
+// const Admin = require("../models/adminModel");
+const Employee = require("../models/employeeModel");
 
 const adminProtect = asyncHandler(async (req, res, next) => {
     let token;
@@ -18,13 +19,13 @@ const adminProtect = asyncHandler(async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
             // Get user from the token
             // (decoded);
-            req.admin = await Admin.findById(decoded.id).select("-password");
+            req.admin = await Employee.findById(decoded.id).select("-password");
 
-            if (req.admin.role !== "database administrator") {
-                // (req.admin.role);
-                res.status(401);
-                throw new Error("Not authorized, Permission denied");
-            }
+            // if (req.admin.role !== "database administrator") {
+            //     // (req.admin.role);
+            //     res.status(401);
+            //     throw new Error("Not authorized, Permission denied");
+            // }
             next();
         } catch (error) {
             error;

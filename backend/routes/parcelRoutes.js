@@ -6,6 +6,7 @@ const {
     registerParcel,
     updateParcel,
     deleteParcel,
+    getParcelsById,
 } = require("../controllers/parcelController");
 const { protect } = require("../middleware/authMiddleware");
 const { adminProtect } = require("../middleware/adminAuthMiddleware");
@@ -16,6 +17,7 @@ router
     .post(adminProtect, registerParcel);
 router
     .route("/:id")
+    .get(adminProtect, getParcelsById)
     .delete(adminProtect, deleteParcel)
     .put(adminProtect, updateParcel);
 

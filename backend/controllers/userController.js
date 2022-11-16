@@ -83,7 +83,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access Public
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }); // ติดต่อกับ DB แล้ว
     if (user && (await bcrypt.compare(password, user.password))) {
         res.json({
             _id: user.id,
@@ -99,10 +99,6 @@ const loginUser = asyncHandler(async (req, res) => {
             postcode: user.postcode,
             dob: user.dob,
             token: generateToken(user._id),
-            // _id: user.id,
-            // fullname: user.firstname + " " + user.lastname,
-            // email: user.email,
-            // token: generateToken(user._id),
         });
     } else {
         res.status(400);
@@ -114,7 +110,6 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route POST /api/users/:id
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-    console.log(req.params.id);
     const targetUser = await User.findById(req.params.id);
 
     if (!targetUser) {

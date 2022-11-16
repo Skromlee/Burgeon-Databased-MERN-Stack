@@ -25,6 +25,8 @@ import CreateEmployee from "./pages/admin/users/employees/CreateEmployees";
 // admin pages => Users => Customers
 import Customers from "./pages/admin/users/customers/Customers";
 import CreateCustomer from "./pages/admin/users/customers/CreateCustomer";
+// admin pages => Parcels
+import ParcelsManage from "./pages/admin/parcels/Parcels";
 
 function App() {
     return (
@@ -44,8 +46,8 @@ function App() {
                     <Route element={<AdminLayout />}>
                         <Route path="/admin" element={<Admin />} />
                         <Route
-                            path="/admin/createparcels"
-                            element={<CreateParcels />}
+                            path="/admin/parcels"
+                            element={<ParcelsManage />}
                         />
                         <Route path="/admin/users" element={<Users />} />
                         <Route

@@ -1,158 +1,134 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import Spinner from "../../../../components/common/Spinner";
-import {
-    getCustomers,
-    updateCustomer,
-    deleteCustomer,
-    reset,
-} from "../../../../features/customer/customerSlice";
-
-// simple table
-import Table from "../../../../components/common/TableCustomers";
 import { useState } from "react";
-import DeleteDialog from "../../../../components/admin/users/employees/DeleteDialog";
-import EditDialog from "../../../../components/admin/users/employees/EditDialog";
+import { RiAddBoxFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import Spinner from "../../../components/common/Spinner";
+import Table from "../../../components/admin/parcels/TableParcel";
+import CreateDialog from "./CreateDialog";
+import { toast } from "react-toastify";
 
-const Customers = () => {
+import {
+    parcelRegister,
+    reset,
+    getParcels,
+    getParcelById,
+} from "../../../features/parcel/parcelSlice";
+
+const Parcels = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const { admin } = useSelector((state) => state.admin);
-    const { customer, isError, isLoading, message } = useSelector(
-        (state) => state.customer
+    const { parcels, parcelbyid, isLoading, isError, message } = useSelector(
+        (state) => state.parcels
     );
-
-    const [id, setId] = useState("");
-    const [cus, setCustomer] = useState({});
-    const [isEditing, setEditing] = useState(false);
-    const [onDelete, setOnDelete] = useState(false);
-    // use to show edit banner
-    const [visibility, setVisibility] = useState(false);
 
     useEffect(() => {
         if (isError) {
             toast.error(message);
         }
 
+        if (parcelbyid) {
+            console.log(parcelbyid);
+        }
+
         if (!admin) {
             navigate("/admin/signin");
         }
 
-        dispatch(getCustomers());
-        // Check for account
+        dispatch(getParcels());
+
         return () => {
             dispatch(reset());
         };
-    }, [admin, navigate, isError, message, dispatch]);
+    }, [admin, navigate, parcelbyid, isError, message, dispatch]);
 
-    const handleChangePage = () => {
-        dispatch(reset());
-        navigate("/admin/users/customers/create"); //<= chagne
-    };
-    console.log(customer);
-    const editingHandler = () => {
-        setEditing((prev) => !prev);
-    };
-
-    // update details
-    const findById = (id) => {
-        let targetEmp = {};
-        customer.map((eachEmp) => {
-            if (eachEmp._id === id) {
-                targetEmp = eachEmp;
-            }
-            return null;
-        });
-        return targetEmp;
+    const initialFormDetails = {
+        firstname: "",
+        lastname: "",
+        phone: "",
+        citizen: "",
+        addressNo: "",
+        province: "",
+        district: "",
+        subdistrict: "",
+        postcode: "",
     };
 
-    const editHandler = (targetId) => {
-        const targetEmp = findById(targetId);
-        setCustomer({
-            ...targetEmp,
-            dob: new Date(targetEmp.dob).toISOString().slice(0, 10),
-        });
-        setEditing(true);
-        setVisibility(true);
+    const initialParcelFormDetails = {
+        weight: "",
+        typeofshipment: "Normal",
+        typeofstuff: "Normal",
+        boxsize: "A4",
     };
 
-    const detailHandler = (targetId) => {
-        const targetEmp = findById(targetId);
-        setCustomer({
-            ...targetEmp,
-            dob: new Date(targetEmp.dob).toISOString().slice(0, 10),
-        });
-        setVisibility(true);
-    };
+    const [receiverFormDetails, setReceiverFormDetails] =
+        useState(initialFormDetails);
+    const [senderFormDetails, setSenderFormDetails] =
+        useState(initialFormDetails);
+    const [parcelFormDetails, setParcelFormDetails] = useState(
+        initialParcelFormDetails
+    );
 
-    const deleteHandler = (targetId) => {
-        setId(targetId);
-        setOnDelete(true);
-    };
+    const [visibility, setVisibility] = useState(false);
 
-    const exitDeleteHandler = () => {
-        setOnDelete(false);
-        setId("");
-    };
-
-    const confirmDeleteHandler = () => {
-        setOnDelete(false);
-        dispatch(deleteCustomer(id));
-    };
-
-    const exitHandler = () => {
-        setVisibility(false);
-        setEditing(false);
-        setId("");
-        setCustomer({});
-    };
-
-    // use to handle input field
-    const onChange = (e) => {
-        setCustomer((prevState) => ({
-            ...prevState,
+    const onSenderChange = (e) => {
+        setSenderFormDetails({
+            ...senderFormDetails,
             [e.target.name]: e.target.value,
-        }));
+        });
+    };
+    const onReceiverChange = (e) => {
+        setReceiverFormDetails({
+            ...receiverFormDetails,
+            [e.target.name]: e.target.value,
+        });
+    };
+    const onParcelChange = (e) => {
+        setParcelFormDetails({
+            ...parcelFormDetails,
+            [e.target.name]: e.target.value,
+        });
     };
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-        dispatch(updateCustomer(cus));
-        setEditing(false);
+    const onExitHandler = (e) => {
+        setVisibility(false);
+    };
+
+    const onSubmit = (e) => {
+        const parcelData = {
+            sender: senderFormDetails,
+            receiver: receiverFormDetails,
+            parcel: parcelFormDetails,
+        };
+        dispatch(parcelRegister(parcelData));
+        setVisibility(false);
+        setSenderFormDetails(initialFormDetails);
+        setReceiverFormDetails(initialFormDetails);
+        setParcelFormDetails(initialParcelFormDetails);
+    };
+
+    const onEditHandler = () => {};
+
+    const onDetailHandler = (id) => {
+        dispatch(getParcelById(id));
+    };
+
+    const onDeleteHandler = (id) => {
+        console.log(id);
     };
 
     if (isLoading) {
         return <Spinner />;
     }
+
     return (
         <>
-            {onDelete && (
-                <DeleteDialog
-                    exitHandler={exitDeleteHandler}
-                    confirmHandler={confirmDeleteHandler}
-                    id={id}
-                />
-            )}
-
-            {visibility && (
-                <EditDialog
-                    isEditing={isEditing}
-                    editingHandler={editingHandler}
-                    exitHandler={exitHandler}
-                    submitHandler={submitHandler}
-                    emp={cus}
-                    onChange={onChange}
-                />
-            )}
-
             <div className=" p-6 space-y-6 flex flex-col">
                 <div className=" flex justify-between">
-                    <h1 className=" text-3xl md:text-4xl">Customers Manager</h1>
+                    <h1 className=" text-3xl md:text-4xl">Parcels Manager</h1>
                     <button
-                        onClick={handleChangePage}
+                        onClick={() => setVisibility((prev) => !prev)}
                         className={
                             visibility
                                 ? `bg-slate-600 p-2 px-4 rounded-full text-white transition`
@@ -160,28 +136,40 @@ const Customers = () => {
                         }
                         disabled={visibility ? true : false}
                     >
-                        Create New Customers
+                        Create New Parcels
                     </button>
                 </div>
-                <div></div>
-                {customer.length > 0 ? (
+                {parcels.length > 0 ? (
                     <div className=" table">
                         <div className=" container mx-auto ">
                             <Table
-                                data={customer}
-                                rowsPerPage={20}
-                                onEditClick={editHandler}
-                                onDetailClick={detailHandler}
-                                onDeleteClick={deleteHandler}
+                                data={parcels}
+                                rowsPerPage={15}
+                                onEditClick={onEditHandler}
+                                onDetailClick={onDetailHandler}
+                                onDeleteClick={onDeleteHandler}
                                 visibility={visibility}
                             />
                         </div>
                     </div>
                 ) : (
-                    <h3>You have not create any Customers</h3>
+                    <h3>You have not create any Parcels</h3>
                 )}
             </div>
+
+            {visibility && (
+                <CreateDialog
+                    onExitHandler={onExitHandler}
+                    senderFormDetails={senderFormDetails}
+                    onSubmit={onSubmit}
+                    onSenderChange={onSenderChange}
+                    receiverFormDetails={receiverFormDetails}
+                    onReceiverChange={onReceiverChange}
+                    parcelFormDetails={parcelFormDetails}
+                    onParcelChange={onParcelChange}
+                />
+            )}
         </>
     );
 };
-export default Customers;
+export default Parcels;

@@ -168,7 +168,7 @@ const Customers = () => {
                         <div className=" container mx-auto ">
                             <Table
                                 data={customer}
-                                rowsPerPage={20}
+                                rowsPerPage={12}
                                 onEditClick={editHandler}
                                 onDetailClick={detailHandler}
                                 onDeleteClick={deleteHandler}

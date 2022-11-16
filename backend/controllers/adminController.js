@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const Admin = require("../models/adminModel");
+const Employee = require("../models/employeeModel");
 
 // @desc Register new admin
 // @route POST /api/admin/
@@ -85,17 +86,18 @@ const registerAdmin = asyncHandler(async (req, res) => {
 // @route POST /api/admin/login
 // @access Public
 const loginAdmin = asyncHandler(async (req, res) => {
-    req.body;
+    // req.body;
     const { email, password } = req.body;
-    const admin = await Admin.findOne({ email });
-    admin;
-    if (admin && (await bcrypt.compare(password, admin.password))) {
+    // const admin = await Admin.findOne({ email });
+    const employee = await Employee.findOne({ email });
+
+    if (employee && (await bcrypt.compare(password, employee.password))) {
         res.json({
-            _id: admin.id,
+            _id: employee.id,
             // fullname: user.firstname + " " + user.lastname,
-            email: admin.email,
-            role: admin.role,
-            token: generateToken(admin._id),
+            email: employee.email,
+            role: employee.role,
+            token: generateToken(employee._id),
         });
     } else {
         res.status(400);

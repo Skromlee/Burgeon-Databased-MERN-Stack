@@ -3,6 +3,7 @@ import parcelService from "./parcelService";
 
 const initialState = {
     parcels: [],
+    parcelbyid: null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -16,6 +17,25 @@ export const getParcels = createAsyncThunk(
         try {
             const token = thunkAPI.getState().admin.admin.token;
             return await parcelService.getParcels(token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+// Get parcel By id
+export const getParcelById = createAsyncThunk(
+    "parcel/getParcelById",
+    async (parcelId, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().admin.admin.token;
+            return await parcelService.getParcelById(parcelId, token);
         } catch (error) {
             const message =
                 (error.response &&
@@ -77,6 +97,19 @@ export const parcelSlice = createSlice({
                 state.parcels = action.payload;
             })
             .addCase(getParcels.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(getParcelById.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getParcelById.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.parcelbyid = action.payload;
+            })
+            .addCase(getParcelById.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;

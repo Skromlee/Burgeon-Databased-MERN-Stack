@@ -57,50 +57,54 @@ const Table = ({
                             <td className={styles.tableCell}>{el.email}</td>
                             <td className={styles.tableCell}>{el.citizen}</td>
                             <td className={styles.tableCell}>
-                                <div className="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-4 justify-center items-center space-y-4">
-                                    <div>
-                                        <button
-                                            className={
-                                                visibility
-                                                    ? `text-slate-600 pointer-events-none transition`
-                                                    : `text-green-600 hover:text-slate-300 transition`
-                                            }
-                                            onClick={() =>
-                                                editHandlerOnClick(el._id)
-                                            }
-                                        >
-                                            Edit
-                                        </button>
+                                {el.citizen !== 9999999999999 ? (
+                                    <div className="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-4 justify-center items-center space-y-4">
+                                        <div>
+                                            <button
+                                                className={
+                                                    visibility
+                                                        ? `text-slate-600 pointer-events-none transition`
+                                                        : `text-green-600 hover:text-slate-300 transition`
+                                                }
+                                                onClick={() =>
+                                                    editHandlerOnClick(el._id)
+                                                }
+                                            >
+                                                Edit
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button
+                                                className={
+                                                    visibility
+                                                        ? `text-slate-600 pointer-events-none transition`
+                                                        : `text-blue-600 hover:text-slate-300 transition`
+                                                }
+                                                onClick={() =>
+                                                    detailHandlerOnClick(el._id)
+                                                }
+                                            >
+                                                Detail
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button
+                                                className={
+                                                    visibility
+                                                        ? `text-slate-600 pointer-events-none transition`
+                                                        : `text-red-600 hover:text-slate-300 transition`
+                                                }
+                                                onClick={() =>
+                                                    deleteHandlerOnClick(el._id)
+                                                }
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <button
-                                            className={
-                                                visibility
-                                                    ? `text-slate-600 pointer-events-none transition`
-                                                    : `text-blue-600 hover:text-slate-300 transition`
-                                            }
-                                            onClick={() =>
-                                                detailHandlerOnClick(el._id)
-                                            }
-                                        >
-                                            Detail
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <button
-                                            className={
-                                                visibility
-                                                    ? `text-slate-600 pointer-events-none transition`
-                                                    : `text-red-600 hover:text-slate-300 transition`
-                                            }
-                                            onClick={() =>
-                                                deleteHandlerOnClick(el._id)
-                                            }
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
+                                ) : (
+                                    "Cannot Remove Edit or View Details."
+                                )}
                             </td>
                         </tr>
                     ))}

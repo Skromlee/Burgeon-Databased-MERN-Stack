@@ -6,7 +6,7 @@ import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
 const navItems = [
     { href: "/admin", icon: AiOutlineDashboard, label: "Dashboard" },
-    { href: "/admin/createparcels", icon: BsBoxSeam, label: "Total Parcels" },
+    { href: "/admin/parcels", icon: BsBoxSeam, label: "Total Parcels" },
     {
         href: "/admin/users/employees",
         icon: AiOutlineUsergroupAdd,

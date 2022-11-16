@@ -14,6 +14,17 @@ const getParcels = async (token) => {
     return response.data;
 };
 
+// Get Parcelbyid
+const getParcelById = async (parcelId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const response = await axios.get(API_URL + parcelId, config);
+    return response.data;
+};
+
 // Register
 
 const parcelRegister = async (parcelData, token) => {
@@ -28,6 +39,7 @@ const parcelRegister = async (parcelData, token) => {
 
 const parcelService = {
     parcelRegister,
+    getParcelById,
     getParcels,
 };
 
