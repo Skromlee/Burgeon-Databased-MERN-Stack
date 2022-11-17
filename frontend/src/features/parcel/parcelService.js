@@ -37,10 +37,39 @@ const parcelRegister = async (parcelData, token) => {
     return response.data;
 };
 
+// update
+const updateParcelData = async (updateParcelData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const parcelId = updateParcelData.parcel._id;
+    const response = await axios.put(
+        API_URL + parcelId,
+        updateParcelData,
+        config
+    );
+    return response.data;
+};
+
+// Delete parcel
+const deleteParcel = async (deleteParcelId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const response = await axios.delete(API_URL + deleteParcelId, config);
+    return response.data;
+};
+
 const parcelService = {
     parcelRegister,
     getParcelById,
     getParcels,
+    updateParcelData,
+    deleteParcel,
 };
 
 export default parcelService;

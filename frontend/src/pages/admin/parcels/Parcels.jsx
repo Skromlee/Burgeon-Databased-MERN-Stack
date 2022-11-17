@@ -5,15 +5,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Spinner from "../../../components/common/Spinner";
 import Table from "../../../components/admin/parcels/TableParcel";
-import CreateDialog from "./CreateDialog";
+import EditDialog from "./EditDialog";
 import { toast } from "react-toastify";
 
 import {
     parcelRegister,
     reset,
     getParcels,
+    parcelUpdate,
+    deleteParcel,
     getParcelById,
 } from "../../../features/parcel/parcelSlice";
+import DeleteDialog from "../../../components/admin/users/employees/DeleteDialog";
+import CreateDialog from "./CreateDialog";
 
 const Parcels = () => {
     const navigate = useNavigate();
@@ -28,10 +32,6 @@ const Parcels = () => {
             toast.error(message);
         }
 
-        if (parcelbyid) {
-            console.log(parcelbyid);
-        }
-
         if (!admin) {
             navigate("/admin/signin");
         }
@@ -41,7 +41,7 @@ const Parcels = () => {
         return () => {
             dispatch(reset());
         };
-    }, [admin, navigate, parcelbyid, isError, message, dispatch]);
+    }, [admin, navigate, isError, message, dispatch]);
 
     const initialFormDetails = {
         firstname: "",
@@ -71,6 +71,10 @@ const Parcels = () => {
     );
 
     const [visibility, setVisibility] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [EditVisibility, setEditVisibility] = useState(false);
+    const [onDelete, setOnDelete] = useState(false);
+    const [targetId, setTargetId] = useState("");
 
     const onSenderChange = (e) => {
         setSenderFormDetails({
@@ -92,10 +96,14 @@ const Parcels = () => {
     };
 
     const onExitHandler = (e) => {
+        setParcelFormDetails(initialParcelFormDetails);
+        setSenderFormDetails(initialFormDetails);
+        setReceiverFormDetails(initialFormDetails);
         setVisibility(false);
     };
 
     const onSubmit = (e) => {
+        e.preventDefault();
         const parcelData = {
             sender: senderFormDetails,
             receiver: receiverFormDetails,
@@ -108,14 +116,85 @@ const Parcels = () => {
         setParcelFormDetails(initialParcelFormDetails);
     };
 
-    const onEditHandler = () => {};
+    const onUpdateSubmit = (e) => {
+        e.preventDefault();
+        setIsEditing(false);
+        const updatedParcelData = {
+            sender: senderFormDetails,
+            receiver: receiverFormDetails,
+            parcel: parcelFormDetails,
+        };
+        dispatch(parcelUpdate(updatedParcelData));
+        // console.log(updateParcelData);
+    };
+
+    const onEditHandler = (id) => {
+        prepareFormForDetail(id);
+        setEditVisibility(true);
+        setIsEditing(true);
+    };
+
+    const editingHandler = () => {
+        setIsEditing((prev) => !prev);
+    };
 
     const onDetailHandler = (id) => {
-        dispatch(getParcelById(id));
+        prepareFormForDetail(id);
+        setEditVisibility(true);
+        setIsEditing(false);
+    };
+
+    const prepareFormForDetail = (id) => {
+        const targetParcel = findParcelById(id);
+        const {
+            sender,
+            receiver,
+            boxsize,
+            typeofshipment,
+            weight,
+            typeofstuff,
+            _id,
+        } = targetParcel[0];
+        setParcelFormDetails({
+            boxsize,
+            typeofshipment,
+            weight,
+            typeofstuff,
+            _id,
+        });
+        setSenderFormDetails({
+            ...sender,
+        });
+        setReceiverFormDetails({
+            ...receiver,
+        });
+    };
+
+    const onEditCloseHandler = () => {
+        setEditVisibility(false);
     };
 
     const onDeleteHandler = (id) => {
-        console.log(id);
+        setTargetId(id);
+        setOnDelete(true);
+    };
+
+    const exitDeleteHandler = () => {
+        setOnDelete(false);
+        setTargetId("");
+    };
+
+    const confirmDeleteHandler = () => {
+        dispatch(deleteParcel(targetId));
+        setTargetId("");
+        setOnDelete(false);
+    };
+
+    const findParcelById = (targetId) => {
+        const targetParcel = parcels.filter((Each) => {
+            return Each._id === targetId;
+        });
+        return targetParcel;
     };
 
     if (isLoading) {
@@ -124,6 +203,14 @@ const Parcels = () => {
 
     return (
         <>
+            {onDelete && (
+                <DeleteDialog
+                    exitHandler={exitDeleteHandler}
+                    confirmHandler={confirmDeleteHandler}
+                    id={targetId}
+                />
+            )}
+
             <div className=" p-6 space-y-6 flex flex-col">
                 <div className=" flex justify-between">
                     <h1 className=" text-3xl md:text-4xl">Parcels Manager</h1>
@@ -149,6 +236,7 @@ const Parcels = () => {
                                 onDetailClick={onDetailHandler}
                                 onDeleteClick={onDeleteHandler}
                                 visibility={visibility}
+                                EditVisibility={EditVisibility}
                             />
                         </div>
                     </div>
@@ -162,6 +250,21 @@ const Parcels = () => {
                     onExitHandler={onExitHandler}
                     senderFormDetails={senderFormDetails}
                     onSubmit={onSubmit}
+                    onSenderChange={onSenderChange}
+                    receiverFormDetails={receiverFormDetails}
+                    onReceiverChange={onReceiverChange}
+                    parcelFormDetails={parcelFormDetails}
+                    onParcelChange={onParcelChange}
+                />
+            )}
+
+            {EditVisibility && (
+                <EditDialog
+                    isEditing={isEditing}
+                    editingHandler={editingHandler}
+                    onExitHandler={onEditCloseHandler}
+                    senderFormDetails={senderFormDetails}
+                    onSubmit={onUpdateSubmit}
                     onSenderChange={onSenderChange}
                     receiverFormDetails={receiverFormDetails}
                     onReceiverChange={onReceiverChange}

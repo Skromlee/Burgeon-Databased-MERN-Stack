@@ -3,7 +3,7 @@ import parcelService from "./parcelService";
 
 const initialState = {
     parcels: [],
-    parcelbyid: null,
+    parcelbyid: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -67,6 +67,47 @@ export const parcelRegister = createAsyncThunk(
     }
 );
 
+// Update parcel
+export const parcelUpdate = createAsyncThunk(
+    "parcel/parcelupdate",
+    async (updateParcelData, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().admin.admin.token;
+            return await parcelService.updateParcelData(
+                updateParcelData,
+                token
+            );
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+// Delete parcel
+export const deleteParcel = createAsyncThunk(
+    "parcel/deleteparcel",
+    async (deleteParcelId, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().admin.admin.token;
+            return await parcelService.deleteParcel(deleteParcelId, token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 export const parcelSlice = createSlice({
     name: "parcel",
     initialState,
@@ -113,6 +154,27 @@ export const parcelSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
+            })
+            .addCase(parcelUpdate.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(parcelUpdate.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.parcels = state.parcels.filter((each) => {
+                    return each._id !== action.payload._id;
+                });
+                state.parcels.push(action.payload);
+            })
+            .addCase(deleteParcel.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteParcel.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.parcels = state.parcels.filter((each) => {
+                    return each._id !== action.payload.id;
+                });
             });
     },
 });

@@ -59,28 +59,40 @@ const registerParcel = asyncHandler(async (req, res) => {
 // @route PUT /api/parcels/:id
 // @access Private
 const updateParcel = asyncHandler(async (req, res) => {
-    const parcel = await Parcel.findById(req.params.id);
+    console.log(req.body);
+    const { sender, receiver, parcel } = req.body;
+    const { weight, typeofshipment, typeofstuff, boxsize } = parcel;
+    if (
+        !sender.citizen ||
+        !receiver.citizen ||
+        !weight ||
+        !typeofshipment ||
+        !typeofstuff ||
+        !boxsize
+    ) {
+        res.status(400);
+        throw new Error("Please add all fields");
+    }
+
+    const targetParcel = await Parcel.findById(req.params.id);
 
     if (!parcel) {
         res.status(400);
         throw new Error("Parcel not found");
     }
 
-    // Check for user
-    if (!req.user) {
-        res.status(401);
-        throw new Error("User not found");
-    }
-
-    // Make sure the logged in user matches the parcel user
-    if (parcel.user.toString() !== req.user.id) {
-        res.status(401);
-        throw new Error("User not authorized");
-    }
+    const updatedParcelData = {
+        sender,
+        receiver,
+        typeofshipment,
+        weight,
+        boxsize,
+        typeofstuff,
+    };
 
     const updatedParcel = await Parcel.findOneAndUpdate(
         req.params.id,
-        req.body,
+        updatedParcelData,
         {
             new: true,
         }
@@ -97,18 +109,6 @@ const deleteParcel = asyncHandler(async (req, res) => {
     if (!parcel) {
         res.status(400);
         throw new Error("Parcel not found");
-    }
-
-    // Check for user
-    if (!req.user) {
-        res.status(401);
-        throw new Error("User not found");
-    }
-
-    // Make sure the logged in user matches the parcel user
-    if (parcel.user.toString() !== req.user.id) {
-        res.status(401);
-        throw new Error("User not authorized");
     }
 
     await parcel.remove();

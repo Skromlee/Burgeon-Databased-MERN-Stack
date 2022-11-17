@@ -14,6 +14,10 @@ const parcelSchema = mongoose.Schema(
             type: String,
             required: [true, "Please add type of shipment"],
         },
+        typeofstuff: {
+            type: String,
+            required: [true, "Please add type of stuff"],
+        },
         weight: {
             type: Number,
             required: [true, "Please add parcel weight"],

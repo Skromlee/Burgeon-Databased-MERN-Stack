@@ -11,6 +11,7 @@ const Table = ({
     onDetailClick,
     onDeleteClick,
     visibility,
+    EditVisibility,
 }) => {
     const [page, setPage] = useState(1);
     const { slice, range } = useTable(data, page, rowsPerPage);
@@ -71,7 +72,7 @@ const Table = ({
                                     <div>
                                         <button
                                             className={
-                                                visibility
+                                                visibility || EditVisibility
                                                     ? `text-slate-600 pointer-events-none transition`
                                                     : `text-green-600 hover:text-slate-300 transition`
                                             }
@@ -85,7 +86,7 @@ const Table = ({
                                     <div>
                                         <button
                                             className={
-                                                visibility
+                                                visibility || EditVisibility
                                                     ? `text-slate-600 pointer-events-none transition`
                                                     : `text-blue-600 hover:text-slate-300 transition`
                                             }
@@ -99,7 +100,7 @@ const Table = ({
                                     <div>
                                         <button
                                             className={
-                                                visibility
+                                                visibility || EditVisibility
                                                     ? `text-slate-600 pointer-events-none transition`
                                                     : `text-red-600 hover:text-slate-300 transition`
                                             }

@@ -1,4 +1,4 @@
-const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
+const ParcelForm = ({ onSubmit, onChange, formDetails, isEditing }) => {
     const {
         firstname,
         lastname,
@@ -27,6 +27,7 @@ const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                             placeholder="Enter employee citizen number"
                             onChange={onChange}
+                            disabled={isEditing ? false : true}
                         />
                     </div>
                     {/* Firstname */}
@@ -42,6 +43,7 @@ const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                             placeholder="Enter employee firstname"
                             onChange={onChange}
+                            disabled={isEditing ? false : true}
                         />
                     </div>
                     {/* Lastname */}
@@ -57,6 +59,7 @@ const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                             placeholder="Enter employee lastname"
                             onChange={onChange}
+                            disabled={isEditing ? false : true}
                         />
                     </div>
                     {/* Phone */}
@@ -72,6 +75,7 @@ const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                             placeholder="Enter employee phone number"
                             onChange={onChange}
+                            disabled={isEditing ? false : true}
                         />
                     </div>
 
@@ -88,6 +92,7 @@ const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                             placeholder="Enter employee postcode"
                             onChange={onChange}
+                            disabled={isEditing ? false : true}
                         />
                     </div>
                 </div>
@@ -106,6 +111,7 @@ const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                             placeholder="Enter employee address number"
                             onChange={onChange}
+                            disabled={isEditing ? false : true}
                         />
                     </div>
                     {/* province */}
@@ -121,6 +127,7 @@ const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                             placeholder="Enter employee province"
                             onChange={onChange}
+                            disabled={isEditing ? false : true}
                         />
                     </div>
 
@@ -137,13 +144,14 @@ const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                             placeholder="Enter employee district"
                             onChange={onChange}
+                            disabled={isEditing ? false : true}
                         />
                     </div>
 
                     {/* subdistrict */}
                     <div className="space-x-2 flex">
                         <label htmlFor="subdistrict" className="basis-1/4">
-                            Sub District
+                            Sub District{isEditing}
                         </label>
                         <input
                             type="text"
@@ -153,19 +161,11 @@ const ParcelForm = ({ onSubmit, onChange, formDetails }) => {
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                             placeholder="Enter employee subdistrict"
                             onChange={onChange}
+                            disabled={isEditing ? false : true}
                         />
                     </div>
                 </div>
             </div>
-
-            {/* <div>
-                <button
-                    type="submit"
-                    className="border-brightRed border-2  rounded-full p-2 px-6 text-brightRed hover:bg-brightRed hover:text-white duration-75"
-                >
-                    Create
-                </button>
-            </div> */}
         </form>
     );
 };

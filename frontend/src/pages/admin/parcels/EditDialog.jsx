@@ -1,6 +1,6 @@
 import ParcelForm from "../../../components/admin/ParcelForm";
 
-const CreateDialog = ({
+const EditDialog = ({
     onExitHandler,
     senderFormDetails,
     onSubmit,
@@ -9,15 +9,8 @@ const CreateDialog = ({
     onReceiverChange,
     onParcelChange,
     parcelFormDetails,
-
-    // onExitHandler={onExitHandler}
-    // senderFormDetails={senderFormDetails}
-    // onSubmit={onSubmit}
-    // onSenderChange={onSenderChange}
-    // receiverFormDetails={receiverFormDetails}
-    // onReceiverChange={onReceiverChange}
-    // parcelFormDetails={parcelFormDetails}
-    // onParcelChange={onParcelChange}
+    isEditing,
+    editingHandler,
 }) => {
     return (
         <div className="">
@@ -25,7 +18,15 @@ const CreateDialog = ({
                 <div className="flex flex-col space-y-10">
                     <div className="text-4xl flex justify-between">
                         <div className="flex items-center space-x-6">
-                            <h1>Create a new parcel</h1>
+                            <h1>Parcel details</h1>
+                            {!isEditing && (
+                                <button
+                                    onClick={editingHandler}
+                                    className=" bg-brightRed text-lg p-1 px-4 rounded-full text-white hover:bg-slate-300 transition"
+                                >
+                                    Edit
+                                </button>
+                            )}
                         </div>
                         <button onClick={onExitHandler}>X</button>
                     </div>
@@ -39,7 +40,7 @@ const CreateDialog = ({
                                         formDetails={senderFormDetails}
                                         onSubmit={onSubmit}
                                         onChange={onSenderChange}
-                                        isEditing={true}
+                                        isEditing={isEditing}
                                     />
                                 </div>
                             </div>
@@ -52,7 +53,7 @@ const CreateDialog = ({
                                     formDetails={receiverFormDetails}
                                     onSubmit={onSubmit}
                                     onChange={onReceiverChange}
-                                    isEditing={true}
+                                    isEditing={isEditing}
                                 />
                             </div>
                         </div>
@@ -88,6 +89,7 @@ const CreateDialog = ({
                                     value={parcelFormDetails.weight}
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     placeholder="Enter parcel weight"
+                                    disabled={isEditing ? false : true}
                                     onChange={onParcelChange}
                                 />
                             </div>
@@ -105,6 +107,7 @@ const CreateDialog = ({
                                     value={parcelFormDetails.typeofshipment}
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     onChange={onParcelChange}
+                                    disabled={isEditing ? false : true}
                                 >
                                     <option value="Normal">Normal</option>
                                     <option value="Express">Express</option>
@@ -122,6 +125,7 @@ const CreateDialog = ({
                                     value={parcelFormDetails.typeofstuff}
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     onChange={onParcelChange}
+                                    disabled={isEditing ? false : true}
                                 >
                                     <option value="Normal">Normal</option>
                                     <option value="Electronics Device">
@@ -145,6 +149,7 @@ const CreateDialog = ({
                                     value={parcelFormDetails.boxsize}
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     onChange={onParcelChange}
+                                    disabled={isEditing ? false : true}
                                 >
                                     <option value="A4">A4</option>
                                     <option value="A5">A5</option>
@@ -154,24 +159,26 @@ const CreateDialog = ({
                         </div>
                     </div>
 
-                    <div className="flex justify-end space-x-4">
-                        <button
-                            onClick={onSubmit}
-                            className="bg-brightRed text-white hover:bg-brightRedLight p-2 px-6"
-                        >
-                            ADD
-                        </button>
-                        <button
-                            onClick={onExitHandler}
-                            className="bg-slate-500 text-white hover:bg-slate-300 p-2 px-6"
-                        >
-                            CANCEL
-                        </button>
-                    </div>
+                    {isEditing && (
+                        <div className="flex justify-end space-x-4">
+                            <button
+                                onClick={onSubmit}
+                                className="bg-brightRed text-white hover:bg-brightRedLight p-2 px-6"
+                            >
+                                UPDATE
+                            </button>
+                            <button
+                                onClick={editingHandler}
+                                className="bg-slate-500 text-white hover:bg-slate-300 p-2 px-6"
+                            >
+                                CANCEL
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     );
 };
 
-export default CreateDialog;
+export default EditDialog;
