@@ -125,7 +125,6 @@ const Parcels = () => {
             parcel: parcelFormDetails,
         };
         dispatch(parcelUpdate(updatedParcelData));
-        // console.log(updateParcelData);
     };
 
     const onEditHandler = (id) => {

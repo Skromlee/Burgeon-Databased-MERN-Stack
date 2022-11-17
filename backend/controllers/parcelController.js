@@ -21,7 +21,6 @@ const getUserParcels = asyncHandler(async (req, res) => {
             { "receiver.citizen": req.user.citizen.toString() },
         ],
     });
-    console.log(parcels);
     res.status(200).json(parcels);
 });
 
@@ -31,7 +30,6 @@ const getUserParcels = asyncHandler(async (req, res) => {
 const getParcelsById = asyncHandler(async (req, res) => {
     const parcel = await Parcel.find({ _id: req.params.id });
     res.status(200).json(parcel);
-    console.log(parcel);
 });
 
 // @desc Register new parcels
@@ -73,7 +71,6 @@ const registerParcel = asyncHandler(async (req, res) => {
 // @route PUT /api/parcels/:id
 // @access Private
 const updateParcel = asyncHandler(async (req, res) => {
-    console.log(req.body);
     const { sender, receiver, parcel } = req.body;
     const { weight, typeofshipment, typeofstuff, boxsize } = parcel;
     if (

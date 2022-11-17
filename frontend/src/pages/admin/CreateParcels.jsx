@@ -85,7 +85,6 @@ const Parcels = () => {
             ...parcelFormDetails,
             [e.target.name]: e.target.value,
         });
-        console.log(parcelFormDetails);
     };
 
     const onExitHandler = (e) => {
