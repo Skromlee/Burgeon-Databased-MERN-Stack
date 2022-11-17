@@ -1,10 +1,3 @@
-// import "bootstrap/dist/css/bootstrap.min.css";
-
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-
-import Badge from "react-bootstrap/Badge";
-
 import { MdDoubleArrow } from "react-icons/md";
 
 function ParcelCard({ data, idx, oncardClickHandler }) {
@@ -13,8 +6,12 @@ function ParcelCard({ data, idx, oncardClickHandler }) {
     };
     return (
         <button onClick={onClickHandler}>
-            <div className="flex flex-col items-center border p-6 max-w-sm space-y-4">
-                <img src="/images/Box.svg" className="h-20 w-20"></img>
+            <div className="flex flex-col items-center border p-6 h-full w-full space-y-4">
+                <img
+                    src="/images/Box.svg"
+                    alt="box-img"
+                    className="h-20 w-20"
+                ></img>
                 <div key={idx} className=" space-y-2">
                     <div className="flex">
                         <div className="mr-2 px-[0.457rem] text-white bg-brightRed rounded-full">
