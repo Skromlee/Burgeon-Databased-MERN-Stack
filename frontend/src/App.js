@@ -16,7 +16,8 @@ import Faq from "./pages/user/Faq";
 // admin pages
 import Admin from "./pages/admin/Admin";
 import AdminSignin from "./pages/admin/AdminSignin";
-import CreateParcels from "./pages/admin/CreateParcels";
+// admin pages => Parcels
+import ParcelsManage from "./pages/admin/parcels/Parcels";
 // admin pages => Users
 import Users from "./pages/admin/users/Users";
 // admin pages => Users => Employees
@@ -25,8 +26,6 @@ import CreateEmployee from "./pages/admin/users/employees/CreateEmployees";
 // admin pages => Users => Customers
 import Customers from "./pages/admin/users/customers/Customers";
 import CreateCustomer from "./pages/admin/users/customers/CreateCustomer";
-// admin pages => Parcels
-import ParcelsManage from "./pages/admin/parcels/Parcels";
 
 function App() {
     return (

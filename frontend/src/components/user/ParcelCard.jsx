@@ -8,7 +8,6 @@ import Badge from "react-bootstrap/Badge";
 import { MdDoubleArrow } from "react-icons/md";
 
 function ParcelCard({ data, idx, oncardClickHandler }) {
-    console.log(data);
     const onClickHandler = () => {
         oncardClickHandler(data._id);
     };
