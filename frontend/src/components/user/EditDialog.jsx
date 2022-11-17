@@ -149,7 +149,7 @@ const EditDialog = ({
                                         value={emp.citizen}
                                         className="transition border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                         placeholder="Enter employee citizen"
-                                        disabled={isEditing ? false : true}
+                                        disabled={true}
                                         onChange={onChange}
                                     />
                                 </div>
