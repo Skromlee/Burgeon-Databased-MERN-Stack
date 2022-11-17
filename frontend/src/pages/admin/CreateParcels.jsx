@@ -5,8 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Spinner from "../../components/common/Spinner";
+import Table from "../../components/admin/parcels/TableParcel";
 
-import { parcelRegister, reset } from "../../features/parcel/parcelSlice";
+import {
+    parcelRegister,
+    reset,
+    getParcels,
+} from "../../features/parcel/parcelSlice";
 
 const Parcels = () => {
     const navigate = useNavigate();
@@ -25,14 +30,14 @@ const Parcels = () => {
             navigate("/admin/signin");
         }
 
-        // dispatch(getParcels());
+        dispatch(getParcels());
 
         return () => {
             dispatch(reset());
         };
     }, [admin, navigate, isError, message, dispatch]);
 
-    const [receiverFormDetails, setReceiverFormDetails] = useState({
+    const initialFormDetails = {
         firstname: "",
         lastname: "",
         phone: "",
@@ -42,24 +47,22 @@ const Parcels = () => {
         district: "",
         subdistrict: "",
         postcode: "",
-    });
-    const [senderFormDetails, setSenderFormDetails] = useState({
-        firstname: "",
-        lastname: "",
-        phone: "",
-        citizen: "",
-        addressNo: "",
-        province: "",
-        district: "",
-        subdistrict: "",
-        postcode: "",
-    });
-    const [parcelFormDetails, setParcelFormDetails] = useState({
+    };
+
+    const initialParcelFormDetails = {
         weight: "",
         typeofshipment: "Normal",
         typeofstuff: "Electronics Device",
         boxsize: "A4",
-    });
+    };
+
+    const [receiverFormDetails, setReceiverFormDetails] =
+        useState(initialFormDetails);
+    const [senderFormDetails, setSenderFormDetails] =
+        useState(initialFormDetails);
+    const [parcelFormDetails, setParcelFormDetails] = useState(
+        initialParcelFormDetails
+    );
 
     const [visibility, setVisibility] = useState(false);
 
@@ -93,7 +96,17 @@ const Parcels = () => {
             parcel: parcelFormDetails,
         };
         dispatch(parcelRegister(parcelData));
+        setVisibility(false);
+        setSenderFormDetails(initialFormDetails);
+        setReceiverFormDetails(initialFormDetails);
+        setParcelFormDetails(initialParcelFormDetails);
     };
+
+    const onEditHandler = () => {};
+
+    const onDetailHandler = () => {};
+
+    const onDeleteHandler = () => {};
 
     if (isLoading) {
         return <Spinner />;
@@ -101,6 +114,20 @@ const Parcels = () => {
 
     return (
         <>
+            {/* data,
+    rowsPerPage,
+    onEditClick,
+    onDetailClick,
+    onDeleteClick,
+    visibility, */}
+            <Table
+                data={parcels}
+                rowsPerPage={15}
+                onEditClick={onEditHandler}
+                onDetailClick={onDetailHandler}
+                onDeleteClick={onDeleteHandler}
+                visibility={false}
+            />
             {visibility && (
                 // bg-slate-200 rounded-xl h-4/5 lg:h-3/5 w-3/5 absolute top-0 left-0 right-0 bottom-0 m-auto transition
                 <div className="">

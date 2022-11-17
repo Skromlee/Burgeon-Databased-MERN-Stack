@@ -9,6 +9,25 @@ const initialState = {
     message: "",
 };
 
+// Get parcel
+export const getParcels = createAsyncThunk(
+    "parcel/getParcel",
+    async (_, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().admin.admin.token;
+            return await parcelService.getParcels(token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 // Register parcel
 export const parcelRegister = createAsyncThunk(
     "parcel/parcelRegister",
@@ -45,6 +64,19 @@ export const parcelSlice = createSlice({
                 state.parcels.push(action.payload);
             })
             .addCase(parcelRegister.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(getParcels.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getParcels.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.parcels = action.payload;
+            })
+            .addCase(getParcels.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;

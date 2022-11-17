@@ -28,6 +28,7 @@ const parcelRegister = async (parcelData, token) => {
 
 const parcelService = {
     parcelRegister,
+    getParcels,
 };
 
 export default parcelService;

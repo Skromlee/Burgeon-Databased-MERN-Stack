@@ -6,8 +6,8 @@ const { update } = require("../models/userModel");
 // @route GET /api/parcels
 // @access Private
 const getParcels = asyncHandler(async (req, res) => {
-    const parcels = await Parcel.find({ user: req.user.id });
-
+    const parcels = await Parcel.find({});
+    console.log(parcels);
     res.status(200).json(parcels);
 });
 
