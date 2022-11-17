@@ -7,10 +7,12 @@ const {
     updateParcel,
     deleteParcel,
     getParcelsById,
+    getUserParcels,
 } = require("../controllers/parcelController");
 const { protect } = require("../middleware/authMiddleware");
 const { adminProtect } = require("../middleware/adminAuthMiddleware");
 
+router.route("/all").get(protect, getUserParcels);
 router
     .route("/")
     .get(adminProtect, getParcels)

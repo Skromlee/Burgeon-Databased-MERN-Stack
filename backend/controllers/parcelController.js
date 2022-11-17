@@ -11,6 +11,20 @@ const getParcels = asyncHandler(async (req, res) => {
     res.status(200).json(parcels);
 });
 
+// @desc Get User parcels
+// @route GET /api/parcels
+// @access Private
+const getUserParcels = asyncHandler(async (req, res) => {
+    const parcels = await Parcel.find({
+        $or: [
+            { "sender.citizen": req.user.citizen.toString() },
+            { "receiver.citizen": req.user.citizen.toString() },
+        ],
+    });
+    console.log(parcels);
+    res.status(200).json(parcels);
+});
+
 // @desc Get parcels specific
 // @route GET /api/parcels/:id
 // @accesss Private
@@ -122,4 +136,5 @@ module.exports = {
     updateParcel,
     deleteParcel,
     getParcelsById,
+    getUserParcels,
 };

@@ -29,6 +29,25 @@ export const getParcels = createAsyncThunk(
     }
 );
 
+// Get parcel By citizen
+export const getParcelByCitizen = createAsyncThunk(
+    "parcel/getParcelByCitizen",
+    async (_, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await parcelService.getParcelByCitizen(token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 // Get parcel By id
 export const getParcelById = createAsyncThunk(
     "parcel/getParcelById",
@@ -175,6 +194,20 @@ export const parcelSlice = createSlice({
                 state.parcels = state.parcels.filter((each) => {
                     return each._id !== action.payload.id;
                 });
+            })
+            .addCase(getParcelByCitizen.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getParcelByCitizen.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.parcels = action.payload;
+            })
+            .addCase(getParcelByCitizen.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+                state.parcels = null;
             });
     },
 });
