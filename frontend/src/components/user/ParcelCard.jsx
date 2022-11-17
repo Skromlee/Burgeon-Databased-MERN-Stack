@@ -2,7 +2,7 @@ import { MdDoubleArrow } from "react-icons/md";
 
 function ParcelCard({ data, idx, oncardClickHandler }) {
     const onClickHandler = () => {
-        oncardClickHandler(data._id);
+        oncardClickHandler(data._id, idx);
     };
     return (
         <button onClick={onClickHandler}>
