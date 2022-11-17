@@ -167,11 +167,16 @@ const EditDialog = ({
                                         disabled={isEditing ? false : true}
                                         onChange={onChange}
                                     >
-                                        <option value="Import">Import</option>
-                                        <option value="Export">Export</option>
-                                        <option value="Import Screen">
-                                            Import Screen
+                                        <option value="Emp Import">
+                                            Emp Import
                                         </option>
+                                        <option value="Emp Screening">
+                                            Emp Screening
+                                        </option>
+                                        <option value="Emp Export">
+                                            Emp Export
+                                        </option>
+                                        <option value="None">None</option>
                                     </select>
                                 </div>
                             </div>
