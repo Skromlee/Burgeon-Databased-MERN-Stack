@@ -19,7 +19,7 @@ const navItems = [
         label: "Cus. Manager",
     },
     {
-        href: "/admin/branch",
+        href: "admin/branch",
         icon: TbBuildingFactory2,
         label: "Branch Manager",
     },

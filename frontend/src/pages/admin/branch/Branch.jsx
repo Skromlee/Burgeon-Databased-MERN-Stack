@@ -3,30 +3,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../../../components/common/Spinner";
+
 import {
-    getCustomers,
-    updateCustomer,
-    deleteCustomer,
+    createBranch,
+    getBranchs,
+    deleteBranch,
+    updateBranch,
     reset,
-} from "../../../features/customer/customerSlice";
+} from "../../../features/branch/branchSlice";
 
 // simple table
-import Table from "../../../components/common/TableCustomers";
+// import Table from "../../../components/common/TableCustomers";
+import Table from "../../../components/admin/branch/Table";
 import { useState } from "react";
-import DeleteDialog from "../../../components/admin/users/employees/DeleteDialog";
-import EditDialog from "../../../components/admin/users/employees/EditDialog";
+import DeleteDialog from "../../../components/admin/branch/DeleteDialog";
+import EditDialog from "../../../components/admin/branch/EditDialog";
 
 const Branch = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const { admin } = useSelector((state) => state.admin);
-    const { customer, isError, isLoading, message } = useSelector(
-        (state) => state.customer
+    const { branch, isError, isLoading, message } = useSelector(
+        (state) => state.branch
     );
 
     const [id, setId] = useState("");
-    const [cus, setCustomer] = useState({});
+    const [branchData, setBranchData] = useState({});
     const [isEditing, setEditing] = useState(false);
     const [onDelete, setOnDelete] = useState(false);
     // use to show edit banner
@@ -41,7 +44,8 @@ const Branch = () => {
             navigate("/admin/signin");
         }
 
-        dispatch(getCustomers());
+        dispatch(getBranchs());
+
         // Check for account
         return () => {
             dispatch(reset());
@@ -50,7 +54,7 @@ const Branch = () => {
 
     const handleChangePage = () => {
         dispatch(reset());
-        navigate("/admin/users/customers/create"); //<= chagne
+        navigate("/admin/branch/create"); //<= chagne
     };
     const editingHandler = () => {
         setEditing((prev) => !prev);
@@ -58,32 +62,26 @@ const Branch = () => {
 
     // update details
     const findById = (id) => {
-        let targetEmp = {};
-        customer.map((eachEmp) => {
-            if (eachEmp._id === id) {
-                targetEmp = eachEmp;
+        let targetBranch = {};
+        branch.map((eachBranch) => {
+            if (eachBranch._id === id) {
+                targetBranch = eachBranch;
             }
             return null;
         });
-        return targetEmp;
+        return targetBranch;
     };
 
     const editHandler = (targetId) => {
-        const targetEmp = findById(targetId);
-        setCustomer({
-            ...targetEmp,
-            dob: new Date(targetEmp.dob).toISOString().slice(0, 10),
-        });
+        const targetBranch = findById(targetId);
+        setBranchData(targetBranch);
         setEditing(true);
         setVisibility(true);
     };
 
     const detailHandler = (targetId) => {
-        const targetEmp = findById(targetId);
-        setCustomer({
-            ...targetEmp,
-            dob: new Date(targetEmp.dob).toISOString().slice(0, 10),
-        });
+        const targetBranch = findById(targetId);
+        setBranchData(targetBranch);
         setVisibility(true);
     };
 
@@ -99,19 +97,19 @@ const Branch = () => {
 
     const confirmDeleteHandler = () => {
         setOnDelete(false);
-        dispatch(deleteCustomer(id));
+        dispatch(deleteBranch(id));
     };
 
     const exitHandler = () => {
         setVisibility(false);
         setEditing(false);
         setId("");
-        setCustomer({});
+        setBranchData({});
     };
 
     // use to handle input field
     const onChange = (e) => {
-        setCustomer((prevState) => ({
+        setBranchData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }));
@@ -119,8 +117,10 @@ const Branch = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(updateCustomer(cus));
-        setEditing(false);
+        console.log(branchData);
+        dispatch(updateBranch(branchData));
+        setVisibility(false);
+        //will use soon
     };
 
     if (isLoading) {
@@ -128,24 +128,24 @@ const Branch = () => {
     }
     return (
         <>
-            {onDelete && (
+            {onDelete ? (
                 <DeleteDialog
                     exitHandler={exitDeleteHandler}
                     confirmHandler={confirmDeleteHandler}
                     id={id}
                 />
-            )}
+            ) : null}
 
-            {visibility && (
+            {visibility ? (
                 <EditDialog
                     isEditing={isEditing}
                     editingHandler={editingHandler}
                     exitHandler={exitHandler}
                     submitHandler={submitHandler}
-                    emp={cus}
+                    branch={branchData}
                     onChange={onChange}
                 />
-            )}
+            ) : null}
 
             <div className=" p-6 space-y-6 flex flex-col">
                 <div className=" flex justify-between">
@@ -159,15 +159,15 @@ const Branch = () => {
                         }
                         disabled={visibility ? true : false}
                     >
-                        Create New Customers
+                        Create New Branch
                     </button>
                 </div>
                 <div></div>
-                {customer.length > 0 ? (
+                {branch.length > 0 ? (
                     <div className=" table">
                         <div className=" container mx-auto ">
                             <Table
-                                data={customer}
+                                data={branch}
                                 rowsPerPage={12}
                                 onEditClick={editHandler}
                                 onDetailClick={detailHandler}
@@ -177,7 +177,7 @@ const Branch = () => {
                         </div>
                     </div>
                 ) : (
-                    <h3>You have not create any Customers</h3>
+                    <h3>You have not create any Branch</h3>
                 )}
             </div>
         </>
