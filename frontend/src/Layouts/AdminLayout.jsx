@@ -3,6 +3,7 @@ import AdminNav from "../components/admin/AdminNav";
 import { BsBoxSeam } from "react-icons/bs";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import { TbBuildingFactory2 } from "react-icons/tb";
 
 const navItems = [
     { href: "/admin", icon: AiOutlineDashboard, label: "Dashboard" },
@@ -16,6 +17,11 @@ const navItems = [
         href: "/admin/users/customers",
         icon: AiOutlineUsergroupAdd,
         label: "Cus. Manager",
+    },
+    {
+        href: "/admin/branch",
+        icon: TbBuildingFactory2,
+        label: "Branch Manager",
     },
 ];
 
