@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import useTable from "../../../hooks/useTable";
 import styles from "./Table.module.css";
@@ -11,6 +11,7 @@ const Table = ({
     onDetailClick,
     onDeleteClick,
     visibility,
+    branch,
 }) => {
     const [page, setPage] = useState(1);
     const { slice, range } = useTable(data, page, rowsPerPage);
@@ -27,6 +28,15 @@ const Table = ({
         onDeleteClick(id);
     };
 
+    const findName = (id) => {
+        return branch.map((each) => {
+            if (each._id === id) {
+                console.log(each.branchName);
+                return each.branchName;
+            }
+        });
+    };
+
     return (
         <>
             <table className={styles.table}>
@@ -39,6 +49,7 @@ const Table = ({
                         <th className={styles.tableHeader}>Phone</th>
                         <th className={styles.tableHeader}>Email</th>
                         <th className={styles.tableHeader}>Citizen NO.</th>
+                        <th className={styles.tableHeader}>Stay at Branch</th>
                         <th className={`${styles.tableHeader} text-center `}>
                             Function
                         </th>
@@ -56,6 +67,15 @@ const Table = ({
                             </td>
                             <td className={styles.tableCell}>{el.email}</td>
                             <td className={styles.tableCell}>{el.citizen}</td>
+                            <td className={styles.tableCell}>
+                                {el.branch ? (
+                                    <p className="text-center">
+                                        {findName(el.branch)}
+                                    </p>
+                                ) : (
+                                    <p className="text-center">NULL</p>
+                                )}
+                            </td>
                             <td className={styles.tableCell}>
                                 {el.citizen !== 9999999999999 ? (
                                     <div className="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-4 justify-center items-center space-y-4">
@@ -103,7 +123,7 @@ const Table = ({
                                         </div>
                                     </div>
                                 ) : (
-                                    "Cannot Remove Edit or View Details."
+                                    "Cannot access..."
                                 )}
                             </td>
                         </tr>

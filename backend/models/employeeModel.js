@@ -56,6 +56,11 @@ const employeeSchema = mongoose.Schema(
             type: Date,
             required: [true, "Please add a date of birth"],
         },
+        branch: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Branch",
+            unique: true,
+        },
     },
     {
         timestamps: true,

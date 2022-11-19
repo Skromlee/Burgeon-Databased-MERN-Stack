@@ -16,9 +16,13 @@ import { useState } from "react";
 import DeleteDialog from "../../../../components/admin/users/employees/DeleteDialog";
 import EditDialog from "../../../../components/admin/users/employees/EditDialog";
 
+import { getBranchs } from "../../../../features/branch/branchSlice";
+
 const Employees = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const { branch } = useSelector((state) => state.branch);
 
     const { admin } = useSelector((state) => state.admin);
     const { employee, isError, isLoading, message } = useSelector(
@@ -42,6 +46,7 @@ const Employees = () => {
         }
 
         dispatch(getEmployees());
+        dispatch(getBranchs());
 
         // Check for account
         return () => {
@@ -67,6 +72,7 @@ const Employees = () => {
             }
             return null;
         });
+        console.log(targetEmp);
         return targetEmp;
     };
 
@@ -167,7 +173,7 @@ const Employees = () => {
                 <div></div>
                 {employee.length > 0 ? (
                     <div className=" table">
-                        <div className=" container mx-auto ">
+                        <div className=" mx-auto ">
                             <Table
                                 data={employee}
                                 rowsPerPage={12}
@@ -175,6 +181,7 @@ const Employees = () => {
                                 onDetailClick={detailHandler}
                                 onDeleteClick={deleteHandler}
                                 visibility={visibility}
+                                branch={branch}
                             />
                         </div>
                     </div>

@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IoIosArrowBack } from "react-icons/io";
+// !TODO Create Branch Slice and Service to serve branch name here
 // import { register, reset } from "../features/auth/authSlice";
+import { getBranchs } from "../../../../features/branch/branchSlice";
 import {
     createEmployee,
     reset,
@@ -24,6 +26,7 @@ const initailFormValue = {
     subdistrict: "",
     postcode: "",
     dob: "",
+    branch: "",
 };
 
 const CreateEmployee = () => {
@@ -43,6 +46,7 @@ const CreateEmployee = () => {
         subdistrict,
         postcode,
         dob,
+        branch,
     } = formData;
 
     const navigate = useNavigate();
@@ -52,11 +56,14 @@ const CreateEmployee = () => {
         (state) => state.employee // Change this line
     );
 
+    const branchs = useSelector((state) => state.branch);
+    const branchsList = branchs.branch;
+
     useEffect(() => {
         if (isError) {
             toast.error(message);
         }
-
+        console.log(branchsList);
         if (!admin) {
             navigate("/admin/signin");
         }
@@ -65,6 +72,8 @@ const CreateEmployee = () => {
             dispatch(reset());
             navigate("/admin/users/employees/");
         }
+
+        dispatch(getBranchs());
 
         // Check for account
         return () => {
@@ -95,7 +104,8 @@ const CreateEmployee = () => {
             !district ||
             !subdistrict ||
             !postcode ||
-            !dob
+            !dob ||
+            !branch
         ) {
             toast.error("Make sure your input all fields");
         } else {
@@ -114,6 +124,7 @@ const CreateEmployee = () => {
                 postcode,
                 // dob: new Date(dob),
                 dob,
+                branch,
             };
             dispatch(createEmployee(employeeData));
         }
@@ -197,7 +208,32 @@ const CreateEmployee = () => {
                                         <option value="None">None</option>
                                     </select>
                                 </div>
-
+                                {/* Branch */}
+                                <div className="space-x-2 flex">
+                                    <label htmlFor="role" className="basis-1/4">
+                                        Branch
+                                    </label>
+                                    <select
+                                        name="branch"
+                                        id="branch"
+                                        value={branch}
+                                        className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
+                                        onChange={onChange}
+                                    >
+                                        <option value="NULL">None</option>
+                                        {/* // This will be dynamic */}
+                                        {branchsList.map((each) => {
+                                            return (
+                                                <option
+                                                    value={each._id}
+                                                    key={each._id}
+                                                >
+                                                    {`${each.branchName} (${each._id})`}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                </div>
                                 {/* Firstname */}
                                 <div className="space-x-2 flex">
                                     <label
@@ -234,24 +270,7 @@ const CreateEmployee = () => {
                                         onChange={onChange}
                                     />
                                 </div>
-                                {/* Phone */}
-                                <div className="space-x-2 flex">
-                                    <label
-                                        htmlFor="phone"
-                                        className="basis-1/4"
-                                    >
-                                        Phone
-                                    </label>
-                                    <input
-                                        type="number"
-                                        id="phone"
-                                        name="phone"
-                                        value={phone}
-                                        className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                                        placeholder="Enter employee phone number"
-                                        onChange={onChange}
-                                    />
-                                </div>
+
                                 {/* Citizen */}
                                 <div className="space-x-2 flex">
                                     <label
@@ -281,6 +300,24 @@ const CreateEmployee = () => {
                 dob, //Care the date */}
 
                             <div className="space-y-8 md:w-1/2">
+                                {/* Phone */}
+                                <div className="space-x-2 flex">
+                                    <label
+                                        htmlFor="phone"
+                                        className="basis-1/4"
+                                    >
+                                        Phone
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="phone"
+                                        name="phone"
+                                        value={phone}
+                                        className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
+                                        placeholder="Enter employee phone number"
+                                        onChange={onChange}
+                                    />
+                                </div>
                                 {/* addressNo */}
                                 <div className="space-x-2 flex">
                                     <label

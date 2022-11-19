@@ -1,3 +1,9 @@
+import { useSelector, useDispatch } from "react-redux";
+
+import { useEffect } from "react";
+
+import { getBranchs } from "../../../../features/branch/branchSlice";
+
 const EditDialog = ({
     isEditing,
     editingHandler,
@@ -6,6 +12,16 @@ const EditDialog = ({
     emp,
     onChange,
 }) => {
+    const dispatch = useDispatch();
+    const branchs = useSelector((state) => state.branch);
+    const branchsList = branchs.branch;
+
+    useEffect(() => {
+        console.log(branchsList);
+
+        dispatch(getBranchs());
+    }, []);
+
     return (
         <div>
             <div className=" bg-slate-200 rounded-xl h-4/5 lg:h-3/5 w-3/5 absolute top-0 left-0 right-0 bottom-0 m-auto transition">
@@ -114,26 +130,6 @@ const EditDialog = ({
                                     />
                                 </div>
 
-                                {/* Phone */}
-                                <div className="transition space-x-2 flex">
-                                    <label
-                                        htmlFor="phone"
-                                        className="transition basis-1/4"
-                                    >
-                                        Phone
-                                    </label>
-                                    <input
-                                        type="number"
-                                        id="phone"
-                                        name="phone"
-                                        value={emp.phone}
-                                        className="transition border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                                        placeholder="Enter employee phone"
-                                        disabled={isEditing ? false : true}
-                                        onChange={onChange}
-                                    />
-                                </div>
-
                                 {/* Citizen */}
                                 <div className="transition space-x-2 flex">
                                     <label
@@ -179,9 +175,56 @@ const EditDialog = ({
                                         <option value="None">None</option>
                                     </select>
                                 </div>
+
+                                {/* Branch */}
+                                <div className="space-x-2 flex">
+                                    <label htmlFor="role" className="basis-1/4">
+                                        Branch
+                                    </label>
+                                    <select
+                                        name="branch"
+                                        id="branch"
+                                        value={emp.branch}
+                                        className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
+                                        onChange={onChange}
+                                        disabled={isEditing ? false : true}
+                                    >
+                                        <option value="NULL">None</option>
+                                        {/* // This will be dynamic */}
+                                        {branchsList.map((each) => {
+                                            return (
+                                                <option
+                                                    value={each._id}
+                                                    key={each._id}
+                                                >
+                                                    {`${each.branchName} (${each._id})`}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                </div>
                             </div>
 
                             <div className="transition space-y-4 lg:w-1/2">
+                                {/* Phone */}
+                                <div className="transition space-x-2 flex">
+                                    <label
+                                        htmlFor="phone"
+                                        className="transition basis-1/4"
+                                    >
+                                        Phone
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="phone"
+                                        name="phone"
+                                        value={emp.phone}
+                                        className="transition border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
+                                        placeholder="Enter employee phone"
+                                        disabled={isEditing ? false : true}
+                                        onChange={onChange}
+                                    />
+                                </div>
                                 {/* Address Number */}
                                 <div className="transition space-x-2 flex">
                                     <label

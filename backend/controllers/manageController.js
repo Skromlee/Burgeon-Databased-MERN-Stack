@@ -24,6 +24,7 @@ const registerEmployee = asyncHandler(async (req, res) => {
         subdistrict,
         postcode,
         dob,
+        branch,
     } = req.body;
 
     if (!email && !password) {
@@ -63,6 +64,7 @@ const registerEmployee = asyncHandler(async (req, res) => {
         subdistrict,
         postcode,
         dob,
+        branch,
     });
     if (employee) {
         res.status(201).json({
@@ -80,6 +82,7 @@ const registerEmployee = asyncHandler(async (req, res) => {
                 postcode: employee.postcode,
             },
             dob: employee.dob,
+            branch: employee.branch,
             token: generateToken(employee._id),
         });
     } else {
