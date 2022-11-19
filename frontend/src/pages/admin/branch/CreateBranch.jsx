@@ -5,6 +5,11 @@ import { toast } from "react-toastify";
 import { IoIosArrowBack } from "react-icons/io";
 import Spinner from "../../../components/common/Spinner";
 import { createBranch, reset } from "../../../features/branch/branchSlice";
+import {
+    getInformationFromPostcode,
+    reset as informationReset,
+} from "../../../features/thailand/thailandSlice";
+import { useCallback } from "react";
 
 const initailFormValue = {
     branchName: "",
@@ -81,6 +86,11 @@ const CreateBranch = () => {
             // dispatch(createEmployee(employeeData));
         }
     };
+
+    const onBlurHandler = useCallback(() => {
+        console.log("Blur");
+        dispatch(getInformationFromPostcode(formData.postcode));
+    }, []);
 
     if (isLoading) {
         return <Spinner />;
@@ -197,6 +207,7 @@ const CreateBranch = () => {
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     placeholder="Enter employee postcode"
                                     onChange={onChange}
+                                    onBlur={onBlurHandler}
                                 />
                             </div>
                         </div>

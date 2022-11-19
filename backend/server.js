@@ -17,6 +17,7 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/parcels", require("./routes/parcelRoutes"));
 app.use("/api/manages", require("./routes/manageRoutes"));
 app.use("/api/branch", require("./routes/branchRoutes"));
+app.use("/api/thailand/", require("./routes/thailandRoutes"));
 
 app.use(errorHandler);
 
