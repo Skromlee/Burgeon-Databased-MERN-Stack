@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 // import { register, reset } from "../features/auth/authSlice";
 import {
@@ -8,6 +8,20 @@ import {
     reset,
 } from "../../../../features/customer/customerSlice";
 import Spinner from "../../../../components/common/Spinner";
+import { IoIosArrowBack } from "react-icons/io";
+import PostcodeInput from "../../../../components/common/PostcodeInput";
+import {
+    getInformationFromPostcode,
+    reset as informationReset,
+} from "../../../../features/thailand/thailandSlice";
+
+// suggestion={suggestion}
+// informationFromPostcode={
+//     informationFromPostcode
+// }
+// onSuggestHandler={onSuggestHandler}
+// onBlurHandler={onBlurHandler}
+// onFocusHandler={onFocusHandler}
 
 const initailFormValue = {
     email: "",
@@ -27,6 +41,8 @@ const initailFormValue = {
 
 const CreateCustomer = () => {
     const [formData, setFormData] = useState(initailFormValue);
+    const [suggestion, setSuggestion] = useState(false);
+    const { informationFromPostcode } = useSelector((state) => state.thailand);
     const {
         email,
         password,
@@ -41,6 +57,27 @@ const CreateCustomer = () => {
         postcode,
         dob,
     } = formData;
+
+    const onSuggestHandler = (informationData) => {
+        const { province, district, subdistrict, postcode } = informationData;
+
+        setFormData({
+            ...formData,
+            province,
+            district,
+            subdistrict,
+            postcode,
+        });
+        setSuggestion(false);
+    };
+
+    const onBlurHandler = () => {
+        setSuggestion(false);
+    };
+
+    const onFocusHandler = () => {
+        setSuggestion(true);
+    };
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -71,6 +108,12 @@ const CreateCustomer = () => {
     }, [admin, customer, isError, isSuccess, navigate, message, dispatch]);
 
     const onChange = (e) => {
+        if (e.target.name === "postcode") {
+            if (e.target.value > 100) {
+                setSuggestion(true);
+                dispatch(getInformationFromPostcode(e.target.value));
+            }
+        }
         setFormData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
@@ -112,6 +155,7 @@ const CreateCustomer = () => {
                 dob,
             };
             dispatch(createCustomers(customerData));
+            dispatch(informationReset());
         }
     };
 
@@ -262,6 +306,19 @@ const CreateCustomer = () => {
                                         onChange={onChange}
                                     />
                                 </div>
+                                {/* postcode */}
+                                <PostcodeInput
+                                    postcode={postcode}
+                                    onChange={onChange}
+                                    suggestion={suggestion}
+                                    informationFromPostcode={
+                                        informationFromPostcode
+                                    }
+                                    onSuggestHandler={onSuggestHandler}
+                                    onBlurHandler={onBlurHandler}
+                                    onFocusHandler={onFocusHandler}
+                                    isEditing={true}
+                                />
                                 {/* province */}
                                 <div className="space-x-2 flex">
                                     <label
@@ -318,24 +375,7 @@ const CreateCustomer = () => {
                                         onChange={onChange}
                                     />
                                 </div>
-                                {/* postcode */}
-                                <div className="space-x-2 flex">
-                                    <label
-                                        htmlFor="postcode"
-                                        className="basis-1/4"
-                                    >
-                                        Postcode
-                                    </label>
-                                    <input
-                                        type="number"
-                                        id="postcode"
-                                        name="postcode"
-                                        value={postcode}
-                                        className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                                        placeholder="Enter customer postcode"
-                                        onChange={onChange}
-                                    />
-                                </div>
+
                                 {/* dob */}
                                 <div className="space-x-2 flex">
                                     <label htmlFor="dob" className="basis-1/4">
@@ -353,13 +393,27 @@ const CreateCustomer = () => {
                             </div>
                         </div>
 
-                        <div className="flex justify-end">
-                            <button
-                                type="submit"
-                                className="border-brightRed border-2  rounded-full p-2 px-6 text-brightRed hover:bg-brightRed hover:text-white duration-75"
-                            >
-                                Create
-                            </button>
+                        <div className="">
+                            <div className="flex justify-between">
+                                <Link
+                                    to="/admin/users/customers"
+                                    className="w-fit"
+                                    onClick={() => {
+                                        dispatch(informationReset());
+                                    }}
+                                >
+                                    <div className="flex flex-col items-center">
+                                        <IoIosArrowBack />
+                                        Back
+                                    </div>
+                                </Link>
+                                <button
+                                    type="submit"
+                                    className="border-brightRed border-2  rounded-full p-2 px-6 text-brightRed hover:bg-brightRed hover:text-white duration-75"
+                                >
+                                    Create
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>

@@ -11,11 +11,16 @@ import {
     reset,
 } from "../../../../features/employee/employeeSlice";
 import Spinner from "../../../../components/common/Spinner";
+import PostcodeInput from "../../../../components/common/PostcodeInput";
+import {
+    getInformationFromPostcode,
+    reset as informationReset,
+} from "../../../../features/thailand/thailandSlice";
 
 const initailFormValue = {
     email: "",
     password: "",
-    role: "Emp Import",
+    role: "None",
     firstname: "",
     lastname: "",
     phone: "",
@@ -31,6 +36,7 @@ const initailFormValue = {
 
 const CreateEmployee = () => {
     const [formData, setFormData] = useState(initailFormValue);
+    const [suggestion, setSuggestion] = useState(false);
 
     const {
         email,
@@ -55,6 +61,7 @@ const CreateEmployee = () => {
     const { employee, isLoading, isError, isSuccess, message } = useSelector(
         (state) => state.employee // Change this line
     );
+    const { informationFromPostcode } = useSelector((state) => state.thailand);
 
     const branchs = useSelector((state) => state.branch);
     const branchsList = branchs.branch;
@@ -82,15 +89,58 @@ const CreateEmployee = () => {
     }, [admin, employee, isError, isSuccess, navigate, message, dispatch]);
 
     const onChange = (e) => {
-        setFormData((prevState) => ({
-            ...prevState,
+        console.log(e.target.name, e.target.value);
+        if (e.target.name === "postcode") {
+            if (e.target.value > 100) {
+                setSuggestion(true);
+                dispatch(getInformationFromPostcode(e.target.value));
+            }
+        }
+        setFormData({
+            ...formData,
             [e.target.name]: e.target.value,
-        }));
+        });
+    };
+
+    const onBlurHandler = () => {
+        setSuggestion(false);
+    };
+
+    const onFocusHandler = () => {
+        setSuggestion(true);
+    };
+
+    const onSuggestHandler = (informationData) => {
+        const { province, district, subdistrict, postcode } = informationData;
+
+        setFormData({
+            ...formData,
+            province,
+            district,
+            subdistrict,
+            postcode,
+        });
+        setSuggestion(false);
     };
 
     const onSubmit = (e) => {
         e.preventDefault();
-
+        console.log(
+            email,
+            password,
+            role,
+            firstname,
+            lastname,
+            phone,
+            citizen,
+            addressNo,
+            province,
+            district,
+            subdistrict,
+            postcode,
+            dob,
+            branch
+        );
         if (
             !email ||
             !password ||
@@ -127,6 +177,7 @@ const CreateEmployee = () => {
                 branch,
             };
             dispatch(createEmployee(employeeData));
+            dispatch(informationReset());
         }
     };
 
@@ -196,6 +247,7 @@ const CreateEmployee = () => {
                                         className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                         onChange={onChange}
                                     >
+                                        <option value="None">None</option>
                                         <option value="Emp Import">
                                             Emp Import
                                         </option>
@@ -205,7 +257,6 @@ const CreateEmployee = () => {
                                         <option value="Emp Export">
                                             Emp Export
                                         </option>
-                                        <option value="None">None</option>
                                     </select>
                                 </div>
                                 {/* Branch */}
@@ -220,7 +271,9 @@ const CreateEmployee = () => {
                                         className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                         onChange={onChange}
                                     >
-                                        <option value="NULL">None</option>
+                                        <option value="NULL">
+                                            --- Must Select ---
+                                        </option>
                                         {/* // This will be dynamic */}
                                         {branchsList.map((each) => {
                                             return (
@@ -318,6 +371,19 @@ const CreateEmployee = () => {
                                         onChange={onChange}
                                     />
                                 </div>
+                                {/* postcode */}
+                                <PostcodeInput
+                                    postcode={postcode}
+                                    onChange={onChange}
+                                    suggestion={suggestion}
+                                    informationFromPostcode={
+                                        informationFromPostcode
+                                    }
+                                    onSuggestHandler={onSuggestHandler}
+                                    onBlurHandler={onBlurHandler}
+                                    onFocusHandler={onFocusHandler}
+                                    isEditing={true}
+                                />
                                 {/* addressNo */}
                                 <div className="space-x-2 flex">
                                     <label
@@ -392,24 +458,6 @@ const CreateEmployee = () => {
                                         onChange={onChange}
                                     />
                                 </div>
-                                {/* postcode */}
-                                <div className="space-x-2 flex">
-                                    <label
-                                        htmlFor="postcode"
-                                        className="basis-1/4"
-                                    >
-                                        Postcode
-                                    </label>
-                                    <input
-                                        type="number"
-                                        id="postcode"
-                                        name="postcode"
-                                        value={postcode}
-                                        className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                                        placeholder="Enter employee postcode"
-                                        onChange={onChange}
-                                    />
-                                </div>
                                 {/* dob */}
                                 <div className="space-x-2 flex">
                                     <label htmlFor="dob" className="basis-1/4">
@@ -427,22 +475,30 @@ const CreateEmployee = () => {
                             </div>
                         </div>
 
-                        <div>
-                            <button
-                                type="submit"
-                                className="border-brightRed border-2  rounded-full p-2 px-6 text-brightRed hover:bg-brightRed hover:text-white duration-75"
-                            >
-                                Create
-                            </button>
+                        <div className="">
+                            <div className="flex justify-between">
+                                <Link
+                                    to="/admin/users/employees"
+                                    className="w-fit"
+                                    onClick={() => {
+                                        dispatch(informationReset());
+                                    }}
+                                >
+                                    <div className="flex flex-col items-center">
+                                        <IoIosArrowBack />
+                                        Back
+                                    </div>
+                                </Link>
+                                <button
+                                    type="submit"
+                                    className="border-brightRed border-2  rounded-full p-2 px-6 text-brightRed hover:bg-brightRed hover:text-white duration-75"
+                                >
+                                    Create
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
-                <Link to="/admin/users/employees">
-                    <div className="flex flex-col w-fit items-center">
-                        <IoIosArrowBack />
-                        Back
-                    </div>
-                </Link>
             </div>
         </>
     );

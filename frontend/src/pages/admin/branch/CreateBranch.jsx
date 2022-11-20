@@ -61,7 +61,14 @@ const CreateBranch = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-
+        console.log(
+            branchName,
+            addressNo,
+            province,
+            district,
+            subdistrict,
+            postcode
+        );
         if (
             !branchName ||
             !addressNo ||
@@ -98,10 +105,10 @@ const CreateBranch = () => {
                 //
             }
         }
-        setFormData((prevState) => ({
-            ...prevState,
+        setFormData({
+            ...formData,
             [e.target.name]: e.target.value,
-        }));
+        });
     };
 
     const [suggestion, setSuggestion] = useState(false);
@@ -110,6 +117,7 @@ const CreateBranch = () => {
         const { province, district, subdistrict, postcode } = informationData;
 
         setFormData({
+            ...formData,
             province,
             district,
             subdistrict,
@@ -179,6 +187,7 @@ const CreateBranch = () => {
                                     informationFromPostcode
                                 }
                                 onSuggestHandler={onSuggestHandler}
+                                isEditing={true}
                             />
 
                             {/* province */}
@@ -232,23 +241,30 @@ const CreateBranch = () => {
                                 />
                             </div>
                         </div>
-
-                        <div>
-                            <button
-                                type="submit"
-                                className="border-brightRed border-2  rounded-full p-2 px-6 text-brightRed hover:bg-brightRed hover:text-white duration-75"
-                            >
-                                Create
-                            </button>
+                        <div className="">
+                            <div className="flex justify-between">
+                                <Link
+                                    to="/admin/branch/"
+                                    className="w-fit"
+                                    // onClick={() => {
+                                    //     dispatch(informationReset());
+                                    // }}
+                                >
+                                    <div className="flex flex-col items-center">
+                                        <IoIosArrowBack />
+                                        Back
+                                    </div>
+                                </Link>
+                                <button
+                                    type="submit"
+                                    className="border-brightRed border-2  rounded-full p-2 px-6 text-brightRed hover:bg-brightRed hover:text-white duration-75"
+                                >
+                                    Create
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
-                <Link to="/admin/branch" className="w-fit">
-                    <div className="flex flex-col items-center w-fit">
-                        <IoIosArrowBack />
-                        Back
-                    </div>
-                </Link>
             </div>
         </>
     );
