@@ -1,10 +1,8 @@
-import ParcelForm from "../../../components/admin/ParcelForm";
+import ParcelForm from "../../../components/admin/groups/ParcelForm";
 
 const EditDialog = ({
     onExitHandler,
-    senderFormDetails,
     onSubmit,
-    onSenderChange,
     receiverFormDetails,
     onReceiverChange,
     onParcelChange,
@@ -19,44 +17,8 @@ const EditDialog = ({
                     <div className="text-4xl flex justify-between">
                         <div className="flex items-center space-x-6">
                             <h1>Parcel details</h1>
-                            {!isEditing && (
-                                <button
-                                    onClick={editingHandler}
-                                    className=" bg-brightRed text-lg p-1 px-4 rounded-full text-white hover:bg-slate-300 transition"
-                                >
-                                    Edit
-                                </button>
-                            )}
                         </div>
                         <button onClick={onExitHandler}>X</button>
-                    </div>
-                    <div className="space-y-10">
-                        <div>
-                            <div className="">
-                                <h1 className="text-2xl">รายละเอียดผู้ส่ง</h1>
-                                <hr className="my-4" />
-                                <div>
-                                    <ParcelForm
-                                        formDetails={senderFormDetails}
-                                        onSubmit={onSubmit}
-                                        onChange={onSenderChange}
-                                        isEditing={isEditing}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <h1 className="text-2xl">รายละเอียดผู้รับ</h1>
-                            <hr className="my-4" />
-                            <div>
-                                <ParcelForm
-                                    formDetails={receiverFormDetails}
-                                    onSubmit={onSubmit}
-                                    onChange={onReceiverChange}
-                                    isEditing={isEditing}
-                                />
-                            </div>
-                        </div>
                     </div>
                     <div>
                         <h1 className="text-2xl">รายละเอียดพัสดุ</h1>
@@ -155,6 +117,20 @@ const EditDialog = ({
                                     <option value="A5">A5</option>
                                     <option value="A6">A6</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="space-y-10">
+                        <div>
+                            <h1 className="text-2xl">รายละเอียดผู้รับ</h1>
+                            <hr className="my-4" />
+                            <div>
+                                <ParcelForm
+                                    formDetails={receiverFormDetails}
+                                    onSubmit={onSubmit}
+                                    onChange={onReceiverChange}
+                                    isEditing={isEditing}
+                                />
                             </div>
                         </div>
                     </div>

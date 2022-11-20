@@ -2,24 +2,9 @@ import ParcelForm from "../../../components/admin/ParcelForm";
 
 const CreateDialog = ({
     onExitHandler,
-    senderFormDetails,
     onSubmit,
-    onSenderChange,
-    receiverFormDetails,
-    onReceiverChange,
     onParcelChange,
     parcelFormDetails,
-    informationFromPostcode,
-    senderSuggestion,
-    receiverSuggestion,
-    onSenderSuggestHandler,
-    onReceiverSuggestHandler,
-    onReceiverBlurHandler,
-    onReceiverFocusHandler,
-    onSenderBlurHandler,
-    onSenderFocusHandler,
-    senderInformation,
-    receiverInformation,
 }) => {
     return (
         <div className="">
@@ -27,82 +12,18 @@ const CreateDialog = ({
                 <div className="flex flex-col space-y-10">
                     <div className="text-4xl flex justify-between">
                         <div className="flex items-center space-x-6">
-                            <h1>Create a new parcel</h1>
+                            <h1>Create a new group</h1>
                         </div>
                         <button onClick={onExitHandler}>X</button>
-                    </div>
-                    <div className="space-y-10">
-                        <div>
-                            <div className="">
-                                <h1 className="text-2xl">รายละเอียดผู้ส่ง</h1>
-                                <hr className="my-4" />
-                                <div>
-                                    <ParcelForm
-                                        formDetails={senderFormDetails}
-                                        onSubmit={onSubmit}
-                                        onChange={onSenderChange}
-                                        isEditing={true}
-                                        // Postcode inputbox
-                                        suggestion={senderSuggestion}
-                                        // informationFromPostcode={
-                                        //     informationFromPostcode
-                                        // }
-                                        informationFromPostcode={
-                                            senderInformation
-                                        }
-                                        onSuggestHandler={
-                                            onSenderSuggestHandler
-                                        }
-                                        onBlurHandler={onSenderBlurHandler}
-                                        onFocusHandler={onSenderFocusHandler}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <h1 className="text-2xl">รายละเอียดผู้รับ</h1>
-                            <hr className="my-4" />
-                            <div>
-                                <ParcelForm
-                                    formDetails={receiverFormDetails}
-                                    onSubmit={onSubmit}
-                                    onChange={onReceiverChange}
-                                    isEditing={true}
-                                    // postcode inputbox
-                                    suggestion={receiverSuggestion}
-                                    informationFromPostcode={
-                                        receiverInformation
-                                    }
-                                    onSuggestHandler={onReceiverSuggestHandler}
-                                    onBlurHandler={onReceiverBlurHandler}
-                                    onFocusHandler={onReceiverFocusHandler}
-                                />
-                            </div>
-                        </div>
                     </div>
                     <div>
                         <h1 className="text-2xl">รายละเอียดพัสดุ</h1>
                         <hr className="my-4" />
                         <div className="flex flex-col space-y-6 max-w-4xl">
-                            {/* _id */}
-                            <div className="space-x-2 flex">
-                                <label htmlFor="weight" className="basis-1/4">
-                                    Parcel ID
-                                </label>
-                                <input
-                                    type="text"
-                                    id="weight"
-                                    name="weight"
-                                    value={parcelFormDetails._id}
-                                    className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                                    disabled={true}
-                                    onChange={onParcelChange}
-                                />
-                            </div>
                             {/* weight */}
                             <div className="space-x-2 flex">
                                 <label htmlFor="weight" className="basis-1/4">
-                                    Weight
+                                    Total Weight
                                 </label>
                                 <input
                                     type="text"
@@ -112,6 +33,26 @@ const CreateDialog = ({
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     placeholder="Enter parcel weight"
                                     onChange={onParcelChange}
+                                    disabled={true}
+                                />
+                            </div>
+                            {/* parcels */}
+                            <div className="space-x-2 flex">
+                                <label
+                                    htmlFor="parcelsNumber"
+                                    className="basis-1/4"
+                                >
+                                    Total Parcels
+                                </label>
+                                <input
+                                    type="text"
+                                    id="parcelsNumber"
+                                    name="parcelsNumber"
+                                    value={parcelFormDetails.weight}
+                                    className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
+                                    placeholder="Enter parcel weight"
+                                    onChange={onParcelChange}
+                                    disabled={true}
                                 />
                             </div>
                             {/* typeofshipment */}
@@ -160,7 +101,7 @@ const CreateDialog = ({
                                     htmlFor="boxsizing"
                                     className="basis-1/4"
                                 >
-                                    Box Size
+                                    Bag Size
                                 </label>
                                 <select
                                     name="boxsize"
@@ -169,9 +110,9 @@ const CreateDialog = ({
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     onChange={onParcelChange}
                                 >
-                                    <option value="A4">A4</option>
-                                    <option value="A5">A5</option>
-                                    <option value="A6">A6</option>
+                                    <option value="BAG 01">BAG 01</option>
+                                    <option value="BAG 02">BAG 02</option>
+                                    <option value="BAG 03">BAG 03</option>
                                 </select>
                             </div>
                         </div>

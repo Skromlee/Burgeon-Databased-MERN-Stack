@@ -37,11 +37,13 @@ const Table = ({
                     <tr>
                         <th className={styles.tableHeader}>Include to group</th>
                         <th className={styles.tableHeader}>Parcel ID</th>
-                        <th className={styles.tableHeader}>Sender ID</th>
-                        <th className={styles.tableHeader}>Receiver ID</th>
+                        {/* <th className={styles.tableHeader}>Sender ID</th> */}
+                        {/* <th className={styles.tableHeader}>Receiver ID</th> */}
                         <th className={styles.tableHeader}>Type of Shipment</th>
                         <th className={styles.tableHeader}>Weight</th>
-                        <th className={styles.tableHeader}>Box size</th>
+                        <th className={styles.tableHeader}>
+                            Receiver Postcode
+                        </th>
                         <th className={styles.tableHeader}>Income Date</th>
                         <th className={`${styles.tableHeader} text-center `}>
                             Function
@@ -56,23 +58,16 @@ const Table = ({
                                     type="checkbox"
                                     name={el._id}
                                     onChange={onChangeHandler}
-                                    // checked={
-                                    //     el.status === "grouped" ? true : false
-                                    // }
                                 />
                             </td>
                             <td className={styles.tableCell}>{el._id}</td>
                             <td className={styles.tableCell}>
-                                {el.sender.citizen}
-                            </td>
-                            <td className={styles.tableCell}>
-                                {el.receiver.citizen}
-                            </td>
-                            <td className={styles.tableCell}>
                                 {el.typeofshipment}
                             </td>
                             <td className={styles.tableCell}>{el.weight}</td>
-                            <td className={styles.tableCell}>{el.boxsize}</td>
+                            <td className={styles.tableCell}>
+                                {el.receiver.postcode}
+                            </td>
                             <td className={styles.tableCell}>
                                 {
                                     new Date(el.createdAt)
@@ -81,49 +76,19 @@ const Table = ({
                                 }
                             </td>
                             <td className={styles.tableCell}>
-                                <div className="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-4 justify-center items-center space-y-4">
-                                    <div>
-                                        {/* <button
-                                            className={
-                                                visibility || EditVisibility
-                                                    ? `text-slate-600 pointer-events-none transition`
-                                                    : `text-green-600 hover:text-slate-300 transition`
-                                            }
-                                            onClick={() =>
-                                                editHandlerOnClick(el._id)
-                                            }
-                                        >
-                                            Edit
-                                        </button> */}
-                                    </div>
-                                    <div>
-                                        <button
-                                            className={
-                                                visibility || EditVisibility
-                                                    ? `text-slate-600 pointer-events-none transition`
-                                                    : `text-blue-600 hover:text-slate-300 transition`
-                                            }
-                                            onClick={() =>
-                                                detailHandlerOnClick(el._id)
-                                            }
-                                        >
-                                            Detail
-                                        </button>
-                                    </div>
-                                    <div>
-                                        {/* <button
-                                            className={
-                                                visibility || EditVisibility
-                                                    ? `text-slate-600 pointer-events-none transition`
-                                                    : `text-red-600 hover:text-slate-300 transition`
-                                            }
-                                            onClick={() =>
-                                                deleteHandlerOnClick(el._id)
-                                            }
-                                        >
-                                            Delete
-                                        </button> */}
-                                    </div>
+                                <div>
+                                    <button
+                                        className={
+                                            visibility || EditVisibility
+                                                ? `text-slate-600 pointer-events-none transition`
+                                                : `text-blue-600 hover:text-slate-300 transition`
+                                        }
+                                        onClick={() =>
+                                            detailHandlerOnClick(el._id)
+                                        }
+                                    >
+                                        Detail
+                                    </button>
                                 </div>
                             </td>
                         </tr>

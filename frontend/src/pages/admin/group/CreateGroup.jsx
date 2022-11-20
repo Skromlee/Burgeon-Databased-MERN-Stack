@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -13,9 +13,7 @@ import {
     reset,
     getParcels,
     parcelUpdate,
-    deleteParcel,
 } from "../../../features/parcel/parcelSlice";
-import DeleteDialog from "../../../components/admin/users/employees/DeleteDialog";
 import CreateDialog from "./CreateDialog";
 import {
     SenderGetInformationFromPostcode,
@@ -30,16 +28,11 @@ const CreateGroup = () => {
         (state) => state.parcels
     );
 
-    const { senderInformation, receiverInformation } = useSelector(
-        (state) => state.thailand
-    );
-
     const [senderSuggestion, setsenderSuggestion] = useState(false);
     const [receiverSuggestion, setreceiverSuggestion] = useState(false);
     const [testParcel] = useState([]);
 
     const [, updateState] = useState();
-    const forceUpdate = useCallback(() => updateState({}), []);
 
     useEffect(() => {
         if (isError) {
@@ -70,7 +63,8 @@ const CreateGroup = () => {
     };
 
     const initialParcelFormDetails = {
-        weight: "",
+        totalWeight: "",
+        totalParcels: "",
         typeofshipment: "Normal",
         typeofstuff: "Normal",
         boxsize: "A4",
@@ -210,18 +204,6 @@ const CreateGroup = () => {
         setOnDelete(true);
     };
 
-    const exitDeleteHandler = () => {
-        setOnDelete(false);
-        setTargetId("");
-    };
-
-    const confirmDeleteHandler = () => {
-        dispatch(deleteParcel(targetId));
-        setTargetId("");
-        setOnDelete(false);
-        forceUpdate();
-    };
-
     const findParcelById = (targetId) => {
         const targetParcel = parcels.filter((Each) => {
             return Each._id === targetId;
@@ -229,48 +211,6 @@ const CreateGroup = () => {
         return targetParcel;
     };
 
-    const onReceiverBlurHandler = () => {
-        setreceiverSuggestion(false);
-    };
-
-    const onReceiverFocusHandler = () => {
-        setreceiverSuggestion(true);
-    };
-
-    const onSenderBlurHandler = () => {
-        setsenderSuggestion(false);
-    };
-
-    const onSenderFocusHandler = () => {
-        setsenderSuggestion(true);
-    };
-
-    const onSenderSuggestHandler = (informationData) => {
-        const { province, district, subdistrict, postcode } = informationData;
-        setSenderFormDetails({
-            ...senderFormDetails,
-            province,
-            district,
-            subdistrict,
-            postcode,
-        });
-        setsenderSuggestion(false);
-    };
-    const onReceiverSuggestHandler = (informationData) => {
-        const { province, district, subdistrict, postcode } = informationData;
-
-        setReceiverFormDetails({
-            ...receiverFormDetails,
-            province,
-            district,
-            subdistrict,
-            postcode,
-        });
-        setreceiverSuggestion(false);
-    };
-
-    // let data = parcels;
-    const [parcelOutGroup, setParcelOutGroup] = useState(parcels);
     const [parcelInGroup, setParcelInGroup] = useState([]);
     const onChangeHandler = (e) => {
         if (e.target.checked) {
@@ -292,25 +232,17 @@ const CreateGroup = () => {
         }
     };
 
-    console.log(parcelInGroup);
-
     if (isLoading) {
         return <Spinner />;
     }
 
     return (
         <>
-            {onDelete && (
-                <DeleteDialog
-                    exitHandler={exitDeleteHandler}
-                    confirmHandler={confirmDeleteHandler}
-                    id={targetId}
-                />
-            )}
-
             <div className=" p-6 space-y-6 flex flex-col">
                 <div className=" flex justify-between">
-                    <h1 className=" text-3xl md:text-4xl">Group Creator</h1>
+                    <h1 className=" text-3xl md:text-4xl">
+                        Manual Group Creator
+                    </h1>
                     <button
                         onClick={() => {
                             setVisibility((prev) => !prev);
@@ -326,11 +258,11 @@ const CreateGroup = () => {
                         }
                         disabled={visibility ? true : false}
                     >
-                        Create New Parcels
+                        Create New Group
                     </button>
                 </div>
                 {parcels.length > 0 ? (
-                    <div className=" table">
+                    <div className="flex space-x-6">
                         <div className=" container mx-auto ">
                             <div className="py-2">
                                 <h1 className="text-2xl">
@@ -378,24 +310,9 @@ const CreateGroup = () => {
             {visibility && (
                 <CreateDialog
                     onExitHandler={onExitHandler}
-                    senderFormDetails={senderFormDetails}
                     onSubmit={onSubmit}
-                    onSenderChange={onSenderChange}
-                    receiverFormDetails={receiverFormDetails}
-                    onReceiverChange={onReceiverChange}
-                    parcelFormDetails={parcelFormDetails}
                     onParcelChange={onParcelChange}
-                    // informationFromPostcode={informationFromPostcode}
-                    senderInformation={senderInformation}
-                    receiverInformation={receiverInformation}
-                    senderSuggestion={senderSuggestion}
-                    receiverSuggestion={receiverSuggestion}
-                    onSenderSuggestHandler={onSenderSuggestHandler}
-                    onReceiverSuggestHandler={onReceiverSuggestHandler}
-                    onReceiverBlurHandler={onReceiverBlurHandler}
-                    onReceiverFocusHandler={onReceiverFocusHandler}
-                    onSenderBlurHandler={onSenderBlurHandler}
-                    onSenderFocusHandler={onSenderFocusHandler}
+                    parcelFormDetails={parcelFormDetails}
                 />
             )}
 
