@@ -6,10 +6,10 @@ const Thailand = require("../models/thailandModel");
 // @access Private Only Manager
 const getInformationByPostcode = asyncHandler(async (req, res) => {
     // req.params.postcode = Number(req.params.postcode);
-    // console.log(req.params.postcode, typeof req.params.postcode);
+    //
     // const test = 1;
     const pattern = "^" + req.params.postcode;
-    console.log(pattern, typeof pattern);
+
     const postcodeInformaiton = await Thailand.find({
         postcode: { $regex: pattern, $options: "" },
     });

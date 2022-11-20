@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { RiAddBoxFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,19 +18,37 @@ import {
 } from "../../../features/parcel/parcelSlice";
 import DeleteDialog from "../../../components/admin/users/employees/DeleteDialog";
 import CreateDialog from "./CreateDialog";
-
+import {
+    getInformationFromPostcode,
+    SenderGetInformationFromPostcode,
+    ReceiverGetInformationFromPostcode,
+    reset as informationReset,
+} from "../../../features/thailand/thailandSlice";
 const Parcels = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { admin } = useSelector((state) => state.admin);
-    const { parcels, parcelbyid, isLoading, isError, message } = useSelector(
-        (state) => state.parcels
-    );
+    const { parcels, parcelbyid, isSuccess, isLoading, isError, message } =
+        useSelector((state) => state.parcels);
+
+    const { informationFromPostcode, senderInformation, receiverInformation } =
+        useSelector((state) => state.thailand);
+
+    const [senderSuggestion, setsenderSuggestion] = useState(false);
+    const [receiverSuggestion, setreceiverSuggestion] = useState(false);
+    const [testParcel, setTestParcel] = useState([]);
+
+    const [, updateState] = useState();
+    const forceUpdate = useCallback(() => updateState({}), []);
 
     useEffect(() => {
         if (isError) {
             toast.error(message);
         }
+
+        // if (isSuccess) {
+        //     forceUpdate();
+        // }
 
         if (!admin) {
             navigate("/admin/signin");
@@ -77,12 +95,28 @@ const Parcels = () => {
     const [targetId, setTargetId] = useState("");
 
     const onSenderChange = (e) => {
+        if (e.target.name === "postcode") {
+            if (e.target.value > 100) {
+                setsenderSuggestion(true);
+                dispatch(SenderGetInformationFromPostcode(e.target.value));
+            } else {
+                setsenderSuggestion(false);
+            }
+        }
         setSenderFormDetails({
             ...senderFormDetails,
             [e.target.name]: e.target.value,
         });
     };
     const onReceiverChange = (e) => {
+        if (e.target.name === "postcode") {
+            if (e.target.value > 100) {
+                setreceiverSuggestion(true);
+                dispatch(ReceiverGetInformationFromPostcode(e.target.value));
+            } else {
+                setreceiverSuggestion(false);
+            }
+        }
         setReceiverFormDetails({
             ...receiverFormDetails,
             [e.target.name]: e.target.value,
@@ -100,6 +134,7 @@ const Parcels = () => {
         setSenderFormDetails(initialFormDetails);
         setReceiverFormDetails(initialFormDetails);
         setVisibility(false);
+        dispatch(informationReset());
     };
 
     const onSubmit = (e) => {
@@ -114,9 +149,15 @@ const Parcels = () => {
         setSenderFormDetails(initialFormDetails);
         setReceiverFormDetails(initialFormDetails);
         setParcelFormDetails(initialParcelFormDetails);
+        dispatch(informationReset());
     };
 
     const onUpdateSubmit = (e) => {
+        
+            sender: senderFormDetails,
+            receiver: receiverFormDetails,
+            parcel: parcelFormDetails,
+        });
         e.preventDefault();
         setIsEditing(false);
         const updatedParcelData = {
@@ -187,6 +228,7 @@ const Parcels = () => {
         dispatch(deleteParcel(targetId));
         setTargetId("");
         setOnDelete(false);
+        forceUpdate();
     };
 
     const findParcelById = (targetId) => {
@@ -194,6 +236,51 @@ const Parcels = () => {
             return Each._id === targetId;
         });
         return targetParcel;
+    };
+
+    const onReceiverBlurHandler = () => {
+        
+        setreceiverSuggestion(false);
+    };
+
+    const onReceiverFocusHandler = () => {
+        
+        setreceiverSuggestion(true);
+    };
+
+    const onSenderBlurHandler = () => {
+        
+        setsenderSuggestion(false);
+    };
+
+    const onSenderFocusHandler = () => {
+        
+        setsenderSuggestion(true);
+    };
+
+    const onSenderSuggestHandler = (informationData) => {
+        
+        const { province, district, subdistrict, postcode } = informationData;
+        setSenderFormDetails({
+            ...senderFormDetails,
+            province,
+            district,
+            subdistrict,
+            postcode,
+        });
+        setsenderSuggestion(false);
+    };
+    const onReceiverSuggestHandler = (informationData) => {
+        const { province, district, subdistrict, postcode } = informationData;
+        
+        setReceiverFormDetails({
+            ...receiverFormDetails,
+            province,
+            district,
+            subdistrict,
+            postcode,
+        });
+        setreceiverSuggestion(false);
     };
 
     if (isLoading) {
@@ -214,7 +301,13 @@ const Parcels = () => {
                 <div className=" flex justify-between">
                     <h1 className=" text-3xl md:text-4xl">Parcels Manager</h1>
                     <button
-                        onClick={() => setVisibility((prev) => !prev)}
+                        onClick={() => {
+                            setVisibility((prev) => !prev);
+                            setSenderFormDetails(initialParcelFormDetails);
+                            setReceiverFormDetails(initialParcelFormDetails);
+                            setParcelFormDetails(initialParcelFormDetails);
+                            dispatch(informationReset());
+                        }}
                         className={
                             visibility
                                 ? `bg-slate-600 p-2 px-4 rounded-full text-white transition`
@@ -230,6 +323,7 @@ const Parcels = () => {
                         <div className=" container mx-auto ">
                             <Table
                                 data={parcels}
+                                test={testParcel}
                                 rowsPerPage={15}
                                 onEditClick={onEditHandler}
                                 onDetailClick={onDetailHandler}
@@ -254,6 +348,17 @@ const Parcels = () => {
                     onReceiverChange={onReceiverChange}
                     parcelFormDetails={parcelFormDetails}
                     onParcelChange={onParcelChange}
+                    // informationFromPostcode={informationFromPostcode}
+                    senderInformation={senderInformation}
+                    receiverInformation={receiverInformation}
+                    senderSuggestion={senderSuggestion}
+                    receiverSuggestion={receiverSuggestion}
+                    onSenderSuggestHandler={onSenderSuggestHandler}
+                    onReceiverSuggestHandler={onReceiverSuggestHandler}
+                    onReceiverBlurHandler={onReceiverBlurHandler}
+                    onReceiverFocusHandler={onReceiverFocusHandler}
+                    onSenderBlurHandler={onSenderBlurHandler}
+                    onSenderFocusHandler={onSenderFocusHandler}
                 />
             )}
 
@@ -269,6 +374,7 @@ const Parcels = () => {
                     onReceiverChange={onReceiverChange}
                     parcelFormDetails={parcelFormDetails}
                     onParcelChange={onParcelChange}
+                    receiverSuggestion={receiverSuggestion}
                 />
             )}
         </>

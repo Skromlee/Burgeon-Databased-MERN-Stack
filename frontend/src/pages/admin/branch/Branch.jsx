@@ -117,7 +117,7 @@ const Branch = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        console.log(branchData);
+
         dispatch(updateBranch(branchData));
         setVisibility(false);
         //will use soon

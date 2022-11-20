@@ -72,7 +72,7 @@ const Employees = () => {
             }
             return null;
         });
-        console.log(targetEmp);
+
         return targetEmp;
     };
 

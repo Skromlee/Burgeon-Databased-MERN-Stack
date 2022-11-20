@@ -9,15 +9,17 @@ const CreateDialog = ({
     onReceiverChange,
     onParcelChange,
     parcelFormDetails,
-
-    // onExitHandler={onExitHandler}
-    // senderFormDetails={senderFormDetails}
-    // onSubmit={onSubmit}
-    // onSenderChange={onSenderChange}
-    // receiverFormDetails={receiverFormDetails}
-    // onReceiverChange={onReceiverChange}
-    // parcelFormDetails={parcelFormDetails}
-    // onParcelChange={onParcelChange}
+    informationFromPostcode,
+    senderSuggestion,
+    receiverSuggestion,
+    onSenderSuggestHandler,
+    onReceiverSuggestHandler,
+    onReceiverBlurHandler,
+    onReceiverFocusHandler,
+    onSenderBlurHandler,
+    onSenderFocusHandler,
+    senderInformation,
+    receiverInformation,
 }) => {
     return (
         <div className="">
@@ -40,6 +42,19 @@ const CreateDialog = ({
                                         onSubmit={onSubmit}
                                         onChange={onSenderChange}
                                         isEditing={true}
+                                        // Postcode inputbox
+                                        suggestion={senderSuggestion}
+                                        // informationFromPostcode={
+                                        //     informationFromPostcode
+                                        // }
+                                        informationFromPostcode={
+                                            senderInformation
+                                        }
+                                        onSuggestHandler={
+                                            onSenderSuggestHandler
+                                        }
+                                        onBlurHandler={onSenderBlurHandler}
+                                        onFocusHandler={onSenderFocusHandler}
                                     />
                                 </div>
                             </div>
@@ -53,6 +68,14 @@ const CreateDialog = ({
                                     onSubmit={onSubmit}
                                     onChange={onReceiverChange}
                                     isEditing={true}
+                                    // postcode inputbox
+                                    suggestion={receiverSuggestion}
+                                    informationFromPostcode={
+                                        receiverInformation
+                                    }
+                                    onSuggestHandler={onReceiverSuggestHandler}
+                                    onBlurHandler={onReceiverBlurHandler}
+                                    onFocusHandler={onReceiverFocusHandler}
                                 />
                             </div>
                         </div>

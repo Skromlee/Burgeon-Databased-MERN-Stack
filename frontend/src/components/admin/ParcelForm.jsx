@@ -1,4 +1,22 @@
-const ParcelForm = ({ onSubmit, onChange, formDetails, isEditing }) => {
+import PostcodeInput from "../../components/common/PostcodeInput";
+
+// postcode={postcode}
+// onChange={onChange}
+// suggestion={suggestion}
+// informationFromPostcode={informationFromPostcode}
+// onSuggestHandler={onSuggestHandler}
+
+const ParcelForm = ({
+    onSubmit,
+    onChange,
+    formDetails,
+    isEditing,
+    suggestion,
+    informationFromPostcode,
+    onSuggestHandler,
+    onBlurHandler,
+    onFocusHandler,
+}) => {
     const {
         firstname,
         lastname,
@@ -80,21 +98,17 @@ const ParcelForm = ({ onSubmit, onChange, formDetails, isEditing }) => {
                     </div>
 
                     {/* postcode */}
-                    <div className="space-x-2 flex">
-                        <label htmlFor="postcode" className="basis-1/4">
-                            Postcode
-                        </label>
-                        <input
-                            type="number"
-                            id="postcode"
-                            name="postcode"
-                            value={postcode}
-                            className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                            placeholder="Enter employee postcode"
-                            onChange={onChange}
-                            disabled={isEditing ? false : true}
-                        />
-                    </div>
+
+                    <PostcodeInput
+                        postcode={postcode}
+                        onChange={onChange}
+                        suggestion={suggestion}
+                        informationFromPostcode={informationFromPostcode}
+                        onSuggestHandler={onSuggestHandler}
+                        onBlurHandler={onBlurHandler}
+                        onFocusHandler={onFocusHandler}
+                        isEditing={isEditing}
+                    />
                 </div>
 
                 <div className="space-y-8 md:w-1/2">

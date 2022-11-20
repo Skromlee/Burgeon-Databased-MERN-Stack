@@ -10,6 +10,8 @@ import {
     reset as informationReset,
 } from "../../../features/thailand/thailandSlice";
 
+import PostcodeInput from "../../../components/common/PostcodeInput";
+
 const initailFormValue = {
     branchName: "",
     addressNo: "",
@@ -21,7 +23,7 @@ const initailFormValue = {
 
 const CreateBranch = () => {
     const [formData, setFormData] = useState(initailFormValue);
-
+    const { informationFromPostcode } = useSelector((state) => state.thailand);
     const { branchName, addressNo, province, district, subdistrict, postcode } =
         formData;
 
@@ -62,7 +64,7 @@ const CreateBranch = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(
+        
             branchName,
             addressNo,
             province,
@@ -89,7 +91,7 @@ const CreateBranch = () => {
                 subdistrict,
                 postcode,
             };
-            console.log(branchData);
+            
             dispatch(createBranch(branchData));
             // dispatch(createEmployee(employeeData));
         }
@@ -97,16 +99,14 @@ const CreateBranch = () => {
 
     // USE
 
-    const { informationFromPostcode } = useSelector((state) => state.thailand);
-
     const onChange = (e) => {
         // !TODO => make this method fire get request with LIKE e.target.value then return
         if (e.target.name === "postcode") {
-            if (e.target.value > 1000) {
+            if (e.target.value > 100) {
                 setSuggestion(true);
                 dispatch(getInformationFromPostcode(e.target.value));
-                console.log(informationFromPostcode);
-                // console.log(suggestions, "-", typeof suggestions, "-");
+                
+                // 
             }
         }
         setFormData((prevState) => ({
@@ -119,7 +119,7 @@ const CreateBranch = () => {
 
     const onSuggestHandler = (informationData) => {
         const { province, district, subdistrict, postcode } = informationData;
-        console.log(postcode);
+        
         setFormData({
             province,
             district,
@@ -163,67 +163,6 @@ const CreateBranch = () => {
                                     onChange={onChange}
                                 />
                             </div>
-                            {/* postcode */}
-                            <div className="flex-col flex">
-                                <div className="space-x-2 flex">
-                                    <label
-                                        htmlFor="postcode"
-                                        className="basis-1/4"
-                                    >
-                                        Postcode
-                                    </label>
-                                    <div className="flex-col basis-2/3">
-                                        <div className="relative">
-                                            <input
-                                                type="number"
-                                                id="postcode"
-                                                name="postcode"
-                                                value={postcode}
-                                                className="border-[1px] border-black rounded-md focus:outline-none w-full px-2"
-                                                placeholder="Enter employee postcode"
-                                                onChange={onChange}
-                                            />
-                                        </div>
-
-                                        <div className="flex-col absolute rounded-lg bg-slate-200">
-                                            {suggestion &&
-                                                informationFromPostcode &&
-                                                informationFromPostcode.map(
-                                                    (
-                                                        informationFromPostcode,
-                                                        i
-                                                    ) => (
-                                                        <h1
-                                                            key={i}
-                                                            className="hover:cursor-pointer hover:border-l-2 hover:border-brightRed  px-2"
-                                                            onClick={() =>
-                                                                onSuggestHandler(
-                                                                    informationFromPostcode
-                                                                )
-                                                            }
-                                                        >
-                                                            {
-                                                                informationFromPostcode.postcode
-                                                            }{" "}
-                                                            -{">"}{" "}
-                                                            {
-                                                                informationFromPostcode.province
-                                                            }{" "}
-                                                            -{">"}{" "}
-                                                            {
-                                                                informationFromPostcode.district
-                                                            }{" "}
-                                                            -{">"}{" "}
-                                                            {
-                                                                informationFromPostcode.subdistrict
-                                                            }
-                                                        </h1>
-                                                    )
-                                                )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             {/* addressNo */}
                             <div className="space-x-2 flex">
                                 <label
@@ -242,6 +181,17 @@ const CreateBranch = () => {
                                     onChange={onChange}
                                 />
                             </div>
+                            {/* postcode */}
+                            <PostcodeInput
+                                postcode={postcode}
+                                onChange={onChange}
+                                suggestion={suggestion}
+                                informationFromPostcode={
+                                    informationFromPostcode
+                                }
+                                onSuggestHandler={onSuggestHandler}
+                            />
+
                             {/* province */}
                             <div className="space-x-2 flex">
                                 <label htmlFor="province" className="basis-1/4">

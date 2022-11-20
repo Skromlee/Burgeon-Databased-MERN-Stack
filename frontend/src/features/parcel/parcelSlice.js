@@ -191,11 +191,9 @@ export const parcelSlice = createSlice({
             .addCase(deleteParcel.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.parcels.push(
-                    state.parcels.filter((each) => {
-                        return each._id !== action.payload.id;
-                    })
-                );
+                state.parcels = state.parcels.filter((each) => {
+                    return each._id !== action.payload.id;
+                });
             })
             .addCase(getParcelByCitizen.pending, (state) => {
                 state.isLoading = true;

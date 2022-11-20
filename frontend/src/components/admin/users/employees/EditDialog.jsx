@@ -17,8 +17,6 @@ const EditDialog = ({
     const branchsList = branchs.branch;
 
     useEffect(() => {
-        console.log(branchsList);
-
         dispatch(getBranchs());
     }, []);
 

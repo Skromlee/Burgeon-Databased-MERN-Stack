@@ -7,7 +7,7 @@ const Branch = require("../models/branchModel");
 // @route POST /api/branch
 // @access Private Only Manager
 const createBranch = asyncHandler(async (req, res) => {
-    console.log("create branch!--------------------");
+    ("create branch!--------------------");
     const { branchName, addressNo, province, district, subdistrict, postcode } =
         req.body;
 
@@ -32,7 +32,7 @@ const createBranch = asyncHandler(async (req, res) => {
         subdistrict,
         postcode,
     });
-    console.log(branch);
+
     if (branch) {
         res.status(201).json({
             _id: branch.id,
@@ -84,7 +84,6 @@ const updateBranch = asyncHandler(async (req, res) => {
 // @route GET /api/branch
 // @access Private only manager
 const getBranchs = asyncHandler(async (req, res) => {
-    console.log("getting");
     const branchs = await Branch.find({});
     res.status(200).json(branchs);
 });

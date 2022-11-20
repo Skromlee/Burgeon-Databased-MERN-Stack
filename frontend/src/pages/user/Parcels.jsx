@@ -58,9 +58,7 @@ const Parcels = () => {
             arrivedDate: arrivedDate.toISOString().split("T")[0],
             idx: idx,
         });
-        console.log(targetParcelId.createdAt);
-        console.log(targetParcelId.typeofshipment);
-        console.log(targetParcelId.arrivedDate);
+
         setVisibility(true);
     };
 

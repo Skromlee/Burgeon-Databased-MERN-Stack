@@ -50,7 +50,6 @@ const User = () => {
 
     useEffect(() => {
         if (isError) {
-            console.log(message);
         }
 
         if (citizen && !firstname) {

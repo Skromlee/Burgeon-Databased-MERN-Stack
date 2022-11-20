@@ -94,18 +94,14 @@ export const branchSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(createBranch.pending, (state) => {
-                console.log("pending...");
                 state.isLoading = true;
             })
             .addCase(createBranch.fulfilled, (state, action) => {
-                console.log("fullfill...");
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.branch.push(action.payload);
-                console.log(state.branch);
             })
             .addCase(createBranch.rejected, (state, action) => {
-                console.log("reject...");
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;

@@ -63,7 +63,7 @@ const CreateEmployee = () => {
         if (isError) {
             toast.error(message);
         }
-        console.log(branchsList);
+
         if (!admin) {
             navigate("/admin/signin");
         }

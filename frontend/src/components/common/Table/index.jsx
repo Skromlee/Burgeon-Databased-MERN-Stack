@@ -31,7 +31,6 @@ const Table = ({
     const findName = (id) => {
         return branch.map((each) => {
             if (each._id === id) {
-                console.log(each.branchName);
                 return each.branchName;
             }
         });
