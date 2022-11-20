@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import AdminNav from "../components/admin/AdminNav";
-import { BsBoxSeam } from "react-icons/bs";
+import { BsBoxSeam, BsListTask } from "react-icons/bs";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { TbBuildingFactory2 } from "react-icons/tb";
@@ -8,6 +8,11 @@ import { TbBuildingFactory2 } from "react-icons/tb";
 const navItems = [
     { href: "/admin", icon: AiOutlineDashboard, label: "Dashboard" },
     { href: "/admin/parcels", icon: BsBoxSeam, label: "Total Parcels" },
+    {
+        href: "admin/groups",
+        icon: BsListTask,
+        label: "Groups Manager",
+    },
     {
         href: "/admin/users/employees",
         icon: AiOutlineUsergroupAdd,

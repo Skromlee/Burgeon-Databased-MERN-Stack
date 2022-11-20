@@ -29,6 +29,9 @@ import CreateCustomer from "./pages/admin/users/customers/CreateCustomer";
 // admin pages => Branch Manager
 import Branch from "./pages/admin/branch/Branch";
 import CreateBranch from "./pages/admin/branch/CreateBranch";
+// admin pages => Group Manager
+import Groups from "./pages/admin/group/Groups";
+import CreateGroup from "./pages/admin/group/CreateGroup";
 
 function App() {
     return (
@@ -73,6 +76,11 @@ function App() {
                             element={<CreateBranch />}
                         />
                         <Route path="/admin/branch" element={<Branch />} />
+                        <Route path="/admin/groups/" element={<Groups />} />
+                        <Route
+                            path="/admin/groups/create"
+                            element={<CreateGroup />}
+                        />
                     </Route>
                     <Route path="/admin/signin" element={<AdminSignin />} />
                     <Route path="/signup" element={<Signup />} />

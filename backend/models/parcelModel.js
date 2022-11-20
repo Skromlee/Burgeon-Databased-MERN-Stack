@@ -26,6 +26,9 @@ const parcelSchema = mongoose.Schema(
             type: String,
             required: [true, "Please add box sizing"],
         },
+        group: {
+            type: mongoose.Schema.Types.ObjectId,
+        },
     },
     { timestamps: true }
 );
