@@ -2,10 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import thailandService from "./thailandService";
 
 const initialState = {
-    informationFromPostcode: {},
+    informationFromPostcode: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
+    isFirsttime: true,
     message: "",
 };
 
@@ -46,6 +47,9 @@ export const thailandSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 console.log(action.payload);
+                if (state.isFirsttime) {
+                    state.mokeUp = action.payload;
+                }
                 state.informationFromPostcode = action.payload;
             })
             .addCase(getInformationFromPostcode.rejected, (state, action) => {

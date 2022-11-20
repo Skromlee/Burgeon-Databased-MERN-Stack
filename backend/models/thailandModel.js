@@ -11,7 +11,7 @@ const thailandSchema = {
         type: String,
     },
     postcode: {
-        type: Number,
+        type: String,
     },
     region: {
         type: String,

@@ -9,7 +9,6 @@ import {
     getInformationFromPostcode,
     reset as informationReset,
 } from "../../../features/thailand/thailandSlice";
-import { useCallback } from "react";
 
 const initailFormValue = {
     branchName: "",
@@ -51,17 +50,26 @@ const CreateBranch = () => {
         return () => {
             dispatch(reset());
         };
-    }, [admin, isError, isSuccess, navigate, message, dispatch]);
-
-    const onChange = (e) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
-    };
+    }, [
+        admin,
+        isError,
+        isSuccess,
+        navigate,
+        message,
+        dispatch,
+        informationFromPostcode,
+    ]);
 
     const onSubmit = (e) => {
         e.preventDefault();
+        console.log(
+            branchName,
+            addressNo,
+            province,
+            district,
+            subdistrict,
+            postcode
+        );
 
         if (
             !branchName ||
@@ -87,10 +95,39 @@ const CreateBranch = () => {
         }
     };
 
-    const onBlurHandler = useCallback(() => {
-        console.log("Blur");
-        dispatch(getInformationFromPostcode(formData.postcode));
-    }, []);
+    // USE
+
+    const { informationFromPostcode } = useSelector((state) => state.thailand);
+
+    const onChange = (e) => {
+        // !TODO => make this method fire get request with LIKE e.target.value then return
+        if (e.target.name === "postcode") {
+            if (e.target.value > 1000) {
+                setSuggestion(true);
+                dispatch(getInformationFromPostcode(e.target.value));
+                console.log(informationFromPostcode);
+                // console.log(suggestions, "-", typeof suggestions, "-");
+            }
+        }
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }));
+    };
+
+    const [suggestion, setSuggestion] = useState(false);
+
+    const onSuggestHandler = (informationData) => {
+        const { province, district, subdistrict, postcode } = informationData;
+        console.log(postcode);
+        setFormData({
+            province,
+            district,
+            subdistrict,
+            postcode,
+        });
+        setSuggestion(false);
+    };
 
     if (isLoading) {
         return <Spinner />;
@@ -125,6 +162,67 @@ const CreateBranch = () => {
                                     placeholder="Enter employee address number"
                                     onChange={onChange}
                                 />
+                            </div>
+                            {/* postcode */}
+                            <div className="flex-col flex">
+                                <div className="space-x-2 flex">
+                                    <label
+                                        htmlFor="postcode"
+                                        className="basis-1/4"
+                                    >
+                                        Postcode
+                                    </label>
+                                    <div className="flex-col basis-2/3">
+                                        <div className="relative">
+                                            <input
+                                                type="number"
+                                                id="postcode"
+                                                name="postcode"
+                                                value={postcode}
+                                                className="border-[1px] border-black rounded-md focus:outline-none w-full px-2"
+                                                placeholder="Enter employee postcode"
+                                                onChange={onChange}
+                                            />
+                                        </div>
+
+                                        <div className="flex-col absolute rounded-lg bg-slate-200">
+                                            {suggestion &&
+                                                informationFromPostcode &&
+                                                informationFromPostcode.map(
+                                                    (
+                                                        informationFromPostcode,
+                                                        i
+                                                    ) => (
+                                                        <h1
+                                                            key={i}
+                                                            className="hover:cursor-pointer hover:border-l-2 hover:border-brightRed  px-2"
+                                                            onClick={() =>
+                                                                onSuggestHandler(
+                                                                    informationFromPostcode
+                                                                )
+                                                            }
+                                                        >
+                                                            {
+                                                                informationFromPostcode.postcode
+                                                            }{" "}
+                                                            -{">"}{" "}
+                                                            {
+                                                                informationFromPostcode.province
+                                                            }{" "}
+                                                            -{">"}{" "}
+                                                            {
+                                                                informationFromPostcode.district
+                                                            }{" "}
+                                                            -{">"}{" "}
+                                                            {
+                                                                informationFromPostcode.subdistrict
+                                                            }
+                                                        </h1>
+                                                    )
+                                                )}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             {/* addressNo */}
                             <div className="space-x-2 flex">
@@ -194,22 +292,6 @@ const CreateBranch = () => {
                                     onChange={onChange}
                                 />
                             </div>
-                            {/* postcode */}
-                            <div className="space-x-2 flex">
-                                <label htmlFor="postcode" className="basis-1/4">
-                                    Postcode
-                                </label>
-                                <input
-                                    type="number"
-                                    id="postcode"
-                                    name="postcode"
-                                    value={postcode}
-                                    className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                                    placeholder="Enter employee postcode"
-                                    onChange={onChange}
-                                    onBlur={onBlurHandler}
-                                />
-                            </div>
                         </div>
 
                         <div>
@@ -222,8 +304,8 @@ const CreateBranch = () => {
                         </div>
                     </form>
                 </div>
-                <Link to="/admin/branch">
-                    <div className="flex flex-col w-fit items-center">
+                <Link to="/admin/branch" className="w-fit">
+                    <div className="flex flex-col items-center w-fit">
                         <IoIosArrowBack />
                         Back
                     </div>

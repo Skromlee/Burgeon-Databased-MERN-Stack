@@ -5,8 +5,13 @@ const Thailand = require("../models/thailandModel");
 // @route POST /api/thailand/:id
 // @access Private Only Manager
 const getInformationByPostcode = asyncHandler(async (req, res) => {
+    // req.params.postcode = Number(req.params.postcode);
+    // console.log(req.params.postcode, typeof req.params.postcode);
+    // const test = 1;
+    const pattern = "^" + req.params.postcode;
+    console.log(pattern, typeof pattern);
     const postcodeInformaiton = await Thailand.find({
-        postcode: req.params.postcode,
+        postcode: { $regex: pattern, $options: "" },
     });
 
     if (!postcodeInformaiton) {
@@ -19,7 +24,6 @@ const getInformationByPostcode = asyncHandler(async (req, res) => {
         res.status(401);
         throw new Error("Not authorized");
     }
-
     res.status(200).json(postcodeInformaiton);
 });
 
