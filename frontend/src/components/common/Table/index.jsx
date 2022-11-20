@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import useTable from "../../../hooks/useTable";
 import styles from "./Table.module.css";
@@ -32,6 +32,8 @@ const Table = ({
         return branch.map((each) => {
             if (each._id === id) {
                 return each.branchName;
+            } else {
+                return null;
             }
         });
     };

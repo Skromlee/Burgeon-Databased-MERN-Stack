@@ -5,10 +5,7 @@ import { toast } from "react-toastify";
 import { IoIosArrowBack } from "react-icons/io";
 import Spinner from "../../../components/common/Spinner";
 import { createBranch, reset } from "../../../features/branch/branchSlice";
-import {
-    getInformationFromPostcode,
-    reset as informationReset,
-} from "../../../features/thailand/thailandSlice";
+import { getInformationFromPostcode } from "../../../features/thailand/thailandSlice";
 
 import PostcodeInput from "../../../components/common/PostcodeInput";
 
@@ -30,7 +27,7 @@ const CreateBranch = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { admin } = useSelector((state) => state.admin);
-    const { branch, isLoading, isError, isSuccess, message } = useSelector(
+    const { isLoading, isError, isSuccess, message } = useSelector(
         (state) => state.branch // Change this line
     );
 
@@ -64,14 +61,6 @@ const CreateBranch = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        
-            branchName,
-            addressNo,
-            province,
-            district,
-            subdistrict,
-            postcode
-        );
 
         if (
             !branchName ||
@@ -91,7 +80,7 @@ const CreateBranch = () => {
                 subdistrict,
                 postcode,
             };
-            
+
             dispatch(createBranch(branchData));
             // dispatch(createEmployee(employeeData));
         }
@@ -105,8 +94,8 @@ const CreateBranch = () => {
             if (e.target.value > 100) {
                 setSuggestion(true);
                 dispatch(getInformationFromPostcode(e.target.value));
-                
-                // 
+
+                //
             }
         }
         setFormData((prevState) => ({
@@ -119,7 +108,7 @@ const CreateBranch = () => {
 
     const onSuggestHandler = (informationData) => {
         const { province, district, subdistrict, postcode } = informationData;
-        
+
         setFormData({
             province,
             district,

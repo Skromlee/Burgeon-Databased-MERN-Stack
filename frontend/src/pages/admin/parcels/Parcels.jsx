@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { RiAddBoxFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -14,12 +13,10 @@ import {
     getParcels,
     parcelUpdate,
     deleteParcel,
-    getParcelById,
 } from "../../../features/parcel/parcelSlice";
 import DeleteDialog from "../../../components/admin/users/employees/DeleteDialog";
 import CreateDialog from "./CreateDialog";
 import {
-    getInformationFromPostcode,
     SenderGetInformationFromPostcode,
     ReceiverGetInformationFromPostcode,
     reset as informationReset,
@@ -28,15 +25,17 @@ const Parcels = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { admin } = useSelector((state) => state.admin);
-    const { parcels, parcelbyid, isSuccess, isLoading, isError, message } =
-        useSelector((state) => state.parcels);
+    const { parcels, isLoading, isError, message } = useSelector(
+        (state) => state.parcels
+    );
 
-    const { informationFromPostcode, senderInformation, receiverInformation } =
-        useSelector((state) => state.thailand);
+    const { senderInformation, receiverInformation } = useSelector(
+        (state) => state.thailand
+    );
 
     const [senderSuggestion, setsenderSuggestion] = useState(false);
     const [receiverSuggestion, setreceiverSuggestion] = useState(false);
-    const [testParcel, setTestParcel] = useState([]);
+    const [testParcel] = useState([]);
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -153,11 +152,6 @@ const Parcels = () => {
     };
 
     const onUpdateSubmit = (e) => {
-        
-            sender: senderFormDetails,
-            receiver: receiverFormDetails,
-            parcel: parcelFormDetails,
-        });
         e.preventDefault();
         setIsEditing(false);
         const updatedParcelData = {
@@ -239,27 +233,22 @@ const Parcels = () => {
     };
 
     const onReceiverBlurHandler = () => {
-        
         setreceiverSuggestion(false);
     };
 
     const onReceiverFocusHandler = () => {
-        
         setreceiverSuggestion(true);
     };
 
     const onSenderBlurHandler = () => {
-        
         setsenderSuggestion(false);
     };
 
     const onSenderFocusHandler = () => {
-        
         setsenderSuggestion(true);
     };
 
     const onSenderSuggestHandler = (informationData) => {
-        
         const { province, district, subdistrict, postcode } = informationData;
         setSenderFormDetails({
             ...senderFormDetails,
@@ -272,7 +261,7 @@ const Parcels = () => {
     };
     const onReceiverSuggestHandler = (informationData) => {
         const { province, district, subdistrict, postcode } = informationData;
-        
+
         setReceiverFormDetails({
             ...receiverFormDetails,
             province,

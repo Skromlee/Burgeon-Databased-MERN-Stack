@@ -12,9 +12,7 @@ const Parcels = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
-    const { parcels, parcelbyid, isLoading, isError, message } = useSelector(
-        (state) => state.parcels
-    );
+    const { parcels, isError, message } = useSelector((state) => state.parcels);
 
     useEffect(() => {
         if (isError) {

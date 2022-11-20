@@ -18,7 +18,7 @@ const EditDialog = ({
 
     useEffect(() => {
         dispatch(getBranchs());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div>

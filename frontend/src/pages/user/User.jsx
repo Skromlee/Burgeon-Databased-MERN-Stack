@@ -16,20 +16,7 @@ const User = () => {
     const { user, isLoading, isError, message } = useSelector(
         (state) => state.auth
     );
-    const {
-        _id,
-        email,
-        firstname,
-        lastname,
-        phone,
-        citizen,
-        addressNo,
-        province,
-        district,
-        subdistrict,
-        postcode,
-        dob,
-    } = user;
+    const { _id, email, firstname, citizen } = user;
 
     const [visibility, setVisibility] = useState(false);
 
