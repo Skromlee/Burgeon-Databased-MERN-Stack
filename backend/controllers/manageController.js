@@ -10,6 +10,7 @@ const User = require("../models/userModel");
 // @route POST /api/manages/employees
 // @access Private Only Manager
 const registerEmployee = asyncHandler(async (req, res) => {
+    console.log("register");
     const {
         email,
         password,
@@ -67,6 +68,7 @@ const registerEmployee = asyncHandler(async (req, res) => {
         branch,
     });
     if (employee) {
+        console.log("Success");
         res.status(201).json({
             _id: employee.id,
             fullname: employee.firstname + " " + employee.lastname,
@@ -86,6 +88,7 @@ const registerEmployee = asyncHandler(async (req, res) => {
             token: generateToken(employee._id),
         });
     } else {
+        console.log("Error");
         res.status(400);
         throw new Error("Invalid employee data");
     }
