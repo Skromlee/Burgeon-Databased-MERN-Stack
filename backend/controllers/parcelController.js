@@ -58,6 +58,9 @@ const registerParcel = asyncHandler(async (req, res) => {
             weight,
             boxsize,
             typeofstuff,
+            status: {
+                isRegisterToBranch: "finish",
+            },
         });
         res.status(200).json(newParcel);
     } catch (error) {

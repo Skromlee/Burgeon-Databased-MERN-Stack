@@ -67,6 +67,8 @@ const Parcels = () => {
         return targetParcel;
     };
 
+    console.log(targetParcelId);
+
     return (
         <>
             {visibility && (

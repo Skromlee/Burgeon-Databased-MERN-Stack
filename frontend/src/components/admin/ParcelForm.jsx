@@ -1,4 +1,5 @@
-import PostcodeInput from "../../components/common/PostcodeInput";
+// import PostcodeInput from "../../components/common/PostcodeInput";
+import PostcodeInputDarkBG from "../../components/common/PostcodeInputDarkBG";
 
 // postcode={postcode}
 // onChange={onChange}
@@ -43,7 +44,7 @@ const ParcelForm = ({
                             name="citizen"
                             value={citizen}
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                            placeholder="Enter employee citizen number"
+                            placeholder="Enter citizen number"
                             onChange={onChange}
                             disabled={isEditing ? false : true}
                         />
@@ -59,7 +60,7 @@ const ParcelForm = ({
                             name="firstname"
                             value={firstname}
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                            placeholder="Enter employee firstname"
+                            placeholder="Enter firstname"
                             onChange={onChange}
                             disabled={isEditing ? false : true}
                         />
@@ -75,7 +76,7 @@ const ParcelForm = ({
                             name="lastname"
                             value={lastname}
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                            placeholder="Enter employee lastname"
+                            placeholder="Enter lastname"
                             onChange={onChange}
                             disabled={isEditing ? false : true}
                         />
@@ -91,7 +92,7 @@ const ParcelForm = ({
                             name="phone"
                             value={phone}
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                            placeholder="Enter employee phone number"
+                            placeholder="Enter phone number"
                             onChange={onChange}
                             disabled={isEditing ? false : true}
                         />
@@ -99,7 +100,7 @@ const ParcelForm = ({
 
                     {/* postcode */}
 
-                    <PostcodeInput
+                    <PostcodeInputDarkBG
                         postcode={postcode}
                         onChange={onChange}
                         suggestion={suggestion}
@@ -123,7 +124,7 @@ const ParcelForm = ({
                             name="addressNo"
                             value={addressNo}
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                            placeholder="Enter employee address number"
+                            placeholder="Enter address number"
                             onChange={onChange}
                             disabled={isEditing ? false : true}
                         />
@@ -156,7 +157,7 @@ const ParcelForm = ({
                             name="district"
                             value={district}
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                            placeholder="Enter employee district"
+                            placeholder="Enter district"
                             onChange={onChange}
                             disabled={isEditing ? false : true}
                         />
@@ -173,7 +174,7 @@ const ParcelForm = ({
                             name="subdistrict"
                             value={subdistrict}
                             className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
-                            placeholder="Enter employee subdistrict"
+                            placeholder="Enter subdistrict"
                             onChange={onChange}
                             disabled={isEditing ? false : true}
                         />

@@ -26,6 +26,24 @@ const parcelSchema = mongoose.Schema(
             type: String,
             required: [true, "Please add box sizing"],
         },
+        status: {
+            isRegisterToBranch: {
+                type: String,
+                default: "false",
+            },
+            isOnTrevelling: {
+                type: String,
+                default: "false",
+            },
+            isOnDelivery: {
+                type: String,
+                default: "false",
+            },
+            isDelivered: {
+                type: String,
+                default: "false",
+            },
+        },
         isgroupped: {
             type: Boolean,
             default: false,

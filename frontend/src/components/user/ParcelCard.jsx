@@ -4,6 +4,28 @@ function ParcelCard({ data, idx, oncardClickHandler }) {
     const onClickHandler = () => {
         oncardClickHandler(data._id, idx);
     };
+    const { isRegisterToBranch, isOnTrevelling, isOnDelivery, isDelivered } =
+        data.status;
+    let imgPath = "/status/";
+    switch (isRegisterToBranch) {
+        case "false":switch (isOnT) {
+            case value:
+                
+                break;
+        
+            default:
+                break;
+        }
+            break;
+        case "process":
+            break;
+        case "finish":
+            break;
+
+        default:
+            break;
+    }
+    console.log(isRegisterToBranch, isOnTrevelling, isOnDelivery, isDelivered);
     return (
         <button onClick={onClickHandler}>
             <div className="flex flex-col items-center border p-6 h-full w-full space-y-4">

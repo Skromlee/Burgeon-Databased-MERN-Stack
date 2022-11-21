@@ -1,4 +1,4 @@
-const PostcodeInput = ({
+const PostcodeInputDarkBG = ({
     postcode,
     onChange,
     suggestion,
@@ -30,7 +30,7 @@ const PostcodeInput = ({
                         />
                     </div>
 
-                    <div className="flex-col absolute rounded-lg bg-slate-200 max-h-80 overflow-auto">
+                    <div className="flex-col absolute rounded-lg bg-white max-h-80 overflow-auto">
                         {suggestion &&
                             informationFromPostcode &&
                             informationFromPostcode.map(
@@ -60,4 +60,4 @@ const PostcodeInput = ({
     );
 };
 
-export default PostcodeInput;
+export default PostcodeInputDarkBG;
