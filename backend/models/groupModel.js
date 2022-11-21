@@ -11,6 +11,7 @@ const groupSchema = mongoose.Schema(
             type: Array,
             default: [],
         },
+        branch: mongoose.Schema.Types.ObjectId,
     },
     { timestamps: true }
 );

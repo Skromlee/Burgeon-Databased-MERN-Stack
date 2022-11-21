@@ -4,7 +4,6 @@ const API_URL = "/api/groups/";
 
 // Get Parcels
 const getGroups = async (token) => {
-    console.log("Gettingg.");
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -28,13 +27,41 @@ const getGroupById = async (groupId, token) => {
 
 // Register
 const groupRegister = async (groupData, token) => {
-    console.log(groupData);
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     };
     const response = await axios.post(API_URL, groupData, config);
+    return response.data;
+};
+
+// update
+const updateGroupData = async (updateGroupData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const groupId = updateGroupData._id;
+    const response = await axios.put(
+        API_URL + groupId,
+        updateGroupData,
+        config
+    );
+    return response.data;
+};
+
+// Delete group
+const deleteGroup = async (deleteGroupId, token) => {
+    console.log("Service ++");
+    console.log("deleteGroupId: ", deleteGroupId);
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const response = await axios.delete(API_URL + deleteGroupId, config);
     return response.data;
 };
 
@@ -51,40 +78,13 @@ const getParcelByCitizen = async (token) => {
     return response.data;
 };
 
-// update
-const updateParcelData = async (updateParcelData, token) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    const parcelId = updateParcelData.parcel._id;
-    const response = await axios.put(
-        API_URL + parcelId,
-        updateParcelData,
-        config
-    );
-    return response.data;
-};
-
-// Delete parcel
-const deleteParcel = async (deleteParcelId, token) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    const response = await axios.delete(API_URL + deleteParcelId, config);
-    return response.data;
-};
-
-const parcelService = {
+const groupService = {
     groupRegister,
     getGroupById,
     getGroups,
-    updateParcelData,
-    deleteParcel,
+    updateGroupData,
+    deleteGroup,
     getParcelByCitizen,
 };
 
-export default parcelService;
+export default groupService;

@@ -69,6 +69,45 @@ export const groupRegister = createAsyncThunk(
     }
 );
 
+// Update group
+export const groupUpdate = createAsyncThunk(
+    "group/groupUpdate",
+    async (updateGroupData, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().admin.admin.token;
+            return await groupService.updateGroupData(updateGroupData, token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+// Delete group
+export const deleteGroup = createAsyncThunk(
+    "group/deleteGroup",
+    async (deleteGroupId, thunkAPI) => {
+        console.log("deleteGroupId: ", deleteGroupId);
+        try {
+            const token = thunkAPI.getState().admin.admin.token;
+            return await groupService.deleteGroup(deleteGroupId, token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 // ---------------------------------------------------------------
 
 // Get parcel By citizen
@@ -90,49 +129,16 @@ export const getParcelByCitizen = createAsyncThunk(
     }
 );
 
-// Update parcel
-export const parcelUpdate = createAsyncThunk(
-    "parcel/parcelupdate",
-    async (updateParcelData, thunkAPI) => {
-        try {
-            const token = thunkAPI.getState().admin.admin.token;
-            return await groupService.updateParcelData(updateParcelData, token);
-        } catch (error) {
-            const message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
-            return thunkAPI.rejectWithValue(message);
-        }
-    }
-);
-
-// Delete parcel
-export const deleteParcel = createAsyncThunk(
-    "parcel/deleteparcel",
-    async (deleteParcelId, thunkAPI) => {
-        try {
-            const token = thunkAPI.getState().admin.admin.token;
-            return await groupService.deleteParcel(deleteParcelId, token);
-        } catch (error) {
-            const message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
-            return thunkAPI.rejectWithValue(message);
-        }
-    }
-);
-
 export const groupSlice = createSlice({
     name: "group",
     initialState,
     reducers: {
-        reset: (state) => initialState,
+        reset: (state) => {
+            state.isLoading = false;
+            state.isSuccess = false;
+            state.isError = false;
+            state.message = "";
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -162,6 +168,41 @@ export const groupSlice = createSlice({
                 state.isError = true;
                 state.message = action.payload;
             })
+            .addCase(groupUpdate.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(groupUpdate.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.groups = state.groups.filter((each) => {
+                    return each._id !== action.payload._id;
+                });
+                state.groups.push(action.payload);
+            })
+            .addCase(groupUpdate.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(deleteGroup.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteGroup.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                let removedGroup = [];
+                removedGroup.push(
+                    state.groups.filter((each) => {
+                        return each._id !== action.payload.id;
+                    })
+                );
+                state.groups = removedGroup[0];
+            })
+            .addCase(deleteGroup.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
             // -----------------------------------------------
             .addCase(groupRegister.pending, (state) => {
                 state.isLoading = true;
@@ -175,27 +216,6 @@ export const groupSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
-            })
-            .addCase(parcelUpdate.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(parcelUpdate.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.isSuccess = true;
-                state.groups = state.groups.filter((each) => {
-                    return each._id !== action.payload._id;
-                });
-                state.groups.push(action.payload);
-            })
-            .addCase(deleteParcel.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(deleteParcel.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.isSuccess = true;
-                state.groups = state.groups.filter((each) => {
-                    return each._id !== action.payload.id;
-                });
             })
             .addCase(getParcelByCitizen.pending, (state) => {
                 state.isLoading = true;

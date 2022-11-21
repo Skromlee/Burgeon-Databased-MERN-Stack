@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import useTable from "../../../../hooks/useTable";
 import styles from "./Table.module.css";
@@ -12,10 +13,13 @@ const Table = ({
     onDeleteClick,
     visibility,
     EditVisibility,
+    branch,
 }) => {
-    console.log(data);
     const [page, setPage] = useState(1);
     const { slice, range } = useTable(data, page, rowsPerPage);
+    const dispatch = useDispatch();
+
+    const { reset } = useSelector((state) => state.group);
 
     const editHandlerOnClick = (id) => {
         onEditClick(id);
@@ -29,6 +33,19 @@ const Table = ({
         onDeleteClick(id);
     };
 
+    const ObjectIdToName = (id) => {
+        let targetBranch = branch.filter((each) => {
+            return each._id === id ? each : null;
+        });
+        targetBranch = targetBranch[0];
+
+        return targetBranch.branchName;
+    };
+
+    useEffect(() => {
+        return () => {};
+    }, []);
+
     return (
         <>
             <table className={styles.table}>
@@ -39,8 +56,8 @@ const Table = ({
                         <th className={styles.tableHeader}>Total weights</th>
                         <th className={styles.tableHeader}>Type of Shipment</th>
                         <th className={styles.tableHeader}>Create Date</th>
-                        <th className={styles.tableHeader}>Stay At</th>
-                        <th className={styles.tableHeader}>Target</th>
+                        <th className={styles.tableHeader}>Target Branch</th>
+                        {/* <th className={styles.tableHeader}>Target</th> */}
                         <th className={`${styles.tableHeader} text-center `}>
                             Function
                         </th>
@@ -51,15 +68,26 @@ const Table = ({
                         <tr className={styles.tableRowItems} key={el._id}>
                             <td className={styles.tableCell}>{el._id}</td>
                             <td className={styles.tableCell}>
-                                <p className="text-center">{el.totalParcels}</p>
+                                <p className={styles.tableCell}>
+                                    {el.totalParcels}
+                                </p>
                             </td>
-                            <td className={styles.tableCell}>{el.to}</td>
+                            <td className={styles.tableCell}>
+                                {el.totalWeight.toFixed(3)}
+                            </td>
                             <td className={styles.tableCell}>
                                 {el.typeofshipment}
                             </td>
-                            {new Date(el.createdAt).toISOString().split("T")[0]}
-                            <td className={styles.tableCell}>{el.weight}</td>
-                            <td className={styles.tableCell}>{el.boxsize}</td>
+                            <td className={styles.tableCell}>
+                                {
+                                    new Date(el.createdAt)
+                                        .toISOString()
+                                        .split("T")[0]
+                                }
+                            </td>
+                            <td className={styles.tableCell}>
+                                {ObjectIdToName(el.branch)}
+                            </td>
                             <td className={styles.tableCell}>
                                 <div className="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-4 justify-center items-center space-y-4">
                                     <div>

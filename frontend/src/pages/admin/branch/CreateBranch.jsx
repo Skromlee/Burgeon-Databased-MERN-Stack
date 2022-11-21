@@ -61,14 +61,6 @@ const CreateBranch = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(
-            branchName,
-            addressNo,
-            province,
-            district,
-            subdistrict,
-            postcode
-        );
         if (
             !branchName ||
             !addressNo ||

@@ -6,6 +6,7 @@ import Spinner from "../../../components/common/Spinner";
 import Table from "../../../components/admin/groups/TableGroups";
 import EditDialog from "./EditDialog";
 import { toast } from "react-toastify";
+import GroupEditDialog from "./GroupEditDialog";
 
 import {
     parcelRegister,
@@ -15,14 +16,20 @@ import {
     deleteParcel,
 } from "../../../features/parcel/parcelSlice";
 import DeleteDialog from "../../../components/admin/users/employees/DeleteDialog";
-import CreateDialog from "./CreateDialog";
+import GroupDetails from "./GroupDetails";
 import {
     SenderGetInformationFromPostcode,
     ReceiverGetInformationFromPostcode,
     reset as informationReset,
 } from "../../../features/thailand/thailandSlice";
 
-import { getGroups } from "../../../features/group/groupSlice";
+import {
+    getGroups,
+    groupUpdate,
+    deleteGroup,
+    reset as GroupReset,
+} from "../../../features/group/groupSlice";
+import { getBranchs } from "../../../features/branch/branchSlice";
 
 const Groups = () => {
     const navigate = useNavigate();
@@ -33,10 +40,10 @@ const Groups = () => {
     );
 
     const { groups } = useSelector((state) => state.group);
+    const GroupError = useSelector((state) => state.group.isError);
+    const GroupErrorMsg = useSelector((state) => state.group.message);
 
-    const { senderInformation, receiverInformation } = useSelector(
-        (state) => state.thailand
-    );
+    const { branch } = useSelector((state) => state.branch);
 
     const [senderSuggestion, setsenderSuggestion] = useState(false);
     const [receiverSuggestion, setreceiverSuggestion] = useState(false);
@@ -50,19 +57,20 @@ const Groups = () => {
             toast.error(message);
         }
 
-        // if (isSuccess) {
-        //     forceUpdate();
-        // }
+        if (GroupError) {
+            toast.error(GroupErrorMsg);
+        }
 
         if (!admin) {
             navigate("/admin/signin");
         }
 
-        // dispatch(getParcels());
+        dispatch(getBranchs());
         dispatch(getGroups());
 
         return () => {
             dispatch(reset());
+            dispatch(GroupReset());
         };
     }, [admin, navigate, isError, message, dispatch]);
 
@@ -89,7 +97,7 @@ const Groups = () => {
         useState(initialFormDetails);
     const [senderFormDetails, setSenderFormDetails] =
         useState(initialFormDetails);
-    const [parcelFormDetails, setParcelFormDetails] = useState(
+    const [parcelFormDetails, setGroupFormDetails] = useState(
         initialParcelFormDetails
     );
 
@@ -128,14 +136,14 @@ const Groups = () => {
         });
     };
     const onParcelChange = (e) => {
-        setParcelFormDetails({
+        setGroupFormDetails({
             ...parcelFormDetails,
             [e.target.name]: e.target.value,
         });
     };
 
     const onExitHandler = (e) => {
-        setParcelFormDetails(initialParcelFormDetails);
+        setGroupFormDetails(initialParcelFormDetails);
         setSenderFormDetails(initialFormDetails);
         setReceiverFormDetails(initialFormDetails);
         setVisibility(false);
@@ -153,19 +161,18 @@ const Groups = () => {
         setVisibility(false);
         setSenderFormDetails(initialFormDetails);
         setReceiverFormDetails(initialFormDetails);
-        setParcelFormDetails(initialParcelFormDetails);
+        setGroupFormDetails(initialParcelFormDetails);
         dispatch(informationReset());
     };
 
     const onUpdateSubmit = (e) => {
         e.preventDefault();
         setIsEditing(false);
-        const updatedParcelData = {
-            sender: senderFormDetails,
-            receiver: receiverFormDetails,
-            parcel: parcelFormDetails,
+        const updatedGroupData = {
+            ...parcelFormDetails,
         };
-        dispatch(parcelUpdate(updatedParcelData));
+        console.log(updatedGroupData);
+        dispatch(groupUpdate(updatedGroupData));
     };
 
     const onEditHandler = (id) => {
@@ -184,29 +191,36 @@ const Groups = () => {
         setIsEditing(false);
     };
 
+    const findGroupById = (targetId) => {
+        const targetGroup = groups.filter((Each) => {
+            return Each._id === targetId;
+        });
+        return targetGroup;
+    };
+
     const prepareFormForDetail = (id) => {
-        const targetParcel = findParcelById(id);
+        const targetGroup = findGroupById(id);
+        console.log(targetGroup[0]);
         const {
-            sender,
-            receiver,
-            boxsize,
+            bagsize,
+            branch,
+            parcelList,
+            totalParcels,
+            totalWeight,
             typeofshipment,
-            weight,
             typeofstuff,
             _id,
-        } = targetParcel[0];
-        setParcelFormDetails({
-            boxsize,
+        } = targetGroup[0];
+
+        setGroupFormDetails({
+            bagsize,
+            branch,
+            parcelList,
+            totalParcels,
+            totalWeight,
             typeofshipment,
-            weight,
             typeofstuff,
             _id,
-        });
-        setSenderFormDetails({
-            ...sender,
-        });
-        setReceiverFormDetails({
-            ...receiver,
         });
     };
 
@@ -225,57 +239,11 @@ const Groups = () => {
     };
 
     const confirmDeleteHandler = () => {
-        dispatch(deleteParcel(targetId));
+        console.log("Deleted");
+        console.log(targetId);
+        dispatch(deleteGroup(targetId));
         setTargetId("");
         setOnDelete(false);
-        forceUpdate();
-    };
-
-    const findParcelById = (targetId) => {
-        const targetParcel = parcels.filter((Each) => {
-            return Each._id === targetId;
-        });
-        return targetParcel;
-    };
-
-    const onReceiverBlurHandler = () => {
-        setreceiverSuggestion(false);
-    };
-
-    const onReceiverFocusHandler = () => {
-        setreceiverSuggestion(true);
-    };
-
-    const onSenderBlurHandler = () => {
-        setsenderSuggestion(false);
-    };
-
-    const onSenderFocusHandler = () => {
-        setsenderSuggestion(true);
-    };
-
-    const onSenderSuggestHandler = (informationData) => {
-        const { province, district, subdistrict, postcode } = informationData;
-        setSenderFormDetails({
-            ...senderFormDetails,
-            province,
-            district,
-            subdistrict,
-            postcode,
-        });
-        setsenderSuggestion(false);
-    };
-    const onReceiverSuggestHandler = (informationData) => {
-        const { province, district, subdistrict, postcode } = informationData;
-
-        setReceiverFormDetails({
-            ...receiverFormDetails,
-            province,
-            district,
-            subdistrict,
-            postcode,
-        });
-        setreceiverSuggestion(false);
     };
 
     if (isLoading) {
@@ -326,6 +294,7 @@ const Groups = () => {
                                 onDeleteClick={onDeleteHandler}
                                 visibility={visibility}
                                 EditVisibility={EditVisibility}
+                                branch={branch}
                             />
                         </div>
                     </div>
@@ -334,43 +303,15 @@ const Groups = () => {
                 )}
             </div>
 
-            {visibility && (
-                <CreateDialog
-                    onExitHandler={onExitHandler}
-                    senderFormDetails={senderFormDetails}
-                    onSubmit={onSubmit}
-                    onSenderChange={onSenderChange}
-                    receiverFormDetails={receiverFormDetails}
-                    onReceiverChange={onReceiverChange}
-                    parcelFormDetails={parcelFormDetails}
-                    onParcelChange={onParcelChange}
-                    // informationFromPostcode={informationFromPostcode}
-                    senderInformation={senderInformation}
-                    receiverInformation={receiverInformation}
-                    senderSuggestion={senderSuggestion}
-                    receiverSuggestion={receiverSuggestion}
-                    onSenderSuggestHandler={onSenderSuggestHandler}
-                    onReceiverSuggestHandler={onReceiverSuggestHandler}
-                    onReceiverBlurHandler={onReceiverBlurHandler}
-                    onReceiverFocusHandler={onReceiverFocusHandler}
-                    onSenderBlurHandler={onSenderBlurHandler}
-                    onSenderFocusHandler={onSenderFocusHandler}
-                />
-            )}
-
             {EditVisibility && (
-                <EditDialog
+                <GroupEditDialog
                     isEditing={isEditing}
                     editingHandler={editingHandler}
                     onExitHandler={onEditCloseHandler}
-                    senderFormDetails={senderFormDetails}
                     onSubmit={onUpdateSubmit}
-                    onSenderChange={onSenderChange}
-                    receiverFormDetails={receiverFormDetails}
-                    onReceiverChange={onReceiverChange}
                     parcelFormDetails={parcelFormDetails}
                     onParcelChange={onParcelChange}
-                    receiverSuggestion={receiverSuggestion}
+                    branch={branch}
                 />
             )}
         </>

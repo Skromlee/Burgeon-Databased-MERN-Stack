@@ -1,6 +1,6 @@
 import ParcelForm from "../../../components/admin/ParcelForm";
 
-const CreateDialog = ({
+const GroupDetails = ({
     onExitHandler,
     onSubmit,
     onParcelChange,
@@ -9,37 +9,67 @@ const CreateDialog = ({
     parcelCount,
     branch: branchsList,
 }) => {
+    console.log(
+        onExitHandler,
+        onSubmit,
+        onParcelChange,
+        parcelFormDetails,
+        weight,
+        parcelCount,
+        branchsList
+    );
     return (
         <div className="">
             <div className="bg-slate-200 rounded-xl h-4/5 lg:h-3/5 w-3/5 absolute top-0 left-0 right-0 bottom-0 m-auto transition overflow-auto p-10">
                 <div className="flex flex-col space-y-10">
                     <div className="text-4xl flex justify-between">
                         <div className="flex items-center space-x-6">
-                            <h1>Create a new group</h1>
+                            <h1>Group In Details</h1>
                         </div>
                         <button onClick={onExitHandler}>X</button>
                     </div>
                     <div>
-                        <h1 className="text-2xl">รายละเอียดพัสดุ</h1>
+                        <h1 className="text-2xl">รายละเอียดของกลุ่มพัสดุ</h1>
                         <hr className="my-4" />
                         <div className="flex flex-col space-y-6 max-w-4xl">
-                            {/* weight */}
+                            {/* group Id */}
                             <div className="space-x-2 flex">
-                                <label htmlFor="weight" className="basis-1/4">
-                                    Total Weight
+                                <label htmlFor="_id" className="basis-1/4">
+                                    Group ID
                                 </label>
                                 <input
                                     type="text"
-                                    id="weight"
-                                    name="weight"
-                                    value={weight}
+                                    id="_id"
+                                    name="_id"
+                                    value={parcelFormDetails._id}
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     placeholder="Enter parcel weight"
                                     onChange={onParcelChange}
                                     disabled={true}
                                 />
                             </div>
-                            {/* parcels */}
+                            {/* Total weight */}
+                            <div className="space-x-2 flex">
+                                <label
+                                    htmlFor="totalWeight"
+                                    className="basis-1/4"
+                                >
+                                    Total Weight
+                                </label>
+                                <input
+                                    type="text"
+                                    id="totalWeight"
+                                    name="totalWeight"
+                                    value={parcelFormDetails.totalWeight.toFixed(
+                                        3
+                                    )}
+                                    className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
+                                    placeholder="Enter parcel weight"
+                                    onChange={onParcelChange}
+                                    disabled={true}
+                                />
+                            </div>
+                            {/* Total Parcels */}
                             <div className="space-x-2 flex">
                                 <label
                                     htmlFor="parcelsNumber"
@@ -49,9 +79,9 @@ const CreateDialog = ({
                                 </label>
                                 <input
                                     type="text"
-                                    id="parcelsNumber"
-                                    name="parcelsNumber"
-                                    value={parcelCount}
+                                    id="totalParcels"
+                                    name="totalParcels"
+                                    value={parcelFormDetails.totalParcels}
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     placeholder="Enter parcel weight"
                                     onChange={onParcelChange}
@@ -81,7 +111,7 @@ const CreateDialog = ({
                             {/* typeofstuff */}
                             <div className="space-x-2 flex">
                                 <label htmlFor="role" className="basis-1/4">
-                                    Type of stuff inside parcel
+                                    Type of stuff inside group
                                 </label>
                                 <select
                                     name="typeofstuff"
@@ -151,7 +181,7 @@ const CreateDialog = ({
                             onClick={onSubmit}
                             className="bg-brightRed text-white hover:bg-brightRedLight p-2 px-6"
                         >
-                            UPDATE
+                            ADD
                         </button>
                         <button
                             onClick={onExitHandler}
@@ -166,4 +196,4 @@ const CreateDialog = ({
     );
 };
 
-export default CreateDialog;
+export default GroupDetails;

@@ -125,22 +125,6 @@ const CreateEmployee = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(
-            email,
-            password,
-            role,
-            firstname,
-            lastname,
-            phone,
-            citizen,
-            addressNo,
-            province,
-            district,
-            subdistrict,
-            postcode,
-            dob,
-            branch
-        );
         if (
             !email ||
             !password ||

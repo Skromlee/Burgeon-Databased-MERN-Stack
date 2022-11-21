@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const Parcel = require("../models/parcelModel");
 const User = require("../models/userModel");
+const Parcel = require("../models/parcelModel");
 const { update } = require("../models/userModel");
 const Group = require("../models/groupModel");
 // @desc Get groups
@@ -36,9 +36,6 @@ const getGroups = asyncHandler(async (req, res) => {
 // @route POST /api/groups
 // @access Private // for Admin
 const registerGroup = asyncHandler(async (req, res) => {
-    console.log(" -------------Register------------- ");
-    console.log(req.body);
-
     const {
         totalParcels,
         totalWeight,
@@ -46,7 +43,15 @@ const registerGroup = asyncHandler(async (req, res) => {
         typeofstuff,
         bagsize,
         parcelList,
+        branch,
     } = req.body;
+
+    const parcelListObjectId = [];
+    parcelListObjectId.push(
+        parcelList.map((each) => {
+            return each._id;
+        })
+    );
 
     if (
         !totalParcels ||
@@ -54,7 +59,8 @@ const registerGroup = asyncHandler(async (req, res) => {
         !typeofshipment ||
         !typeofstuff ||
         !bagsize ||
-        !parcelList
+        !parcelList ||
+        !branch
     ) {
         res.status(400);
         throw new Error("Plead add all fields");
@@ -62,6 +68,7 @@ const registerGroup = asyncHandler(async (req, res) => {
 
     try {
         parcelList.map((each) => {
+            console.log(each._id);
             Parcel.findByIdAndUpdate(each._id, { isgroupped: true }, (err) => {
                 if (err) console.log(err);
             });
@@ -72,7 +79,8 @@ const registerGroup = asyncHandler(async (req, res) => {
             typeofshipment,
             typeofstuff,
             bagsize,
-            parcelList,
+            parcelList: parcelListObjectId[0],
+            branch,
         });
         res.status(200).json(newGroup);
     } catch (error) {
@@ -83,68 +91,92 @@ const registerGroup = asyncHandler(async (req, res) => {
 // @desc Update group information
 // @route PUT /api/groups/:id
 // @access Private
-const updateParcel = asyncHandler(async (req, res) => {
-    const { sender, receiver, parcel } = req.body;
-    const { weight, typeofshipment, typeofstuff, boxsize } = parcel;
+const updateGroup = asyncHandler(async (req, res) => {
+    console.log(req.body);
+
+    const {
+        bagsize,
+        branch,
+        parcelList,
+        totalParcels,
+        totalWeight,
+        typeofshipment,
+        typeofstuff,
+    } = req.body;
+
     if (
-        !sender.citizen ||
-        !receiver.citizen ||
-        !weight ||
+        !bagsize ||
+        !branch ||
+        !parcelList ||
+        !totalParcels ||
+        !totalWeight ||
         !typeofshipment ||
-        !typeofstuff ||
-        !boxsize
+        !typeofstuff
     ) {
         res.status(400);
         throw new Error("Please add all fields");
     }
 
-    const targetParcel = await Parcel.findById(req.params.id);
+    const targetGroup = await Group.findById(req.params.id);
 
-    if (!parcel) {
+    if (!targetGroup) {
         res.status(400);
-        throw new Error("Parcel not found");
+        throw new Error("Group not found");
     }
 
-    const updatedParcelData = {
-        sender,
-        receiver,
+    const updatedGroupData = {
+        bagsize,
+        branch,
+        parcelList,
+        totalParcels,
+        totalWeight,
         typeofshipment,
-        weight,
-        boxsize,
         typeofstuff,
     };
 
-    const updatedParcel = await Parcel.findOneAndUpdate(
+    const updatedGroup = await Group.findOneAndUpdate(
         req.params.id,
-        updatedParcelData,
-        {
-            new: true,
-        }
+        updatedGroupData,
+        { new: true }
     );
-    res.status(200).json(updatedParcel);
+
+    res.status(200).json(updatedGroup);
 });
 
 // @desc Delete groups
 // @route DELETE /api/groups/:id
 // @access Private
-const deleteParcel = asyncHandler(async (req, res) => {
-    const parcel = await Parcel.findById(req.params.id);
+const deleteGroup = asyncHandler(async (req, res) => {
+    const group = await Group.findById(req.params.id);
 
-    if (!parcel) {
+    if (!group) {
         res.status(400);
-        throw new Error("Parcel not found");
+        throw new Error("Group not found");
     }
 
-    await parcel.remove();
+    const { parcelList } = group;
 
-    res.status(200).json({ id: req.params.id });
+    try {
+        parcelList.forEach((element) => {
+            console.log(element);
+            Parcel.findByIdAndUpdate(element, { isgroupped: false }, (err) => {
+                if (err) console.log(err);
+            });
+        });
+        await group.remove();
+        res.status(200).json({ id: req.params.id });
+    } catch (error) {
+        if (error) {
+            console.log(error);
+        }
+    }
 });
 
 module.exports = {
     getGroups,
     registerGroup,
-    updateParcel,
-    deleteParcel,
+    updateGroup,
+    deleteGroup,
     // getParcelsById,
     // getUserParcels,
 };

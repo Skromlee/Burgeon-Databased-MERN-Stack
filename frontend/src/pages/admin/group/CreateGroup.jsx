@@ -16,7 +16,10 @@ import {
     parcelUpdate,
 } from "../../../features/parcel/parcelSlice";
 
-import { groupRegister } from "../../../features/group/groupSlice";
+import {
+    groupRegister,
+    reset as GroupReset,
+} from "../../../features/group/groupSlice";
 import CreateDialog from "./CreateDialog";
 import {
     SenderGetInformationFromPostcode,
@@ -31,6 +34,8 @@ const CreateGroup = () => {
         (state) => state.parcels
     );
     const { branch } = useSelector((state) => state.branch);
+    const isGroupError = useSelector((state) => state.group.isError);
+    const GroupMessage = useSelector((state) => state.message);
 
     const [senderSuggestion, setsenderSuggestion] = useState(false);
     const [receiverSuggestion, setreceiverSuggestion] = useState(false);
@@ -42,6 +47,9 @@ const CreateGroup = () => {
         if (isError) {
             toast.error(message);
         }
+        if (isGroupError) {
+            toast.error(GroupMessage);
+        }
 
         if (!admin) {
             navigate("/admin/signin");
@@ -51,7 +59,8 @@ const CreateGroup = () => {
         dispatch(getBranchs());
 
         return () => {
-            dispatch(reset());
+            // dispatch(reset());
+            dispatch(GroupReset());
         };
     }, [admin, navigate, isError, message, dispatch]);
 
