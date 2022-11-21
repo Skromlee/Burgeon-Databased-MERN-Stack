@@ -13,6 +13,7 @@ const Table = ({
     visibility,
     EditVisibility,
 }) => {
+    console.log(data);
     const [page, setPage] = useState(1);
     const { slice, range } = useTable(data, page, rowsPerPage);
 
@@ -36,7 +37,7 @@ const Table = ({
                         <th className={styles.tableHeader}>Group ID</th>
                         <th className={styles.tableHeader}>Total parcels</th>
                         <th className={styles.tableHeader}>Total weights</th>
-                        <th className={styles.tableHeader}>Status</th>
+                        <th className={styles.tableHeader}>Type of Shipment</th>
                         <th className={styles.tableHeader}>Create Date</th>
                         <th className={styles.tableHeader}>Stay At</th>
                         <th className={styles.tableHeader}>Target</th>
@@ -50,23 +51,15 @@ const Table = ({
                         <tr className={styles.tableRowItems} key={el._id}>
                             <td className={styles.tableCell}>{el._id}</td>
                             <td className={styles.tableCell}>
-                                {el.sender.citizen}
+                                <p className="text-center">{el.totalParcels}</p>
                             </td>
-                            <td className={styles.tableCell}>
-                                {el.receiver.citizen}
-                            </td>
+                            <td className={styles.tableCell}>{el.to}</td>
                             <td className={styles.tableCell}>
                                 {el.typeofshipment}
                             </td>
+                            {new Date(el.createdAt).toISOString().split("T")[0]}
                             <td className={styles.tableCell}>{el.weight}</td>
                             <td className={styles.tableCell}>{el.boxsize}</td>
-                            <td className={styles.tableCell}>
-                                {
-                                    new Date(el.createdAt)
-                                        .toISOString()
-                                        .split("T")[0]
-                                }
-                            </td>
                             <td className={styles.tableCell}>
                                 <div className="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-4 justify-center items-center space-y-4">
                                     <div>

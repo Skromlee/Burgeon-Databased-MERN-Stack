@@ -6,6 +6,7 @@ import customerReducer from "../features/customer/customerSlice";
 import parcelReducer from "../features/parcel/parcelSlice";
 import branchReducer from "../features/branch/branchSlice";
 import thailandReducer from "../features/thailand/thailandSlice";
+import groupReducer from "../features/group/groupSlice";
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
         parcels: parcelReducer,
         branch: branchReducer,
         thailand: thailandReducer,
+        group: groupReducer,
     },
 });

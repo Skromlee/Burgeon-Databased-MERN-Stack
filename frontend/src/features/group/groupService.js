@@ -4,6 +4,7 @@ const API_URL = "/api/groups/";
 
 // Get Parcels
 const getGroups = async (token) => {
+    console.log("Gettingg.");
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -27,6 +28,7 @@ const getGroupById = async (groupId, token) => {
 
 // Register
 const groupRegister = async (groupData, token) => {
+    console.log(groupData);
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,

@@ -138,10 +138,37 @@ const Parcels = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        console.log(senderFormDetails);
         const parcelData = {
-            sender: senderFormDetails,
-            receiver: receiverFormDetails,
-            parcel: parcelFormDetails,
+            sender: {
+                firstname: senderFormDetails.firstname,
+                lastname: senderFormDetails.lastname,
+                phone: senderFormDetails.phone,
+                citizen: senderFormDetails.citizen,
+                addressNo: senderFormDetails.addressNo,
+                province: senderFormDetails.province,
+                district: senderFormDetails.district,
+                subdistrict: senderFormDetails.subdistrict,
+                postcode: senderFormDetails.postcode,
+            },
+
+            receiver: {
+                firstname: receiverFormDetails.firstname,
+                lastname: receiverFormDetails.lastname,
+                phone: receiverFormDetails.phone,
+                citizen: receiverFormDetails.citizen,
+                addressNo: receiverFormDetails.addressNo,
+                province: receiverFormDetails.province,
+                district: receiverFormDetails.district,
+                subdistrict: receiverFormDetails.subdistrict,
+                postcode: receiverFormDetails.postcode,
+            },
+            parcel: {
+                weight: parcelFormDetails.weight,
+                typeofshipment: parcelFormDetails.typeofshipment,
+                typeofstuff: parcelFormDetails.typeofstuff,
+                boxsize: parcelFormDetails.boxsize,
+            },
         };
         dispatch(parcelRegister(parcelData));
         setVisibility(false);

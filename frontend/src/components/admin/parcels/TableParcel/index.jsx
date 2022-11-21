@@ -28,6 +28,9 @@ const Table = ({
         onDeleteClick(id);
     };
 
+    slice.map((el) => {
+        console.log(el.isgroupped);
+    });
     return (
         <>
             <table className={styles.table}>
@@ -40,6 +43,7 @@ const Table = ({
                         <th className={styles.tableHeader}>Weight</th>
                         <th className={styles.tableHeader}>Box size</th>
                         <th className={styles.tableHeader}>Income Date</th>
+                        <th className={styles.tableHeader}>Group</th>
                         <th className={`${styles.tableHeader} text-center `}>
                             Function
                         </th>
@@ -66,6 +70,9 @@ const Table = ({
                                         .toISOString()
                                         .split("T")[0]
                                 }
+                            </td>
+                            <td className={styles.tableCell}>
+                                {el.isgroupped ? "Groupped" : "UnGroupped"}
                             </td>
                             <td className={styles.tableCell}>
                                 <div className="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-4 justify-center items-center space-y-4">

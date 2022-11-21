@@ -2,13 +2,13 @@ const asyncHandler = require("express-async-handler");
 const Parcel = require("../models/parcelModel");
 const User = require("../models/userModel");
 const { update } = require("../models/userModel");
-
+const Group = require("../models/groupModel");
 // @desc Get groups
 // @route GET /api/groups
 // @access Private
-const getParcels = asyncHandler(async (req, res) => {
-    const parcels = await Parcel.find({});
-    res.status(200).json(parcels);
+const getGroups = asyncHandler(async (req, res) => {
+    const groups = await Group.find({});
+    res.status(200).json(groups);
 });
 
 // // @desc Get User parcels
@@ -36,35 +36,48 @@ const getParcels = asyncHandler(async (req, res) => {
 // @route POST /api/groups
 // @access Private // for Admin
 const registerGroup = asyncHandler(async (req, res) => {
-    const { sender, receiver, parcel } = req.body;
-    const { weight, typeofshipment, typeofstuff, boxsize } = parcel;
+    console.log(" -------------Register------------- ");
+    console.log(req.body);
+
+    const {
+        totalParcels,
+        totalWeight,
+        typeofshipment,
+        typeofstuff,
+        bagsize,
+        parcelList,
+    } = req.body;
+
     if (
-        !sender.citizen ||
-        !receiver.citizen ||
-        !weight ||
+        !totalParcels ||
+        !totalWeight ||
         !typeofshipment ||
         !typeofstuff ||
-        !boxsize
+        !bagsize ||
+        !parcelList
     ) {
         res.status(400);
-        throw new Error("Please add all fields");
+        throw new Error("Plead add all fields");
     }
 
     try {
-        const newParcel = await Parcel.create({
-            sender,
-            receiver,
-            typeofshipment,
-            weight,
-            boxsize,
-            typeofstuff,
+        parcelList.map((each) => {
+            Parcel.findByIdAndUpdate(each._id, { isgroupped: true }, (err) => {
+                if (err) console.log(err);
+            });
         });
-        res.status(200).json(newParcel);
+        const newGroup = await Group.create({
+            totalParcels,
+            totalWeight,
+            typeofshipment,
+            typeofstuff,
+            bagsize,
+            parcelList,
+        });
+        res.status(200).json(newGroup);
     } catch (error) {
         console.log(error);
     }
-
-    // res.status(200).json(req.body);
 });
 
 // @desc Update group information
@@ -128,10 +141,10 @@ const deleteParcel = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-    getParcels,
-    registerParcel: registerGroup,
+    getGroups,
+    registerGroup,
     updateParcel,
     deleteParcel,
-    getParcelsById,
-    getUserParcels,
+    // getParcelsById,
+    // getUserParcels,
 };

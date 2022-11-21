@@ -5,6 +5,9 @@ const CreateDialog = ({
     onSubmit,
     onParcelChange,
     parcelFormDetails,
+    weight,
+    parcelCount,
+    branch: branchsList,
 }) => {
     return (
         <div className="">
@@ -29,7 +32,7 @@ const CreateDialog = ({
                                     type="text"
                                     id="weight"
                                     name="weight"
-                                    value={parcelFormDetails.weight}
+                                    value={weight}
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     placeholder="Enter parcel weight"
                                     onChange={onParcelChange}
@@ -48,7 +51,7 @@ const CreateDialog = ({
                                     type="text"
                                     id="parcelsNumber"
                                     name="parcelsNumber"
-                                    value={parcelFormDetails.weight}
+                                    value={parcelCount}
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     placeholder="Enter parcel weight"
                                     onChange={onParcelChange}
@@ -95,17 +98,14 @@ const CreateDialog = ({
                                     <option value="Foods">Foods</option>
                                 </select>
                             </div>
-                            {/* boxsizing */}
+                            {/* Bag size */}
                             <div className="space-x-2 flex">
-                                <label
-                                    htmlFor="boxsizing"
-                                    className="basis-1/4"
-                                >
+                                <label htmlFor="bagsize" className="basis-1/4">
                                     Bag Size
                                 </label>
                                 <select
-                                    name="boxsize"
-                                    id="boxsize"
+                                    name="bagsize"
+                                    id="bagsize"
                                     value={parcelFormDetails.boxsize}
                                     className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
                                     onChange={onParcelChange}
@@ -113,6 +113,34 @@ const CreateDialog = ({
                                     <option value="BAG 01">BAG 01</option>
                                     <option value="BAG 02">BAG 02</option>
                                     <option value="BAG 03">BAG 03</option>
+                                </select>
+                            </div>
+                            {/* Target Branch */}
+                            <div className="space-x-2 flex">
+                                <label htmlFor="role" className="basis-1/4">
+                                    Target Branch
+                                </label>
+                                <select
+                                    name="branch"
+                                    id="branch"
+                                    value={parcelFormDetails.branch}
+                                    className="border-[1px] border-black rounded-md focus:outline-none px-2 basis-2/3"
+                                    onChange={onParcelChange}
+                                >
+                                    <option value="NULL">
+                                        --- Must Select ---
+                                    </option>
+                                    {/* // This will be dynamic */}
+                                    {branchsList.map((each) => {
+                                        return (
+                                            <option
+                                                value={each._id}
+                                                key={each._id}
+                                            >
+                                                {`${each.branchName} (${each._id})`}
+                                            </option>
+                                        );
+                                    })}
                                 </select>
                             </div>
                         </div>

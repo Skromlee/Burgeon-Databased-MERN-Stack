@@ -7,6 +7,7 @@ import Table from "../../../components/admin/groups/TableParcel";
 import Table2 from "../../../components/admin/groups/TableParcelInGroup";
 import EditDialog from "./EditDialog";
 import { toast } from "react-toastify";
+import { getBranchs } from "../../../features/branch/branchSlice";
 
 import {
     parcelRegister,
@@ -14,6 +15,8 @@ import {
     getParcels,
     parcelUpdate,
 } from "../../../features/parcel/parcelSlice";
+
+import { groupRegister } from "../../../features/group/groupSlice";
 import CreateDialog from "./CreateDialog";
 import {
     SenderGetInformationFromPostcode,
@@ -27,6 +30,7 @@ const CreateGroup = () => {
     const { parcels, isLoading, isError, message } = useSelector(
         (state) => state.parcels
     );
+    const { branch } = useSelector((state) => state.branch);
 
     const [senderSuggestion, setsenderSuggestion] = useState(false);
     const [receiverSuggestion, setreceiverSuggestion] = useState(false);
@@ -44,6 +48,7 @@ const CreateGroup = () => {
         }
 
         dispatch(getParcels());
+        dispatch(getBranchs());
 
         return () => {
             dispatch(reset());
@@ -67,7 +72,8 @@ const CreateGroup = () => {
         totalParcels: "",
         typeofshipment: "Normal",
         typeofstuff: "Normal",
-        boxsize: "A4",
+        bagsize: "BAG 01",
+        parcelList: [],
     };
 
     const [receiverFormDetails, setReceiverFormDetails] =
@@ -116,6 +122,9 @@ const CreateGroup = () => {
         setParcelFormDetails({
             ...parcelFormDetails,
             [e.target.name]: e.target.value,
+            totalParcels: parcelCount,
+            totalWeight: weight,
+            parcelList: parcelInGroup,
         });
     };
 
@@ -129,17 +138,13 @@ const CreateGroup = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const parcelData = {
-            sender: senderFormDetails,
-            receiver: receiverFormDetails,
-            parcel: parcelFormDetails,
-        };
-        dispatch(parcelRegister(parcelData));
+        console.log(parcelFormDetails);
+        dispatch(groupRegister(parcelFormDetails));
         setVisibility(false);
-        setSenderFormDetails(initialFormDetails);
-        setReceiverFormDetails(initialFormDetails);
         setParcelFormDetails(initialParcelFormDetails);
         dispatch(informationReset());
+        setParcelInGroup([]);
+        navigate("/admin/groups/");
     };
 
     const onUpdateSubmit = (e) => {
@@ -220,7 +225,9 @@ const CreateGroup = () => {
             });
             targetParcel = targetParcel[0];
             setParcelInGroup((prev) => [...prev, targetParcel]);
+            addWeightHandler(targetParcel);
         } else {
+            removeWeightHandler(e.target.name);
             let removedParcelGroup = [];
             removedParcelGroup.push(
                 parcelInGroup.filter((each) => {
@@ -230,6 +237,25 @@ const CreateGroup = () => {
             removedParcelGroup = removedParcelGroup[0];
             setParcelInGroup(removedParcelGroup);
         }
+    };
+
+    const [weight, setWeight] = useState(0);
+    const [parcelCount, setParcelCount] = useState(0);
+
+    const addWeightHandler = (targetParcel) => {
+        console.log(targetParcel);
+        setWeight((prev) => prev + targetParcel.weight);
+        setParcelCount((prev) => prev + 1);
+    };
+    const removeWeightHandler = (targetParcel) => {
+        console.log(targetParcel);
+        let removedWeight = parcels.filter((each) => {
+            return targetParcel === each._id;
+        });
+        removedWeight = removedWeight[0];
+        console.log(removedWeight.weight);
+        setWeight((prev) => prev - removedWeight.weight);
+        setParcelCount((prev) => prev - 1);
     };
 
     if (isLoading) {
@@ -270,7 +296,9 @@ const CreateGroup = () => {
                                 </h1>
                             </div>
                             <Table
-                                data={parcels}
+                                data={parcels.filter((each) =>
+                                    each.isgroupped === false ? each : null
+                                )}
                                 test={testParcel}
                                 rowsPerPage={15}
                                 onEditClick={onEditHandler}
@@ -299,6 +327,8 @@ const CreateGroup = () => {
                                 EditVisibility={EditVisibility}
                                 parcelInGroup={parcelInGroup}
                                 onChangeHandler={onChangeHandler}
+                                addWeightHandler={addWeightHandler}
+                                weight={weight}
                             />
                         </div>
                     </div>
@@ -313,6 +343,9 @@ const CreateGroup = () => {
                     onSubmit={onSubmit}
                     onParcelChange={onParcelChange}
                     parcelFormDetails={parcelFormDetails}
+                    weight={weight}
+                    parcelCount={parcelCount}
+                    branch={branch}
                 />
             )}
 

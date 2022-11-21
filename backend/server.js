@@ -18,6 +18,7 @@ app.use("/api/parcels", require("./routes/parcelRoutes"));
 app.use("/api/manages", require("./routes/manageRoutes"));
 app.use("/api/branch", require("./routes/branchRoutes"));
 app.use("/api/thailand/", require("./routes/thailandRoutes"));
+app.use("/api/groups", require("./routes/groupRoutes"));
 
 app.use(errorHandler);
 

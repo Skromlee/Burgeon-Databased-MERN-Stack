@@ -10,6 +10,8 @@ const Table = ({
     onDetailClick,
     visibility,
     EditVisibility,
+    addWeightHandler,
+    weight,
 }) => {
     const [page, setPage] = useState(1);
     const { slice, range } = useTable(data, page, rowsPerPage);
@@ -17,11 +19,6 @@ const Table = ({
     const detailHandlerOnClick = (id) => {
         onDetailClick(id);
     };
-
-    let weight = 0;
-    data.forEach((each) => {
-        weight += each.weight;
-    });
 
     return (
         <>

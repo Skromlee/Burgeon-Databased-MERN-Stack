@@ -21,6 +21,9 @@ import {
     ReceiverGetInformationFromPostcode,
     reset as informationReset,
 } from "../../../features/thailand/thailandSlice";
+
+import { getGroups } from "../../../features/group/groupSlice";
+
 const Groups = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -28,6 +31,8 @@ const Groups = () => {
     const { parcels, isLoading, isError, message } = useSelector(
         (state) => state.parcels
     );
+
+    const { groups } = useSelector((state) => state.group);
 
     const { senderInformation, receiverInformation } = useSelector(
         (state) => state.thailand
@@ -53,7 +58,8 @@ const Groups = () => {
             navigate("/admin/signin");
         }
 
-        dispatch(getParcels());
+        // dispatch(getParcels());
+        dispatch(getGroups());
 
         return () => {
             dispatch(reset());
@@ -308,11 +314,11 @@ const Groups = () => {
                         Create New Groups
                     </button>
                 </div>
-                {parcels.length > 0 ? (
+                {groups.length > 0 ? (
                     <div className=" table">
                         <div className=" container mx-auto ">
                             <Table
-                                data={parcels}
+                                data={groups}
                                 test={testParcel}
                                 rowsPerPage={15}
                                 onEditClick={onEditHandler}
