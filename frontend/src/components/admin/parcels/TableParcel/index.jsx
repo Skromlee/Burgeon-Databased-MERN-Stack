@@ -12,6 +12,7 @@ const Table = ({
     onDeleteClick,
     visibility,
     EditVisibility,
+    onStatusClickhandler,
 }) => {
     const [page, setPage] = useState(1);
     const { slice, range } = useTable(data, page, rowsPerPage);
@@ -76,6 +77,20 @@ const Table = ({
                             </td>
                             <td className={styles.tableCell}>
                                 <div className="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-4 justify-center items-center space-y-4">
+                                    <div>
+                                        <button
+                                            className={
+                                                visibility || EditVisibility
+                                                    ? `text-slate-600 pointer-events-none transition`
+                                                    : `text-yellow-600 hover:text-slate-300 transition`
+                                            }
+                                            onClick={() =>
+                                                onStatusClickhandler(el._id)
+                                            }
+                                        >
+                                            Status
+                                        </button>
+                                    </div>
                                     <div>
                                         <button
                                             className={

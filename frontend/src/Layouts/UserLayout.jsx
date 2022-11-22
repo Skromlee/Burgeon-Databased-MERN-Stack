@@ -7,7 +7,6 @@ import { FaQuestionCircle } from "react-icons/fa";
 const navItems = [
     { href: "/user", icon: AiOutlineDashboard, label: "Dashboard" },
     { href: "/user/parcels", icon: BsMailbox, label: "Parcels" },
-    { href: "/user/faq", icon: FaQuestionCircle, label: "FAQ" },
 ];
 
 const UserLayout = () => {

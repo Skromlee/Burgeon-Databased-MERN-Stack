@@ -21,6 +21,8 @@ import {
     ReceiverGetInformationFromPostcode,
     reset as informationReset,
 } from "../../../features/thailand/thailandSlice";
+import StatusDialog from "./StatusDialog";
+import { set } from "mongoose";
 const Parcels = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -299,6 +301,20 @@ const Parcels = () => {
         setreceiverSuggestion(false);
     };
 
+    const [statusVisibility, setStatusVisibility] = useState(false);
+
+    const onStatusClickhandler = (id) => {
+        const targetParcel = findParcelById(id);
+        setParcelFormDetails(targetParcel[0]);
+
+        setStatusVisibility((prev) => !prev);
+    };
+
+    const onStatusExitHandler = () => {
+        setStatusVisibility(false);
+    };
+    const onStatusSubmitHandler = () => {};
+
     if (isLoading) {
         return <Spinner />;
     }
@@ -310,6 +326,16 @@ const Parcels = () => {
                     exitHandler={exitDeleteHandler}
                     confirmHandler={confirmDeleteHandler}
                     id={targetId}
+                />
+            )}
+
+            {statusVisibility && (
+                <StatusDialog
+                    onExitHandler={onStatusExitHandler}
+                    onSubmit={onStatusSubmitHandler}
+                    parcelFormDetails={parcelFormDetails}
+                    isEditing={isEditing}
+                    editingHandler={editingHandler}
                 />
             )}
 
@@ -346,6 +372,7 @@ const Parcels = () => {
                                 onDeleteClick={onDeleteHandler}
                                 visibility={visibility}
                                 EditVisibility={EditVisibility}
+                                onStatusClickhandler={onStatusClickhandler}
                             />
                         </div>
                     </div>

@@ -20,15 +20,14 @@ const Admin = () => {
     };
 
     return (
-        <div>
-            {admin ? (
-                <>
-                    <p>{admin.email}</p>
-                    <p>{admin.role}</p>
-                </>
-            ) : null}
-            <h1>Account Protected Page</h1>
-            <button onClick={onLogout}>Log Out</button>
+        <div className="mx-auto text-center my-auto h-screen flex flex-col justify-center space-y-20">
+            <h1 className="text-7xl">Welcome to Admin Section ...</h1>
+            <h1 className="text-7xl">OF BURGEON SYSTEM</h1>
+            <div>
+                <p>Email : {admin && admin.email}</p>
+                <p>Role : {admin && admin.role}</p>
+                <button onClick={onLogout}>Log Out</button>
+            </div>
         </div>
     );
 };

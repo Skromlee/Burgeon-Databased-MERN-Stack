@@ -9,6 +9,12 @@ import { GoCalendar } from "react-icons/go";
 
 import { reset, getParcelByCitizen } from "../../features/parcel/parcelSlice";
 const Parcels = () => {
+    const [imgPath, setImgPath] = useState({
+        100: "/status/100_F.png",
+        200: "/status/200_F.png",
+        300: "/status/300_F.png",
+        400: "/status/400_F.png",
+    });
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
@@ -57,6 +63,84 @@ const Parcels = () => {
             idx: idx,
         });
 
+        const {
+            isDelivered,
+            isOnDelivery,
+            isOnTrevelling,
+            isRegisterToBranch,
+        } = targetParcel.status;
+
+        console.log(
+            isDelivered,
+            isOnDelivery,
+            isOnTrevelling,
+            isRegisterToBranch
+        );
+
+        let configImgPath = {};
+
+        switch (isDelivered) {
+            case "finish":
+                configImgPath = { ...configImgPath, 400: "/status/400_P.png" };
+                break;
+            case "process":
+                configImgPath = { ...configImgPath, 400: "/status/400_C.png" };
+                break;
+            case "false":
+                configImgPath = { ...configImgPath, 400: "/status/400_F.png" };
+                break;
+            default:
+                break;
+        }
+        switch (isOnDelivery) {
+            case "finish":
+                configImgPath = { ...configImgPath, 300: "/status/300_P.png" };
+                break;
+            case "process":
+                configImgPath = { ...configImgPath, 300: "/status/300_C.png" };
+
+                break;
+            case "false":
+                configImgPath = { ...configImgPath, 300: "/status/300_F.png" };
+
+                break;
+            default:
+                break;
+        }
+        switch (isOnTrevelling) {
+            case "finish":
+                configImgPath = { ...configImgPath, 200: "/status/200_P.png" };
+
+                break;
+            case "process":
+                configImgPath = { ...configImgPath, 200: "/status/200_C.png" };
+
+                break;
+            case "false":
+                configImgPath = { ...configImgPath, 200: "/status/200_F.png" };
+
+                break;
+            default:
+                break;
+        }
+        switch (isRegisterToBranch) {
+            case "finish":
+                configImgPath = { ...configImgPath, 100: "/status/100_P.png" };
+
+                break;
+            case "process":
+                configImgPath = { ...configImgPath, 100: "/status/100_C.png" };
+
+                break;
+            case "false":
+                configImgPath = { ...configImgPath, 100: "/status/100_F.png" };
+
+                break;
+            default:
+                break;
+        }
+
+        setImgPath(configImgPath);
         setVisibility(true);
     };
 
@@ -67,12 +151,21 @@ const Parcels = () => {
         return targetParcel;
     };
 
-    console.log(targetParcelId);
-
     return (
         <>
             {visibility && (
-                <div className="bg-slate-100 rounded-xl h-4/5 lg:h-3/5 w-3/5 absolute top-0 left-0 right-0 bottom-0 m-auto transition z-50 p-6 space-y-2">
+                <div className="bg-slate-100 rounded-xl h-4/5 lg:h-2/5 w-3/5 absolute top-0 left-0 right-0 bottom-0 m-auto transition z-50 p-6 space-y-2">
+                    <div className="relative m-4">
+                        {" "}
+                        <div
+                            className="absolute -right-6 -top-12 justify-end flex hover:cursor-pointer my-4 text-2xl"
+                            onClick={() => {
+                                setVisibility((prev) => !prev);
+                            }}
+                        >
+                            X
+                        </div>
+                    </div>
                     <div className="flex flex-col">
                         <div className="flex justify-between">
                             <div>
@@ -98,13 +191,15 @@ const Parcels = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex flex-col items-end">
-                                <div className="flex items-center space-x-1">
-                                    <GoCalendar />
-                                    <h1>กำหนดส่ง</h1>
-                                </div>
-                                <div className="text-brightRed">
-                                    {targetParcelId.arrivedDate}
+                            <div className="flex items-center space-x-4">
+                                <div className="flex flex-col items-end">
+                                    <div className="flex items-center space-x-1">
+                                        <GoCalendar />
+                                        <h1>กำหนดส่ง</h1>
+                                    </div>
+                                    <div className="text-brightRed">
+                                        {targetParcelId.arrivedDate}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +209,7 @@ const Parcels = () => {
                         <div className="flex items-center">
                             <div>
                                 <img
-                                    src="/images/Box.svg"
+                                    src={imgPath[100]}
                                     alt="box-img"
                                     className="h-28 w-28"
                                 />
@@ -125,7 +220,7 @@ const Parcels = () => {
                             <MdDoubleArrow className="text-brightRed inline-block mr-1" />{" "}
                             <div>
                                 <img
-                                    src="/images/Box.svg"
+                                    src={imgPath[200]}
                                     alt="box-img"
                                     className="h-28 w-28"
                                 />
@@ -134,7 +229,7 @@ const Parcels = () => {
                             <MdDoubleArrow className="text-brightRed inline-block mr-1" />{" "}
                             <div>
                                 <img
-                                    src="/images/Box.svg"
+                                    src={imgPath[300]}
                                     alt="box-img"
                                     className="h-28 w-28"
                                 />
@@ -143,7 +238,7 @@ const Parcels = () => {
                             <MdDoubleArrow className="text-brightRed inline-block mr-1" />{" "}
                             <div>
                                 <img
-                                    src="/images/Box.svg"
+                                    src={imgPath[400]}
                                     alt="box-img"
                                     className="h-28 w-28"
                                 />
@@ -157,16 +252,18 @@ const Parcels = () => {
                 </div>
             )}
             <div className="grid gap-4 grid-cols-4 grid-rows-4">
-                {parcels.map((parcel, idx) => {
-                    return (
-                        <ParcelCard
-                            key={idx}
-                            data={parcel}
-                            idx={idx}
-                            oncardClickHandler={onCardClickHandler}
-                        />
-                    );
-                })}
+                {parcels > 0
+                    ? parcels.map((parcel, idx) => {
+                          return (
+                              <ParcelCard
+                                  key={idx}
+                                  data={parcel}
+                                  idx={idx}
+                                  oncardClickHandler={onCardClickHandler}
+                              />
+                          );
+                      })
+                    : "There's no parcel yet ..."}
             </div>
         </>
     );

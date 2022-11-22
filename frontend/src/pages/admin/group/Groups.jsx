@@ -250,6 +250,8 @@ const Groups = () => {
         return <Spinner />;
     }
 
+    console.log(groups);
+
     return (
         <>
             {onDelete && (
@@ -265,11 +267,6 @@ const Groups = () => {
                     <h1 className=" text-3xl md:text-4xl">Groups Manager</h1>
                     <button
                         onClick={() => {
-                            // setVisibility((prev) => !prev);
-                            // setSenderFormDetails(initialParcelFormDetails);
-                            // setReceiverFormDetails(initialParcelFormDetails);
-                            // setParcelFormDetails(initialParcelFormDetails);
-                            // dispatch(informationReset());
                             navigate("/admin/groups/create");
                         }}
                         className={

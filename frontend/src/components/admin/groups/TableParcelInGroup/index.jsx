@@ -80,12 +80,14 @@ const Table = ({
                     <tr className={styles.tableRowItems}>
                         <td className={styles.tableCell}> </td>
                         <td className={styles.tableCell}></td>
+                        <td className={styles.tableCell}></td>
+                        <td className={styles.tableCell}></td>
+                        <td className={styles.tableCell}>
+                            {weight > 0 ? "Total weight" : null}
+                        </td>
                         <td className={styles.tableCell}>
                             {weight > 0 ? weight : null}
                         </td>
-                        <td className={styles.tableCell}></td>
-                        <td className={styles.tableCell}></td>
-                        <td className={styles.tableCell}></td>
                     </tr>
                 </tbody>
             </table>

@@ -89,10 +89,11 @@ const User = () => {
                 />
             )}
 
-            <div>
-                <h1>Account Protected Page</h1>
-                <button onClick={onLogout}>Log Out</button>
-                <button onClick={() => setVisibility(true)}>Log Out</button>
+            <div className="flex flex-col items-center h-screen justify-center space-y-10">
+                <h1 className="text-7xl">Welcome to BURGEON SYSTEM ...</h1>
+                <div>
+                    <button onClick={onLogout}>Log Out</button>
+                </div>
             </div>
         </>
     );
