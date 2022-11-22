@@ -3,6 +3,10 @@ import { FaMotorcycle, FaShuttleVan } from "react-icons/fa";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { IoIosClipboard } from "react-icons/io";
 import { useState } from "react";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import { BiLoaderCircle } from "react-icons/bi";
+import { updateStatus } from "../../../features/parcel/parcelSlice";
+import { useDispatch } from "react-redux";
 
 const StatusDialog = ({
     onExitHandler,
@@ -10,54 +14,283 @@ const StatusDialog = ({
     parcelFormDetails,
     isEditing,
     editingHandler,
+    status,
 }) => {
-    console.log(parcelFormDetails.status);
+    const dispatch = useDispatch();
     const { isRegisterToBranch, isOnTrevelling, isOnDelivery, isDelivered } =
-        parcelFormDetails.status;
+        status;
 
     const [optionVisibility, setOptionVisibility] = useState(false);
-    let btnBgClassList = "bg-brightRed hover:bg-brightRedLight";
+    let btnBgClassListInitialState = {
+        isRegisterToBranch: "bg-brightRed hover:bg-brightRedLight",
+        isOnTrevelling: "bg-brightRed hover:bg-brightRedLight",
+        isOnDelivery: "bg-brightRed hover:bg-brightRedLight",
+        isDelivered: "bg-brightRed hover:bg-brightRedLight",
+    };
+    const [btnBgClassList, setBtnBgClassList] = useState(
+        btnBgClassListInitialState
+    );
+    const [prevBtn, setPrevBtn] = useState("");
+    const [key, setKey] = useState("");
     const onClickHandler = (name) => {
         const key = name;
         setOptionVisibility(true);
-        console.log(name);
+        if (prevBtn !== key) {
+            //Different Key
+            setPrevBtn(key);
+            if (!optionVisibility) {
+                setBtnBgClassList({
+                    ...btnBgClassListInitialState,
+                    [key]: "bg-green-600 hover:bg-green-400",
+                });
+                setKey(key);
+            } else {
+                setBtnBgClassList({
+                    ...btnBgClassListInitialState,
+                    [key]: "bg-green-600 hover:bg-green-400",
+                });
+                setKey(key);
+            }
+        } else {
+            // SameKey
+            if (!optionVisibility) {
+                setBtnBgClassList({
+                    ...btnBgClassListInitialState,
+                    [key]: "bg-green-600 hover:bg-green-400",
+                });
+                setKey(key);
+            } else {
+                setBtnBgClassList({
+                    ...btnBgClassListInitialState,
+                });
+                setPrevBtn("");
+                setOptionVisibility(false);
+            }
+        }
     };
 
+    const setStatusHandler = (status) => {
+        switch (key) {
+            case "isRegisterToBranch":
+                switch (status) {
+                    case "false":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "false",
+                                    isOnTrevelling: "false",
+                                    isOnDelivery: "false",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+                    case "process":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "process",
+                                    isOnTrevelling: "false",
+                                    isOnDelivery: "false",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+                    case "finish":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "false",
+                                    isOnDelivery: "false",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case "isOnTrevelling":
+                switch (status) {
+                    case "false":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "false",
+                                    isOnDelivery: "false",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+                    case "process":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "process",
+                                    isOnDelivery: "false",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+                    case "finish":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "finish",
+                                    isOnDelivery: "false",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case "isOnDelivery":
+                switch (status) {
+                    case "false":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "finish",
+                                    isOnDelivery: "false",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+                    case "process":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "finish",
+                                    isOnDelivery: "process",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+                    case "finish":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "finish",
+                                    isOnDelivery: "finish",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case "isDelivered":
+                switch (status) {
+                    case "false":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "finish",
+                                    isOnDelivery: "finish",
+                                    isDelivered: "false",
+                                },
+                            })
+                        );
+                        break;
+                    case "process":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "finish",
+                                    isOnDelivery: "finish",
+                                    isDelivered: "process",
+                                },
+                            })
+                        );
+                        break;
+                    case "finish":
+                        dispatch(
+                            updateStatus({
+                                _id: parcelFormDetails._id,
+                                status: {
+                                    isRegisterToBranch: "finish",
+                                    isOnTrevelling: "finish",
+                                    isOnDelivery: "finish",
+                                    isDelivered: "finish",
+                                },
+                            })
+                        );
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+        setOptionVisibility(false);
+        setKey("");
+        setPrevBtn("");
+        setBtnBgClassList(btnBgClassListInitialState);
+    };
     const Option = () => {
         return (
             <>
-                <div className="flex justify-between">
+                <h1 className="text-center">Set to</h1>
+                <div className="flex justify-center space-x-4">
                     <button
-                        onClick={() => onClickHandler("isRegisterToBranch")}
+                        onClick={() => setStatusHandler("false")}
                         name="isRegisterToBranch"
-                        className=" flex w-44 text-center items-center space-x-2 bg-brightRed text-white py-2 px-4 rounded-lg hover:bg-yellow-300 "
+                        className=" flex w-44 text-center items-center space-x-2 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-400 "
                     >
-                        <IoIosClipboard />
-                        <p>Register ...</p>
+                        <AiOutlineClose />
+                        <p>False</p>
                     </button>
                     <button
-                        onClick={() => onClickHandler("isOnTrevelling")}
+                        onClick={() => setStatusHandler("process")}
                         name="isOnTrevelling"
-                        className=" flex w-44 text-center items-center space-x-2 bg-brightRed text-white py-2 px-4 rounded-lg hover:bg-yellow-300"
+                        className=" flex w-44 text-center items-center space-x-2 bg-yellow-600 text-white py-2 px-4 rounded-lg hover:bg-yellow-400"
                     >
-                        <FaShuttleVan />
-                        <p>Transmitting ...</p>
+                        <BiLoaderCircle />
+                        <p>Process</p>
                     </button>
                     <button
-                        onClick={() => onClickHandler("isOnDelivery")}
+                        onClick={() => setStatusHandler("finish")}
                         name="isOnDelivery"
-                        className="flex w-44 text-center items-center space-x-2 bg-brightRed text-white py-2 px-4 rounded-lg hover:bg-yellow-300"
+                        className="flex w-44 text-center items-center space-x-2 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-400"
                     >
-                        <FaMotorcycle />
-                        <p>Delivering ...</p>
-                    </button>
-                    <button
-                        onClick={() => onClickHandler("isDelivered")}
-                        name="isDelivered"
-                        className="flex w-44 text-center items-center space-x-2 bg-brightRed text-white py-2 px-4 rounded-lg hover:bg-yellow-300"
-                    >
-                        <IoMdCheckmarkCircle />
-                        <p>Deliverred ...</p>
+                        <AiOutlineCheck />
+                        <p>Finish</p>
                     </button>
                 </div>
             </>
@@ -90,7 +323,56 @@ const StatusDialog = ({
                             </div>
                             <div className="flex space-x-4">
                                 <p>STATUS: </p>
-                                <p>{`Register : ${isRegisterToBranch}    Transmitting :    ${isOnTrevelling}    Delivering :    ${isOnDelivery}  Deliverred : ${isDelivered}`}</p>
+                                <div>
+                                    Register :{" "}
+                                    <span
+                                        className={
+                                            isRegisterToBranch === "finish"
+                                                ? "text-green-600"
+                                                : isRegisterToBranch === "false"
+                                                ? "text-red-600"
+                                                : "text-yellow-600"
+                                        }
+                                    >
+                                        {isRegisterToBranch}
+                                    </span>{" "}
+                                    Transmitting :{" "}
+                                    <span
+                                        className={
+                                            isOnTrevelling === "finish"
+                                                ? "text-green-600"
+                                                : isOnTrevelling === "false"
+                                                ? "text-red-600"
+                                                : "text-yellow-600"
+                                        }
+                                    >
+                                        {isOnTrevelling}
+                                    </span>{" "}
+                                    Delivering :{" "}
+                                    <span
+                                        className={
+                                            isOnDelivery === "finish"
+                                                ? "text-green-600"
+                                                : isOnDelivery === "false"
+                                                ? "text-red-600"
+                                                : "text-yellow-600"
+                                        }
+                                    >
+                                        {isOnDelivery}
+                                    </span>{" "}
+                                    Deliverred :{" "}
+                                    <span
+                                        className={
+                                            isDelivered === "finish"
+                                                ? "text-green-600"
+                                                : isDelivered === "false"
+                                                ? "text-red-600"
+                                                : "text-yellow-600"
+                                        }
+                                    >
+                                        {isDelivered}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div className="space-y-6">
@@ -102,7 +384,7 @@ const StatusDialog = ({
                                             onClickHandler("isRegisterToBranch")
                                         }
                                         name="isRegisterToBranch"
-                                        className={`${btnBgClassList} flex w-44 text-center items-center space-x-2 text-white py-2 px-4 rounded-lg`}
+                                        className={`${btnBgClassList.isRegisterToBranch} flex w-44 text-center items-center space-x-2 text-white py-2 px-4 rounded-lg`}
                                     >
                                         <IoIosClipboard />
                                         <p>Register ...</p>
@@ -114,7 +396,7 @@ const StatusDialog = ({
                                             onClickHandler("isOnTrevelling")
                                         }
                                         name="isOnTrevelling"
-                                        className=" flex w-44 text-center items-center space-x-2 bg-brightRed text-white py-2 px-4 rounded-lg hover:bg-yellow-300"
+                                        className={`${btnBgClassList.isOnTrevelling} flex w-44 text-center items-center space-x-2 text-white py-2 px-4 rounded-lg`}
                                     >
                                         <FaShuttleVan />
                                         <p>Transmitting ...</p>
@@ -126,7 +408,7 @@ const StatusDialog = ({
                                             onClickHandler("isOnDelivery")
                                         }
                                         name="isOnDelivery"
-                                        className="flex w-44 text-center items-center space-x-2 bg-brightRed text-white py-2 px-4 rounded-lg hover:bg-yellow-300"
+                                        className={`${btnBgClassList.isOnDelivery} flex w-44 text-center items-center space-x-2 text-white py-2 px-4 rounded-lg`}
                                     >
                                         <FaMotorcycle />
                                         <p>Delivering ...</p>
@@ -137,7 +419,7 @@ const StatusDialog = ({
                                         onClickHandler("isDelivered")
                                     }
                                     name="isDelivered"
-                                    className="flex w-44 text-center items-center space-x-2 bg-brightRed text-white py-2 px-4 rounded-lg hover:bg-yellow-300"
+                                    className={`${btnBgClassList.isDelivered} flex w-44 text-center items-center space-x-2 text-white py-2 px-4 rounded-lg`}
                                 >
                                     <IoMdCheckmarkCircle />
                                     <p>Deliverred ...</p>

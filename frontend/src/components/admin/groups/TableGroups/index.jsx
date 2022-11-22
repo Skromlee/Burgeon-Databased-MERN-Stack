@@ -46,8 +46,6 @@ const Table = ({
         return () => {};
     }, []);
 
-    console.log(data);
-
     return (
         <>
             <table className={styles.table}>

@@ -29,9 +29,7 @@ const Table = ({
         onDeleteClick(id);
     };
 
-    slice.map((el) => {
-        console.log(el.isgroupped);
-    });
+    slice.map((el) => {});
     return (
         <>
             <table className={styles.table}>

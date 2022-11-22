@@ -108,6 +108,25 @@ export const parcelUpdate = createAsyncThunk(
     }
 );
 
+// Update parcel status
+export const updateStatus = createAsyncThunk(
+    "parcel/updateStatus",
+    async (updatedStatusData, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().admin.admin.token;
+            return await parcelService.updateStatus(updatedStatusData, token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 // Delete parcel
 export const deleteParcel = createAsyncThunk(
     "parcel/deleteparcel",
@@ -208,6 +227,24 @@ export const parcelSlice = createSlice({
                 state.isError = true;
                 state.message = action.payload;
                 state.parcels = null;
+            })
+            .addCase(updateStatus.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateStatus.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.parcels = state.parcels.filter((each) => {
+                    return each._id !== action.payload._id;
+                });
+                state.parcels.push(action.payload);
+                state.parcelStatus = action.payload;
+                state.parcelStatuscheck = true;
+            })
+            .addCase(updateStatus.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
             });
     },
 });

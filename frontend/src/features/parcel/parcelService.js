@@ -64,6 +64,22 @@ const updateParcelData = async (updateParcelData, token) => {
     return response.data;
 };
 
+// update status
+const updateStatus = async (updatedStatusData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const parcelId = updatedStatusData._id;
+    const response = await axios.put(
+        API_URL + "status/" + parcelId,
+        updatedStatusData,
+        config
+    );
+    return response.data;
+};
+
 // Delete parcel
 const deleteParcel = async (deleteParcelId, token) => {
     const config = {
@@ -82,6 +98,7 @@ const parcelService = {
     updateParcelData,
     deleteParcel,
     getParcelByCitizen,
+    updateStatus,
 };
 
 export default parcelService;

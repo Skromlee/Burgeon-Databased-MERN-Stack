@@ -8,6 +8,7 @@ const {
     deleteParcel,
     getParcelsById,
     getUserParcels,
+    updateStatus,
 } = require("../controllers/parcelController");
 const { protect } = require("../middleware/authMiddleware");
 const { adminProtect } = require("../middleware/adminAuthMiddleware");
@@ -22,5 +23,6 @@ router
     .get(adminProtect, getParcelsById)
     .delete(adminProtect, deleteParcel)
     .put(adminProtect, updateParcel);
+router.put("/status/:id", adminProtect, updateStatus);
 
 module.exports = router;

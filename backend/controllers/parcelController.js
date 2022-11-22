@@ -70,6 +70,36 @@ const registerParcel = asyncHandler(async (req, res) => {
     // res.status(200).json(req.body);
 });
 
+// @desc Update parcels status
+// @route PUT /api/parcels/status/:id
+// @access Private
+const updateStatus = asyncHandler(async (req, res) => {
+    const { _id, status } = req.body;
+    console.log(req.params.id);
+    console.log(_id, status);
+    if (!_id || !status) {
+        res.status(400);
+        throw new Error("Please add all fields");
+    }
+
+    const targetParcel = await Parcel.findById(_id);
+
+    if (!targetParcel) {
+        res.status(400);
+        throw new Error("Parcel not found");
+    }
+
+    const updatedParcel = await Parcel.findOneAndUpdate(
+        _id,
+        { status: status },
+        {
+            new: true,
+        }
+    );
+    console.log(updatedParcel);
+    res.status(200).json(updatedParcel);
+});
+
 // @desc Update parcels information
 // @route PUT /api/parcels/:id
 // @access Private
@@ -137,4 +167,5 @@ module.exports = {
     deleteParcel,
     getParcelsById,
     getUserParcels,
+    updateStatus,
 };

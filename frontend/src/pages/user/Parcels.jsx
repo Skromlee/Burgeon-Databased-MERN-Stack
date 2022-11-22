@@ -70,13 +70,6 @@ const Parcels = () => {
             isRegisterToBranch,
         } = targetParcel.status;
 
-        console.log(
-            isDelivered,
-            isOnDelivery,
-            isOnTrevelling,
-            isRegisterToBranch
-        );
-
         let configImgPath = {};
 
         switch (isDelivered) {
