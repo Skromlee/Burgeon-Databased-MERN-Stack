@@ -75,8 +75,6 @@ const registerParcel = asyncHandler(async (req, res) => {
 // @access Private
 const updateStatus = asyncHandler(async (req, res) => {
     const { _id, status } = req.body;
-    console.log(req.params.id);
-    console.log(_id, status);
     if (!_id || !status) {
         res.status(400);
         throw new Error("Please add all fields");
@@ -90,13 +88,13 @@ const updateStatus = asyncHandler(async (req, res) => {
     }
 
     const updatedParcel = await Parcel.findOneAndUpdate(
-        _id,
+        { _id: _id },
         { status: status },
         {
             new: true,
         }
     );
-    console.log(updatedParcel);
+
     res.status(200).json(updatedParcel);
 });
 

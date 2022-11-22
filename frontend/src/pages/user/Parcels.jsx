@@ -245,7 +245,7 @@ const Parcels = () => {
                 </div>
             )}
             <div className="grid gap-4 grid-cols-4 grid-rows-4">
-                {parcels > 0
+                {parcels
                     ? parcels.map((parcel, idx) => {
                           return (
                               <ParcelCard
@@ -256,7 +256,7 @@ const Parcels = () => {
                               />
                           );
                       })
-                    : "There's no parcel yet ..."}
+                    : "There's not parcel yet..."}
             </div>
         </>
     );
