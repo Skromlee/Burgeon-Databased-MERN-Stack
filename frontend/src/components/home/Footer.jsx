@@ -76,7 +76,7 @@ const Footer = () => {
 
                 {/* <!-- List Container --> */}
                 <div className="flex justify-around space-x-32">
-                    <div className="flex flex-col space-y-3 text-white">
+                    {/* <div className="flex flex-col space-y-3 text-white">
                         <Link href="#" className="hover:text-brightRed">
                             Home
                         </Link>
@@ -100,7 +100,7 @@ const Footer = () => {
                         <Link href="#" className="hover:text-brightRed">
                             Privacy Policy
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
                 {/* <!-- Input Container --> */}
                 <div className="flex flex-col justify-center items-center">

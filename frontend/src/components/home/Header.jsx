@@ -25,16 +25,16 @@ function Header() {
                         Home
                     </NavLink>
                     <NavLink
-                        to="/about"
+                        to="/search"
                         className={(navData) =>
                             navData.isActive
                                 ? `hover:text-gray-500 text-brightRed`
                                 : `hover:text-gray-500`
                         }
                     >
-                        About
+                        Parcel Finder
                     </NavLink>
-                    <NavLink
+                    {/* <NavLink
                         to="/our-teams"
                         className={(navData) =>
                             navData.isActive
@@ -63,7 +63,7 @@ function Header() {
                         }
                     >
                         Contact
-                    </NavLink>
+                    </NavLink> */}
                 </div>
                 <div className="flex items-center space-x-6">
                     <div className="flex justify-center md:justify-start">
