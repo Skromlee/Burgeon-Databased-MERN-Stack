@@ -164,7 +164,7 @@ const Branch = () => {
                 <div></div>
                 {branch.length > 0 ? (
                     <div className=" table">
-                        <div className=" container mx-auto ">
+                        <div className=" mx-auto ">
                             <Table
                                 data={branch}
                                 rowsPerPage={12}

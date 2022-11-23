@@ -372,7 +372,7 @@ const Parcels = () => {
                 </div>
                 {parcels.length > 0 ? (
                     <div className=" table">
-                        <div className=" container mx-auto ">
+                        <div className=" mx-auto ">
                             <Table
                                 data={parcels}
                                 test={testParcel}
