@@ -281,7 +281,7 @@ const Groups = () => {
                 </div>
                 {groups.length > 0 ? (
                     <div className=" table">
-                        <div className=" container mx-auto ">
+                        <div className=" mx-auto ">
                             <Table
                                 data={groups}
                                 test={testParcel}

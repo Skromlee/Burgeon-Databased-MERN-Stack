@@ -34,12 +34,20 @@ const Table = ({
     };
 
     const ObjectIdToName = (id) => {
-        let targetBranch = branch.filter((each) => {
-            return each._id === id ? each : null;
-        });
-        targetBranch = targetBranch[0];
+        if (branch) {
+            let targetBranch = branch.filter((each) => {
+                return each._id === id ? each : null;
+            });
+            targetBranch = targetBranch[0];
 
-        return targetBranch.branchName;
+            if (targetBranch) {
+                return targetBranch.branchName;
+            } else {
+                return id;
+            }
+        } else {
+            return id;
+        }
     };
 
     useEffect(() => {
