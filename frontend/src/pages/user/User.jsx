@@ -16,17 +16,16 @@ const User = () => {
     const { user, isLoading, isError, message } = useSelector(
         (state) => state.auth
     );
-    const { _id, email, firstname, citizen } = user;
 
     const [visibility, setVisibility] = useState(false);
 
     const [formDetails, setFormDetails] = useState({
-        _id,
-        email: email,
+        _id: "",
+        email: "",
         firstname: "",
         lastname: "",
         phone: "",
-        citizen: citizen,
+        citizen: "",
         addressNo: "",
         province: "",
         district: "",
@@ -35,11 +34,19 @@ const User = () => {
         dob: "",
     });
 
+    // const { firstname, citizen } = user;
+
     useEffect(() => {
         if (isError) {
         }
 
-        if (citizen && !firstname) {
+        if (user && user.citizen && !user.firstname) {
+            setFormDetails({
+                ...formDetails,
+                _id: user._id,
+                email: user.email,
+                citizen: user.citizen,
+            });
             setVisibility(true);
         } else {
             setVisibility(false);
@@ -48,7 +55,7 @@ const User = () => {
         if (!user) {
             navigate("/signin");
         }
-    }, [user, navigate, citizen, firstname, isError, message, dispatch]);
+    }, [user, navigate, isError, formDetails, message, dispatch]);
 
     const onLogout = () => {
         dispatch(logout());
