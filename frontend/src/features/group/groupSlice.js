@@ -92,7 +92,6 @@ export const groupUpdate = createAsyncThunk(
 export const deleteGroup = createAsyncThunk(
     "group/deleteGroup",
     async (deleteGroupId, thunkAPI) => {
-        console.log("deleteGroupId: ", deleteGroupId);
         try {
             const token = thunkAPI.getState().admin.admin.token;
             return await groupService.deleteGroup(deleteGroupId, token);

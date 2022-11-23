@@ -20,7 +20,6 @@ function ParcelCard({ data, idx, oncardClickHandler }) {
         imgPath += "100_F.png";
     }
 
-    // console.log(isRegisterToBranch, isOnTrevelling, isOnDelivery, isDelivered);
     return (
         <button onClick={onClickHandler}>
             <div className="flex flex-col items-center border p-6 h-full w-full space-y-4">

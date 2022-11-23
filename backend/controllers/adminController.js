@@ -8,7 +8,6 @@ const Employee = require("../models/employeeModel");
 // @route POST /api/admin/
 // @access Public for now
 const registerAdmin = asyncHandler(async (req, res) => {
-    console.log("register new admin");
     const {
         email,
         password,
@@ -87,13 +86,10 @@ const registerAdmin = asyncHandler(async (req, res) => {
 // @route POST /api/admin/login
 // @access Public
 const loginAdmin = asyncHandler(async (req, res) => {
-    console.log(req.body);
     // req.body;
     const { email, password } = req.body;
     // const admin = await Admin.findOne({ email });
     const employee = await Employee.findOne({ email });
-    console.log(employee);
-    console.log(await bcrypt.compare(password, employee.password));
 
     if (employee && (await bcrypt.compare(password, employee.password))) {
         res.json({

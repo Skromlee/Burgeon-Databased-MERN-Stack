@@ -54,8 +54,6 @@ const updateGroupData = async (updateGroupData, token) => {
 
 // Delete group
 const deleteGroup = async (deleteGroupId, token) => {
-    console.log("Service ++");
-    console.log("deleteGroupId: ", deleteGroupId);
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,

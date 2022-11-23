@@ -68,7 +68,6 @@ const registerGroup = asyncHandler(async (req, res) => {
 
     try {
         parcelList.map((each) => {
-            console.log(each._id);
             Parcel.findByIdAndUpdate(each._id, { isgroupped: true }, (err) => {
                 if (err) console.log(err);
             });
@@ -92,8 +91,6 @@ const registerGroup = asyncHandler(async (req, res) => {
 // @route PUT /api/groups/:id
 // @access Private
 const updateGroup = asyncHandler(async (req, res) => {
-    console.log(req.body);
-
     const {
         bagsize,
         branch,
@@ -158,7 +155,6 @@ const deleteGroup = asyncHandler(async (req, res) => {
 
     try {
         parcelList.forEach((element) => {
-            console.log(element);
             Parcel.findByIdAndUpdate(element, { isgroupped: false }, (err) => {
                 if (err) console.log(err);
             });

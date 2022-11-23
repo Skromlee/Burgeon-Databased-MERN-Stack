@@ -147,7 +147,7 @@ const CreateGroup = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(parcelFormDetails);
+
         dispatch(groupRegister(parcelFormDetails));
         setVisibility(false);
         setParcelFormDetails(initialParcelFormDetails);
@@ -252,17 +252,15 @@ const CreateGroup = () => {
     const [parcelCount, setParcelCount] = useState(0);
 
     const addWeightHandler = (targetParcel) => {
-        console.log(targetParcel);
         setWeight((prev) => prev + targetParcel.weight);
         setParcelCount((prev) => prev + 1);
     };
     const removeWeightHandler = (targetParcel) => {
-        console.log(targetParcel);
         let removedWeight = parcels.filter((each) => {
             return targetParcel === each._id;
         });
         removedWeight = removedWeight[0];
-        console.log(removedWeight.weight);
+
         setWeight((prev) => prev - removedWeight.weight);
         setParcelCount((prev) => prev - 1);
     };

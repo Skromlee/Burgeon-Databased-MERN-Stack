@@ -33,6 +33,8 @@ import CreateBranch from "./pages/admin/branch/CreateBranch";
 // admin pages => Group Manager
 import Groups from "./pages/admin/group/Groups";
 import CreateGroup from "./pages/admin/group/CreateGroup";
+// For Testing
+import TanTable from "./components/common/TanTable";
 
 function App() {
     return (
@@ -87,6 +89,7 @@ function App() {
                     <Route path="/admin/signin" element={<AdminSignin />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/signin" element={<Signin />} />
+                    <Route path="/test" element={<TanTable />} />
                 </Routes>
             </Router>
             <ToastContainer />

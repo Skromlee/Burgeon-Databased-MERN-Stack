@@ -9,15 +9,6 @@ const GroupDetails = ({
     parcelCount,
     branch: branchsList,
 }) => {
-    console.log(
-        onExitHandler,
-        onSubmit,
-        onParcelChange,
-        parcelFormDetails,
-        weight,
-        parcelCount,
-        branchsList
-    );
     return (
         <div className="">
             <div className="bg-slate-200 rounded-xl h-4/5 lg:h-3/5 w-3/5 absolute top-0 left-0 right-0 bottom-0 m-auto transition overflow-auto p-10">

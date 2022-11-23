@@ -171,7 +171,7 @@ const Groups = () => {
         const updatedGroupData = {
             ...parcelFormDetails,
         };
-        console.log(updatedGroupData);
+
         dispatch(groupUpdate(updatedGroupData));
     };
 
@@ -200,7 +200,7 @@ const Groups = () => {
 
     const prepareFormForDetail = (id) => {
         const targetGroup = findGroupById(id);
-        console.log(targetGroup[0]);
+
         const {
             bagsize,
             branch,
@@ -239,8 +239,6 @@ const Groups = () => {
     };
 
     const confirmDeleteHandler = () => {
-        console.log("Deleted");
-        console.log(targetId);
         dispatch(deleteGroup(targetId));
         setTargetId("");
         setOnDelete(false);
@@ -249,8 +247,6 @@ const Groups = () => {
     if (isLoading) {
         return <Spinner />;
     }
-
-    console.log(groups);
 
     return (
         <>

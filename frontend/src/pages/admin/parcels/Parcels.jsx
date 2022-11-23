@@ -54,10 +54,9 @@ const Parcels = () => {
 
         if (parcelStatuscheck) {
             // prepareFormForDetail()
-            console.log(status);
-            console.log(parcelStatuscheck);
+
             setStatus(parcelStatus.status);
-            console.log(status);
+
             // }
         }
 
