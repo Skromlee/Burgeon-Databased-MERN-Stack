@@ -16,12 +16,19 @@ const getParcels = async (token) => {
 
 // Get Parcelbyid
 const getParcelById = async (parcelId, token) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    const response = await axios.get(API_URL + parcelId, config);
+    // const config = {
+    //     headers: {
+    //         Authorization: `Bearer ${token}`,
+    //     },
+    // };
+    // const response = await axios.get(API_URL + parcelId, config);
+    const response = await axios.get(API_URL + parcelId);
+    return response.data;
+};
+// globalParcelById
+const globalParcelById = async (parcelId) => {
+    const response = await axios.get(API_URL + parcelId);
+
     return response.data;
 };
 
@@ -99,6 +106,7 @@ const parcelService = {
     deleteParcel,
     getParcelByCitizen,
     updateStatus,
+    globalParcelById,
 };
 
 export default parcelService;

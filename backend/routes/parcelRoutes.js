@@ -20,7 +20,8 @@ router
     .post(adminProtect, registerParcel);
 router
     .route("/:id")
-    .get(adminProtect, getParcelsById)
+    // .get(adminProtect, getParcelsById)
+    .get(getParcelsById)
     .delete(adminProtect, deleteParcel)
     .put(adminProtect, updateParcel);
 router.put("/status/:id", adminProtect, updateStatus);

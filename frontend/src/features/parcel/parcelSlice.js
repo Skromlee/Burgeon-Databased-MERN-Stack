@@ -53,8 +53,8 @@ export const getParcelById = createAsyncThunk(
     "parcel/getParcelById",
     async (parcelId, thunkAPI) => {
         try {
-            const token = thunkAPI.getState().admin.admin.token;
-            return await parcelService.getParcelById(parcelId, token);
+            // const token = thunkAPI.getState().admin.admin.token;
+            return await parcelService.getParcelById(parcelId);
         } catch (error) {
             const message =
                 (error.response &&
@@ -66,6 +66,23 @@ export const getParcelById = createAsyncThunk(
         }
     }
 );
+
+// export const globalParcelById = createAsyncThunk(
+//     "parcel/globalParcelById",
+//     async (parcelId, thunkAPI) => {
+//         try {
+//             return await parcelService.globalParcelById(parcelId);
+//         } catch (error) {
+//             const message =
+//                 (error.response &&
+//                     error.response.data &&
+//                     error.response.data.message) ||
+//                 error.message ||
+//                 error.toString();
+//             return thunkAPI.rejectWithValue(message);
+//         }
+//     }
+// );
 
 // Register parcel
 export const parcelRegister = createAsyncThunk(
