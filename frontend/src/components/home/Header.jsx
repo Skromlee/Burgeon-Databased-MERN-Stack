@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import { Button } from "@mui/material";
 
 function Header() {
     return (
@@ -34,36 +35,6 @@ function Header() {
                     >
                         Parcel Finder
                     </NavLink>
-                    {/* <NavLink
-                        to="/our-teams"
-                        className={(navData) =>
-                            navData.isActive
-                                ? `hover:text-gray-500 text-brightRed`
-                                : `hover:text-gray-500`
-                        }
-                    >
-                        Our Teams
-                    </NavLink>
-                    <NavLink
-                        to="/my-customers"
-                        className={(navData) =>
-                            navData.isActive
-                                ? `hover:text-gray-500 text-brightRed`
-                                : `hover:text-gray-500`
-                        }
-                    >
-                        My Customers
-                    </NavLink>
-                    <NavLink
-                        to="/contact"
-                        className={(navData) =>
-                            navData.isActive
-                                ? `hover:text-gray-500 text-brightRed`
-                                : `hover:text-gray-500`
-                        }
-                    >
-                        Contact
-                    </NavLink> */}
                 </div>
                 <div className="flex items-center space-x-6">
                     <div className="flex justify-center md:justify-start">
@@ -82,6 +53,7 @@ function Header() {
                             >
                                 Get Started
                             </Link>
+                            {/* <Button variant="contained">Get Started</Button> */}
                         </div>
                     </div>
                 </div>

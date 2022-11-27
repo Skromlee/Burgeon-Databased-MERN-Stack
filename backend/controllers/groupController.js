@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const Parcel = require("../models/parcelModel");
 const { update } = require("../models/userModel");
 const Group = require("../models/groupModel");
+
 // @desc Get groups
 // @route GET /api/groups
 // @access Private
@@ -10,27 +11,6 @@ const getGroups = asyncHandler(async (req, res) => {
     const groups = await Group.find({});
     res.status(200).json(groups);
 });
-
-// // @desc Get User parcels
-// // @route GET /api/parcels
-// // @access Private
-// const getUserParcels = asyncHandler(async (req, res) => {
-//     const parcels = await Parcel.find({
-//         $or: [
-//             { "sender.citizen": req.user.citizen.toString() },
-//             { "receiver.citizen": req.user.citizen.toString() },
-//         ],
-//     });
-//     res.status(200).json(parcels);
-// });
-
-// // @desc Get parcels specific
-// // @route GET /api/parcels/:id
-// // @accesss Private
-// const getParcelsById = asyncHandler(async (req, res) => {
-//     const parcel = await Parcel.find({ _id: req.params.id });
-//     res.status(200).json(parcel);
-// });
 
 // @desc Register new group
 // @route POST /api/groups

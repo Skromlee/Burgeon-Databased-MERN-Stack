@@ -8,7 +8,7 @@ const CTA = () => {
             <div className="container mx-auto flex flex-col items-center justify-between space-y-12 px-6 py-24 md:flex-row md:space-y-0 md:py-12">
                 {/* <!-- Heading --> */}
                 <h2 className="text-center text-5xl font-bold leading-tight text-white md:max-w-xl md:text-left md:text-4xl">
-                    Simplyify how your team works today
+                    Let be our part ...
                 </h2>
                 {/* <!-- Button --> */}
                 <div>

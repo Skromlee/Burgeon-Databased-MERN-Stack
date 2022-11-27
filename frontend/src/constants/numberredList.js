@@ -1,17 +1,17 @@
 export const numberreddetails = [
     {
         number: "01",
-        title: "Track compony-wide progress",
-        detail: "See how your day-to-day tasks fit into the wider vision. Go from tracking progress at the milestone level all the way done to the smallest of details. Never lose sight of the bigger picture again.",
+        title: "Parcel Registration",
+        detail: "Take the customer's individual information. including parcel information into the database thoroughly ready to verify the correctness.",
     },
     {
         number: "02",
-        title: "Track compony-wide progress",
-        detail: "See how your day-to-day tasks fit into the wider vision. Go from tracking progress at the milestone level all the way done to the smallest of details. Never lose sight of the bigger picture again.",
+        title: "Product Sorting",
+        detail: "Separate parcels according to convenience Proximity, consistency, to reach the destination as quickly as possible.",
     },
     {
         number: "03",
-        title: "Track compony-wide progress",
-        detail: "See how your day-to-day tasks fit into the wider vision. Go from tracking progress at the milestone level all the way done to the smallest of details. Never lose sight of the bigger picture again.",
+        title: "Freight",
+        detail: "Deliver goods accurately and quickly from the sorting of products into categories.",
     },
 ];
