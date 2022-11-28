@@ -126,7 +126,7 @@ const updateUser = asyncHandler(async (req, res) => {
         new: true,
     }).select("-password");
     const updateUserAddedToken = {
-        ...updateUser,
+        ...updatedUser._doc,
         token: generateToken(updateUser._id),
     };
     res.status(200).json(updateUserAddedToken);

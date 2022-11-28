@@ -55,7 +55,7 @@ const User = () => {
         if (!user) {
             navigate("/signin");
         }
-    }, [user, navigate, isError, formDetails, message, dispatch]);
+    }, [user, navigate, isError, message, dispatch]);
 
     const onLogout = () => {
         dispatch(logout());
