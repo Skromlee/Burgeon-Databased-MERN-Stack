@@ -6,40 +6,40 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
-import { createTheme, ThemeProvider } from "@mui/material";
+// import { createTheme, ThemeProvider } from "@mui/material";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
 
-// Create Theme
-const theme = createTheme({
-    palette: {
-        primary: {
-            light: "#ffb15d",
-            main: "#ff802d",
-            dark: "#c55100",
-            contrastText: "#000000",
-        },
-        secondary: {
-            light: "#76b7ff",
-            main: "#2d88ff",
-            dark: "#005ccb",
-            contrastText: "#000000",
-        },
-        white: {
-            main: "#fff",
-            contrastText: "#000",
-        },
-    },
-});
+// // Create Theme
+// const theme = createTheme({
+//     palette: {
+//         primary: {
+//             light: "#ffb15d",
+//             main: "#ff802d",
+//             dark: "#c55100",
+//             contrastText: "#000000",
+//         },
+//         secondary: {
+//             light: "#76b7ff",
+//             main: "#2d88ff",
+//             dark: "#005ccb",
+//             contrastText: "#000000",
+//         },
+//         white: {
+//             main: "#fff",
+//             contrastText: "#000",
+//         },
+//     },
+// });
 
 root.render(
     <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <Provider store={store}>
-                <App />
-            </Provider>
-        </ThemeProvider>
+        {/* <ThemeProvider theme={theme}> */}
+        <Provider store={store}>
+            <App />
+        </Provider>
+        {/* </ThemeProvider> */}
     </React.StrictMode>
 );
 
